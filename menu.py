@@ -1,7 +1,7 @@
 
 from InquirerPy import inquirer
 import config
-from constants import MENU_MESSAGE, STATS_MESSAGE, RULES_MESSAGE, END_MESSAGE
+from constants import MAIN_MENU_CHOICES, RULES_MENU_CHOICES, STATS_MENU_CHOICES, MENU_MESSAGE, STATS_MENU_CHOICES_NEW, STATS_MENU_CHOICES_VIEW, STATS_MESSAGE, RULES_MESSAGE, END_MESSAGE, STATS_MESSAGE_NEW, STATS_PRINTE_MESSAGE, STATS_VIEW_MESSAGE
 from stats import Stats
 from game import Game
 
@@ -9,16 +9,16 @@ def main_menu():
     stats = Stats()
     selection = inquirer.select(
     message=MENU_MESSAGE,
-    choices=["Start", "Stats", "Rules", "Exit"],
+    choices=[MAIN_MENU_CHOICES.start, MAIN_MENU_CHOICES.stats, MAIN_MENU_CHOICES.rules, MAIN_MENU_CHOICES.exit],
     ).execute()
     match selection:
-        case "Start":
+        case MAIN_MENU_CHOICES.start:
             Game().start()
-        case "Stats":
+        case MAIN_MENU_CHOICES.stats:
             stats_menu(stats)
-        case "Rules":
+        case MAIN_MENU_CHOICES.rules:
             rules_menu()
-        case "Exit":
+        case MAIN_MENU_CHOICES.exite:
             print(END_MESSAGE)
             quit()
 
@@ -26,54 +26,60 @@ def stats_menu(stats):
 
     if (stats.name is None):
         selection = inquirer.select(
-        message=STATS_MESSAGE+"\nNo stats available. Please create a profile first or load the data from a file.",
-        choices=["Create New Profile", "Load from File", "Back to Main Menu"],
+        message=STATS_MESSAGE_NEW,
+        choices=[STATS_MENU_CHOICES_NEW.create, STATS_MENU_CHOICES_NEW.load, STATS_MENU_CHOICES_NEW.back],
         ).execute()
         match selection:
-            case "Create New Profile":
-                print("Enter your username: ")
+            case STATS_MENU_CHOICES_NEW.create:
+                print(STATS_PRINTE_MESSAGE.usernNameInput)
                 username = str(input())
                 stats.create_new(username)
                 stats.save_to_file()
                 stats_menu(stats)
-            case "Load from File":
-                print("Enter the filename to load from (including path): ")
+            case STATS_MENU_CHOICES_NEW.load:
+                print(STATS_PRINTE_MESSAGE.fileNameInput)
                 filename = str(input())
                 stats.load_from_file(filename)
+                print(STATS_PRINTE_MESSAGE.successLoadMessage)
                 stats_menu(stats)
-            case "Back to Main Menu":
+            case STATS_MENU_CHOICES_NEW.back:
                 main_menu()
 
     selection = inquirer.select(
     message=STATS_MESSAGE,
-    choices=["View Stats", "Save Stats", "Load New Stats from File", "Back to Main Menu"],
+    choices=[STATS_MENU_CHOICES.view, STATS_MENU_CHOICES.save, STATS_MENU_CHOICES.load, STATS_MENU_CHOICES.back],
     ).execute()
     match selection:
-        case "View Stats":
-            print(f"Name: {stats.name}")
-            print(f"Wins: {stats.winNumber}")
-            print(f"Losses: {stats.loseNumber}")
-            print(f"ELO Score: {stats.eloScore}")
-            stats_menu(stats)
-        case "Save Stats":
+        case STATS_MENU_CHOICES.view:
+            stats.printe_stats()
+            selection = inquirer.select(
+            choices=[STATS_MENU_CHOICES_VIEW.back],
+            message=STATS_VIEW_MESSAGE,
+            ).execute()
+            match selection:
+                case STATS_MENU_CHOICES_VIEW.back:
+                    stats_menu(stats)
+        case STATS_MENU_CHOICES.save:
             stats.save_to_file()
-            stats_menu()
-        case "Load New Stats from File":
-            print("Enter the filename to load from (including path): ")
+            print(STATS_PRINTE_MESSAGE.successSaveMessage)
+            stats_menu(stats)
+        case STATS_MENU_CHOICES.load:
+            print(STATS_PRINTE_MESSAGE.fileNameInput)
             filename = str(input())
             stats.load_from_file(filename)
+            print(STATS_PRINTE_MESSAGE.successLoadMessage)
             stats_menu(stats)
-        case "Back to Main Menu":
+        case STATS_MENU_CHOICES.back:
             main_menu()
 
 def rules_menu():
     print(create_rules())
     selection = inquirer.select(
-    choices=["Back to Main Menu"],
-    message="",
+    choices=[RULES_MENU_CHOICES.back],
+    message=RULES_MESSAGE,
     ).execute()
     match selection:
-        case "Back to Main Menu":
+        case RULES_MENU_CHOICES.back:
             main_menu()
 
 def create_rules():

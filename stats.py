@@ -46,3 +46,18 @@ class Stats:
         else:
             self.loseNumber += 1
             self.eloScore -= 10
+
+    def printe_stats(self):
+        lines = [
+            f"Name: {self.name}",
+            f"Wins: {self.winNumber}",
+            f"Losses: {self.loseNumber}",
+            f"ELO Score: {self.eloScore}"
+        ]
+
+        width = max(len(line) for line in lines) + 2
+
+        print("  +" + "-" * width + "+")
+        for line in lines:
+            print(f"  | {line.ljust(width - 1)}|")
+        print("  +" + "-" * width + "+")
