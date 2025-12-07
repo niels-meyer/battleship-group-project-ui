@@ -1,17 +1,19 @@
 import random
-from app_types import TRemainingCells, TCoord
+from app_types import TRemainingCells, TCoord, TShipCoords
 from player import Player
-from config import get_rows, get_columns
+from config import get_rows, get_columns, get_ships
+from utils import suggest_ship_end_coords, get_coords_between
 
 class AI(Player):
-    def __init__(self):
-        super().__init__("AI")
+    def __init__(self, name: str):
+        super().__init__(name)
         self._opponent_remaining_cells: TRemainingCells = self._generate_opponent_remaining_cells()
 
     def _generate_opponent_remaining_cells(self) -> TRemainingCells:
         return { row: get_columns().copy() for row in get_rows() }
 
     def _get_random_opponent_remaining_cell(self) -> TCoord | None:
+        # TODO: Improve AI shooting logic, make it smarter
         if not self._opponent_remaining_cells:
             return None
 
@@ -20,17 +22,31 @@ class AI(Player):
 
         return (row, column)
     
-    def _get_random_ship_placement_coord(self) -> TCoord | None:
-        pass
+    def get_random_ship_placement_coords(self, ship_length: int) -> TShipCoords:
+        # TODO: Improve AI ship placement logic, make it smarter
+        rows = get_rows()
+        columns = get_columns()
+        
+        start_coord = (random.choice(rows), random.choice(columns))
+        
+        valid_end_coords = suggest_ship_end_coords(self.board, start_coord, ship_length)
+        
+        if not valid_end_coords:
+            return self.get_random_ship_placement_coords(ship_length)
+        
+        end_coord = random.choice(valid_end_coords)
+        
+        return get_coords_between(start_coord, end_coord)
 
     # --- Override ---
-    
-    def place_ship(self, ship_name: str) -> None:
-        start_coord, end_coord = self._get_random_ship_placement_coord()
-        
-        super().place_ship(ship_name, start_coord, end_coord)
+    def place_ship(self, ship_name) -> None:
+        ships = get_ships()
+        ship_length = ships[ship_name]["length"]
+        ship_coords = self.get_random_ship_placement_coords(ship_length)
 
-    def shoot_player(self, player: Player) -> bool:
+        super().place_ship(ship_name, ship_coords)
+
+    def shoot_player(self, player: Player) -> None:
         coord = self._get_random_opponent_remaining_cell()
         row, column = coord
 
@@ -39,6 +55,6 @@ class AI(Player):
         if not self._opponent_remaining_cells[row]:
             del self._opponent_remaining_cells[row]
 
-        return super().shoot_player(player, coord)
+        super().shoot_player(player, coord)
 
     

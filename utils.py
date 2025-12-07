@@ -103,7 +103,7 @@ def parse_coord(input_coord: str) -> TCoord:
         raise ValueError("Invalid format. Use 'row column', e.g. 'a 1'.")
 
     if not is_coord_exists(coord):
-        raise ValueError(f"Coordinate '{input_coord}' does not exist, overlaps or out of bound.")
+        raise ValueError(f"Coordinate '{input_coord}' does not exist.")
 
     return coord
 
