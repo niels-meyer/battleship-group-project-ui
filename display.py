@@ -75,7 +75,7 @@ def print_boards(player_board, enemy_board):
     for row_index, row_label in enumerate(_row_labels):
         row_label_cell = _render_cell(row_label)
         player_board_battleground_row_cells = _render_board_battleground_row_cells(player_board, row_index, reveal_ship=True)
-        enemy_board_battleground_row_cells = _render_board_battleground_row_cells(enemy_board, row_index, reveal_ship=True)
+        enemy_board_battleground_row_cells = _render_board_battleground_row_cells(enemy_board, row_index, reveal_ship=False)
         player_board_row = _join_cells([row_label_cell] + player_board_battleground_row_cells)
         enemy_board_row = _join_cells([row_label_cell] + enemy_board_battleground_row_cells)
         print(player_board_row + _board_separator + enemy_board_row)
