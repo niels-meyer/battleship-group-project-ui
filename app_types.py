@@ -11,6 +11,12 @@ TConfig = TypedDict("TConfig", {
     "rows": TConfigRows,
     "columns": TConfigColumns
 })
+TConfigCellSymbols = TypedDict("TConfigCellSymbols", {
+    "empty": str,
+    "ship": str,
+    "hit": str,
+    "miss": str
+})
 
 # --- Coord ---
 TCoord = Tuple[str, str] # ("row", "column") e.g. ("a", "1"), ("b", "10")
