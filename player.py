@@ -1,7 +1,6 @@
 from app_types import TBoard, TCoord, TShipCoords, TShips
 from board import Board
 from ships import Ships
-from utils import get_coords_between
 
 class Player:
     def __init__(self, name: str):
@@ -18,3 +17,5 @@ class Player:
 
         if ship:
             player.ships.decrease_ship(ship, coord)
+
+        print(f"{self.name.capitalize()} shot at \"{coord[0]} {coord[1]}\" and {'hit a ship!' if ship else 'missed.'}")
