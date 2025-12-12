@@ -7,5 +7,11 @@
         "Cruiser": { "length": 3 },
         "Submarine": { "length": 3 },
         "Destroyer": { "length": 2 }
+    },
+    "cell_symbols": {
+        "empty": "-",
+        "ship": "■",
+        "hit": "□",
+        "miss": "X"
     }
 }
