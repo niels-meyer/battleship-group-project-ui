@@ -40,7 +40,6 @@ def stats_menu(stats):
                 print(STATS_PRINTE_MESSAGE.fileNameInput)
                 filename = str(input())
                 stats.load_from_file(filename)
-                print(STATS_PRINTE_MESSAGE.successLoadMessage)
                 stats_menu(stats)
             case STATS_MENU_CHOICES_NEW.back:
                 main_menu()

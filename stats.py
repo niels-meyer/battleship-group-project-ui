@@ -1,6 +1,8 @@
 import json
 import uuid
 
+from constants import STATS_PRINTE_MESSAGE
+
 class Stats:
     def __init__(self):
         self.id = uuid.uuid4()
@@ -17,13 +19,17 @@ class Stats:
         self.eloScore = 500
     
     def load_from_file(self, filename):
-        with open(filename, 'r') as f:
-            data = json.load(f)
-            self.name = data['name']
-            self.id = data['id']
-            self.winNumber = data['winNumber']
-            self.loseNumber = data['loseNumber']
-            self.eloScore = data['eloScore']
+        try:
+            with open(filename, 'r') as f:
+                data = json.load(f)
+                self.name = data['name']
+                self.id = data['id']
+                self.winNumber = data['winNumber']
+                self.loseNumber = data['loseNumber']
+                self.eloScore = data['eloScore']
+            print(STATS_PRINTE_MESSAGE.successLoadMessage)
+        except:
+            print('\033[91m' + "Error: Path: {" + filename + "} does not exist")
     
     def save_to_file(self):
         if not hasattr(self, 'name'):
