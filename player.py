@@ -12,7 +12,7 @@ class Player:
         self.ships.add_ship(ship_name, ship_coords)
         self.board.add_ship(ship_name, ship_coords)
     
-    def shoot_player(self, player: Player, coord: TCoord) -> None:
+    def shoot_player(self, player: "Player", coord: TCoord) -> None:
         ship = player.board.shoot_ship(coord)
 
         if ship:
