@@ -1,88 +1,98 @@
-
 from InquirerPy import inquirer
 import config
-from constants import MAIN_MENU_CHOICES, RULES_MENU_CHOICES, STATS_MENU_CHOICES, MENU_MESSAGE, STATS_MENU_CHOICES_NEW, STATS_MENU_CHOICES_VIEW, STATS_MESSAGE, RULES_MESSAGE, END_MESSAGE, STATS_MESSAGE_NEW, STATS_PRINTE_MESSAGE, STATS_VIEW_MESSAGE
+from constants import MAIN_MENU_CHOICES, CONFIG_MENU_CHOICES, STATS_MENU_CHOICES, MENU_MESSAGE, STATS_MENU_CHOICES_NEW, STATS_MENU_CHOICES_VIEW, STATS_MESSAGE, STATS_TITLE_ART, CONFIG_MESSAGE, END_MESSAGE, STATS_PRINT_MESSAGE, STATS_VIEW_MESSAGE
 from stats import Stats
 from game import Game
+from utils import clear_screen
 
 def main_menu():
-    stats = Stats()
+    clear_screen()
     selection = inquirer.select(
     message=MENU_MESSAGE,
-    choices=[MAIN_MENU_CHOICES.start, MAIN_MENU_CHOICES.stats, MAIN_MENU_CHOICES.rules, MAIN_MENU_CHOICES.exit],
+    choices=[MAIN_MENU_CHOICES.start, MAIN_MENU_CHOICES.stats, MAIN_MENU_CHOICES.config, MAIN_MENU_CHOICES.exit],
     ).execute()
     match selection:
         case MAIN_MENU_CHOICES.start:
-            Game().start()
+            game_menu()
         case MAIN_MENU_CHOICES.stats:
-            stats_menu(stats)
-        case MAIN_MENU_CHOICES.rules:
-            rules_menu()
-        case MAIN_MENU_CHOICES.exite:
-            print(END_MESSAGE)
-            quit()
+            stats_menu()
+        case MAIN_MENU_CHOICES.config:
+            config_menu()
+        case MAIN_MENU_CHOICES.exit:
+            exit_menu()
 
-def stats_menu(stats):
+def exit_menu():
+    clear_screen()
+    print(END_MESSAGE)
+    quit()
 
-    if (stats.name is None):
+def game_menu():
+    clear_screen()
+    Game().start()
+    main_menu()
+
+def stats_menu():
+    clear_screen()
+    if (Stats().name is None):
         selection = inquirer.select(
-        message=STATS_MESSAGE_NEW,
+        message=STATS_MESSAGE,
         choices=[STATS_MENU_CHOICES_NEW.create, STATS_MENU_CHOICES_NEW.load, STATS_MENU_CHOICES_NEW.back],
         ).execute()
         match selection:
             case STATS_MENU_CHOICES_NEW.create:
-                print(STATS_PRINTE_MESSAGE.usernNameInput)
+                print(STATS_PRINT_MESSAGE.usernNameInput)
                 username = str(input())
-                stats.create_new(username)
-                stats.save_to_file()
-                stats_menu(stats)
+                Stats().create_new(username)
+                Stats().save_to_file()
+                stats_menu()
             case STATS_MENU_CHOICES_NEW.load:
-                print(STATS_PRINTE_MESSAGE.fileNameInput)
+                print(STATS_PRINT_MESSAGE.fileNameInput)
                 filename = str(input())
-                stats.load_from_file(filename)
-                stats_menu(stats)
+                Stats().load_from_file(filename)
+                stats_menu()
             case STATS_MENU_CHOICES_NEW.back:
                 main_menu()
 
     selection = inquirer.select(
-    message=STATS_MESSAGE,
+    message=STATS_TITLE_ART,
     choices=[STATS_MENU_CHOICES.view, STATS_MENU_CHOICES.save, STATS_MENU_CHOICES.load, STATS_MENU_CHOICES.back],
     ).execute()
     match selection:
         case STATS_MENU_CHOICES.view:
-            stats.printe_stats()
+            Stats().print_stats()
             selection = inquirer.select(
             choices=[STATS_MENU_CHOICES_VIEW.back],
             message=STATS_VIEW_MESSAGE,
             ).execute()
             match selection:
                 case STATS_MENU_CHOICES_VIEW.back:
-                    stats_menu(stats)
+                    stats_menu()
         case STATS_MENU_CHOICES.save:
-            stats.save_to_file()
-            print(STATS_PRINTE_MESSAGE.successSaveMessage)
-            stats_menu(stats)
+            Stats().save_to_file()
+            print(STATS_PRINT_MESSAGE.successSaveMessage)
+            stats_menu()
         case STATS_MENU_CHOICES.load:
-            print(STATS_PRINTE_MESSAGE.fileNameInput)
+            print(STATS_PRINT_MESSAGE.fileNameInput)
             filename = str(input())
-            stats.load_from_file(filename)
-            print(STATS_PRINTE_MESSAGE.successLoadMessage)
-            stats_menu(stats)
+            Stats().load_from_file(filename)
+            print(STATS_PRINT_MESSAGE.successLoadMessage)
+            stats_menu()
         case STATS_MENU_CHOICES.back:
             main_menu()
 
-def rules_menu():
-    print(create_rules())
+def config_menu():
+    clear_screen()
+    print(create_config())
     selection = inquirer.select(
-    choices=[RULES_MENU_CHOICES.back],
-    message=RULES_MESSAGE,
+    choices=[CONFIG_MENU_CHOICES.back],
+    message=CONFIG_MESSAGE,
     ).execute()
     match selection:
-        case RULES_MENU_CHOICES.back:
+        case CONFIG_MENU_CHOICES.back:
             main_menu()
 
-def create_rules():
-    rules_lines = [
+def create_config():
+    config_lines = [
     "Welcome to Battleship against AI!",
     f"Board: {len(config.get_rows())}x{len(config.get_columns())}",
     f"Rows: {', '.join(config.get_rows())}",
@@ -91,32 +101,18 @@ def create_rules():
     ]
 
     for ship, info in config.get_ships().items():
-        rules_lines.append(f"- {ship}: {info['length']} cells")
+        config_lines.append(f"- {ship}: {info['length']} cells")
 
-    content_width = max(len(line) for line in rules_lines)
+    content_width = max(len(line) for line in config_lines)
     box_width = content_width + 2  # padding inside box
 
-    RULES_MESSAGE = "       /\\_/\\  \n      ( o.o ) \n       > ^ <  \n"
+    CONFIG_MESSAGE = "       /\\_/\\  \n      ( o.o ) \n       > ^ <  \n"
+    CONFIG_MESSAGE += "  +" + "-" * box_width + "+\n"
+    CONFIG_MESSAGE += "  |" + "CONFIG".center(box_width) + "|\n"
 
-    RULES_MESSAGE += "  +" + "-"*box_width + "+\n"
-    for line in rules_lines:
-        RULES_MESSAGE += "  |" + line.ljust(box_width) + "|\n"
+    CONFIG_MESSAGE += "  +" + "-"*box_width + "+\n"
+    for line in config_lines:
+        CONFIG_MESSAGE += "  |" + line.ljust(box_width) + "|\n"
 
-    RULES_MESSAGE += "  +" + "-"*box_width + "+"
-    
-    return RULES_MESSAGE
-
-# def mainMenuSelectionHandler():
-#     selection = inquirer.select(
-#     message=MENU_MESSAGE,
-#     choices=list(MAIN_MENU_CHOICES.values()),
-#     ).execute()
-
-#     if selection == MAIN_MENU_CHOICES["start"]:
-#         print("Exiting the game...")
-#     elif selection == MAIN_MENU_CHOICES["stats"]:
-#         statsMenuSelectionHandler()
-#     elif selection == MAIN_MENU_CHOICES["rules"]:
-#         print("Displaying rules...")
-#     elif selection == MAIN_MENU_CHOICES["exit"]:
-#         print("Exiting the game...")
+    CONFIG_MESSAGE += "  +" + "-"*box_width + "+"
+    return CONFIG_MESSAGE

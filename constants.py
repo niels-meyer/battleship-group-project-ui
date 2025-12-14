@@ -1,34 +1,29 @@
-from enum import Enum
 from types import SimpleNamespace
 
 MENU_MESSAGE = "                    /\\_/\\ \n                     ( o.o )\n                      > ^ < \n     ______________________________________________________\n    /   ~  ~  ~  ~  ~  ~  BATTLESHIP  ~  ~  ~  ~  ~  ~    |=====[]>\n __/______________________________________________________|______\n<_______________________________________________________________/\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-STATS_MESSAGE = "     /\\_/\\  \n      ( o.o ) \n       > ^ <  \n  +--------------------+\n  |       STATS        |\n  +--------------------+"
-STATS_MESSAGE_NEW = STATS_MESSAGE + "\nNo stats available. Please create a profile first or load the data from a file."
-
-# RULES section with cat
-RULES_MESSAGE = "     /\\_/\\  \n      ( o.o ) \n       > ^ <  \n  +--------------------+\n  |       RULES        |\n  +--------------------+"
+STATS_TITLE_ART = "     /\\_/\\  \n      ( o.o ) \n       > ^ <  \n  +--------------------+\n  |       STATS        |\n  +--------------------+"
+STATS_MESSAGE = STATS_TITLE_ART + "\nNo stats available. Please create a profile first or load the data from a file."
 
 # AFTER HE LEFT THE GAME section with cat
 END_MESSAGE = "       /\\_/\\  \n      ( o.- )  \n       > ^ <  \n      Goodbye!"
 
-RULES_MESSAGE = "Back to Main Menu"
+CONFIG_MESSAGE = "Back to Main Menu"
 STATS_VIEW_MESSAGE = "Back to Stats Menu"
 
 
-STATS_PRINTE_MESSAGE= SimpleNamespace(
+STATS_PRINT_MESSAGE= SimpleNamespace(
     usernNameInput= "Enter your username: ",
     successSaveMessage= "Stats saved successfully.",
     successLoadMessage= "Stats successfully loaded from file.",
     successCreateMessage= "Profile created successfully.",
     fileNameInput= "Enter the filename to load from (including path): ",
 )
-    
 
 # Menu choices as constants
 MAIN_MENU_CHOICES = SimpleNamespace(
     start= "Start Game",
     stats= "Stats",
-    rules= "Rules",
+    config= "Config",
     exit= "Exit"
 )
 
@@ -49,11 +44,14 @@ STATS_MENU_CHOICES_VIEW = SimpleNamespace(
     back= "Press Enter"
 )
 
-RULES_MENU_CHOICES = SimpleNamespace(
+CONFIG_MENU_CHOICES = SimpleNamespace(
     back= "Press Enter"
 )
 
-
-class PlayerType(Enum):
-    HUMAN = "human"
-    AI = "ai"
+# ANSI color codes
+COLOR_RESET = "\033[0m"
+COLOR_CYAN = "\033[36m"
+COLOR_YELLOW = "\033[33m"
+COLOR_GREEN = "\033[32m"
+COLOR_RED = "\033[31m"
+COLOR_BOLD = "\033[1m"

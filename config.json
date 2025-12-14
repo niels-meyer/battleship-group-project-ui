@@ -9,9 +9,9 @@
         "Destroyer": { "length": 2 }
     },
     "cell_symbols": {
-        "empty": "-",
+        "empty": "~",
         "ship": "■",
         "hit": "□",
-        "miss": "X"
+        "miss": "x"
     }
 }
