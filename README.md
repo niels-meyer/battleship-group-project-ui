@@ -96,8 +96,6 @@ The ELO-like score is updated after each game using simple increments/decrements
 ## Possible improvements
 
 - Improve AI logic for smarter ship placement and shooting.
-- Slow the time between the taking turn
-- Avoid the repetition of the terminal for each output.
 
 
 
