@@ -1,6 +1,8 @@
 from typing import List
 from app_types import TBoard
 from config import get_rows, get_columns, get_cell_symbols
+from utils import print_empty_line
+from constants import COLOR_CYAN, COLOR_BOLD, COLOR_RESET, COLOR_GREEN, COLOR_YELLOW
 
 _cell_symbols = get_cell_symbols()
 _row_labels = get_rows()
@@ -45,24 +47,22 @@ def _render_board_battleground_row_cells(board: TBoard, row_index: int, reveal_s
         cells.append(cell)
     return cells
 
-def _print_empty_line():
-    print("")
-
-def print_boards(player_board, enemy_board):
-    _print_empty_line()
-
-    # Legend
-    print("\nLegend:")
-    print(f"  {_cell_symbols['empty']} : water")
-    print(f"  {_cell_symbols['miss']} : miss")
-    print(f"  {_cell_symbols['hit']} : hit")
-    print(f"  {_cell_symbols['ship']} : ship")
-
-    _print_empty_line()
+def print_boards(player_board, enemy_board, show_legend = True):
+    print_empty_line(2)
+    # Legend (only show once at the beginning)
+    if show_legend:
+        print(
+            f"{COLOR_BOLD}Legend:{COLOR_RESET} "
+            f"water: {_cell_symbols['empty']} | "
+            f"miss: {_cell_symbols['miss']} | "
+            f"hit: {_cell_symbols['hit']} | "
+            f"ship: {_cell_symbols['ship']}"
+        )
+        print_empty_line()
 
     # Header line
-    player_board_header = f"{_PLAYER_BOARD:^{_board_width}}"
-    enemy_board_header = f"{_ENEMY_BOARD:^{_board_width}}"
+    player_board_header = f"{COLOR_BOLD}{COLOR_CYAN}{_PLAYER_BOARD:^{_board_width}}{COLOR_RESET}"
+    enemy_board_header = f"{COLOR_BOLD}{COLOR_CYAN}{_ENEMY_BOARD:^{_board_width}}{COLOR_RESET}"
     print(player_board_header + _board_separator + enemy_board_header)
 
     # Column labels line
@@ -79,5 +79,4 @@ def print_boards(player_board, enemy_board):
         player_board_row = _join_cells([row_label_cell] + player_board_battleground_row_cells)
         enemy_board_row = _join_cells([row_label_cell] + enemy_board_battleground_row_cells)
         print(player_board_row + _board_separator + enemy_board_row)
-
-    _print_empty_line()
+    print_empty_line(2)

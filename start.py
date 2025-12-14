@@ -1,8 +1,11 @@
 from menu import main_menu
-from game import Game
+from utils import clear_screen
 
 def main():
-    main_menu()
+    try:
+        main_menu()
+    except KeyboardInterrupt:
+        clear_screen()
     
 if __name__ == "__main__":
     main()

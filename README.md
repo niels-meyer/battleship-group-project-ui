@@ -53,7 +53,7 @@ You will see a main menu with options:
 
 - **Start** – Begin a new game of Battleship.
 - **Stats** – View, save, or load player stats.
-- **Rules** – Placeholder for rules text (to be implemented).
+- **Config** – Displaying current game configuration.
 - **Exit** – Quit the application.
 
 ## Gameplay

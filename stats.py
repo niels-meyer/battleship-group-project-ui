@@ -1,7 +1,7 @@
 import json
 import uuid
-
-from constants import STATS_PRINTE_MESSAGE
+import os
+from constants import STATS_PRINT_MESSAGE
 
 class Stats:
     def __init__(self):
@@ -27,7 +27,7 @@ class Stats:
                 self.winNumber = data['winNumber']
                 self.loseNumber = data['loseNumber']
                 self.eloScore = data['eloScore']
-            print(STATS_PRINTE_MESSAGE.successLoadMessage)
+            print(STATS_PRINT_MESSAGE.successLoadMessage)
         except:
             print('\033[91m' + "Error: Path: {" + filename + "} does not exist")
     
@@ -35,6 +35,10 @@ class Stats:
         if not hasattr(self, 'name'):
             print("Enter your username: ")
             self.name = str(input())
+        
+        # Create stats directory if it doesn't exist
+        os.makedirs("stats", exist_ok=True)
+        
         data = {
             'name': self.name,
             'id': str(self.id),
@@ -53,7 +57,7 @@ class Stats:
             self.loseNumber += 1
             self.eloScore -= 10
 
-    def printe_stats(self):
+    def print_stats(self):
         lines = [
             f"Name: {self.name}",
             f"Wins: {self.winNumber}",

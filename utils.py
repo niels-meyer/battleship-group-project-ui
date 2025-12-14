@@ -1,3 +1,4 @@
+import os
 from typing import Sequence, List
 from app_types import TCoord, TBoard, TShipCoords
 from config import get_rows, get_columns
@@ -136,3 +137,13 @@ def suggest_ship_end_coords(board: TBoard, start_coord: TCoord, ship_length: int
             suggestions.append(end_coord)
 
     return suggestions
+
+def print_empty_line(number_of_lines: int = 1) -> None:
+    print("\n" * (number_of_lines - 1))
+
+def clear_screen():
+    """Clear the console screen and scrollback buffer."""
+    # Use ANSI escape sequence to clear screen and scrollback buffer
+    print('\033[2J\033[H', end='', flush=True)
+    # Also call system clear for extra reliability
+    os.system("cls" if os.name == "nt" else "clear")
