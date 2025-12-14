@@ -1,6 +1,7 @@
 import random
 from InquirerPy import inquirer
 from config import get_ships
+from stats import Stats
 from display import print_boards
 from utils import get_column_index, get_row_index, parse_coord, print_empty_line, suggest_ship_end_coords, get_coords_between, clear_screen
 from constants import COLOR_BOLD, COLOR_YELLOW, COLOR_RED, COLOR_GREEN, COLOR_RESET, COLOR_CYAN
@@ -129,6 +130,10 @@ class Game:
             print("║   Better luck next time!    ║")
             print("╚═════════════════════════════╝")
             print(f"{COLOR_RESET}")
+
+        # Only update stats if it has been initialized (singleton)
+        if Stats().id is not None:
+            Stats().update_stats(self._player.ships.has_ships())
         
         input(f"{COLOR_BOLD}Press Enter to return to main menu...{COLOR_RESET}")
 

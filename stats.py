@@ -4,12 +4,17 @@ import os
 from constants import STATS_PRINT_MESSAGE
 
 class Stats:
-    def __init__(self):
-        self.id = uuid.uuid4()
-        self.winNumber = 0
-        self.loseNumber = 0
-        self.eloScore = 500
-        self.name = None
+    _instance = None
+    
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance.name = None
+            cls._instance.id = None
+            cls._instance.winNumber = 0
+            cls._instance.loseNumber = 0
+            cls._instance.eloScore = 500
+        return cls._instance
     
     def create_new(self, name):
         self.name = name
@@ -49,8 +54,8 @@ class Stats:
         with open("stats/" + str(self.id) + ".json", 'w') as f:
             json.dump(data, f, indent=4)
 
-    def update_stats(self, won):
-        if won:
+    def update_stats(self, has_player_won: bool):
+        if has_player_won:
             self.winNumber += 1
             self.eloScore += 10
         else:

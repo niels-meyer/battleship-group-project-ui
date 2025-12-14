@@ -7,7 +7,6 @@ from utils import clear_screen
 
 def main_menu():
     clear_screen()
-    stats = Stats()
     selection = inquirer.select(
     message=MENU_MESSAGE,
     choices=[MAIN_MENU_CHOICES.start, MAIN_MENU_CHOICES.stats, MAIN_MENU_CHOICES.config, MAIN_MENU_CHOICES.exit],
@@ -16,7 +15,7 @@ def main_menu():
         case MAIN_MENU_CHOICES.start:
             game_menu()
         case MAIN_MENU_CHOICES.stats:
-            stats_menu(stats)
+            stats_menu()
         case MAIN_MENU_CHOICES.config:
             config_menu()
         case MAIN_MENU_CHOICES.exit:
@@ -32,9 +31,9 @@ def game_menu():
     Game().start()
     main_menu()
 
-def stats_menu(stats):
+def stats_menu():
     clear_screen()
-    if (stats.name is None):
+    if (Stats().name is None):
         selection = inquirer.select(
         message=STATS_MESSAGE,
         choices=[STATS_MENU_CHOICES_NEW.create, STATS_MENU_CHOICES_NEW.load, STATS_MENU_CHOICES_NEW.back],
@@ -43,14 +42,14 @@ def stats_menu(stats):
             case STATS_MENU_CHOICES_NEW.create:
                 print(STATS_PRINT_MESSAGE.usernNameInput)
                 username = str(input())
-                stats.create_new(username)
-                stats.save_to_file()
-                stats_menu(stats)
+                Stats().create_new(username)
+                Stats().save_to_file()
+                stats_menu()
             case STATS_MENU_CHOICES_NEW.load:
                 print(STATS_PRINT_MESSAGE.fileNameInput)
                 filename = str(input())
-                stats.load_from_file(filename)
-                stats_menu(stats)
+                Stats().load_from_file(filename)
+                stats_menu()
             case STATS_MENU_CHOICES_NEW.back:
                 main_menu()
 
@@ -60,24 +59,24 @@ def stats_menu(stats):
     ).execute()
     match selection:
         case STATS_MENU_CHOICES.view:
-            stats.print_stats()
+            Stats().print_stats()
             selection = inquirer.select(
             choices=[STATS_MENU_CHOICES_VIEW.back],
             message=STATS_VIEW_MESSAGE,
             ).execute()
             match selection:
                 case STATS_MENU_CHOICES_VIEW.back:
-                    stats_menu(stats)
+                    stats_menu()
         case STATS_MENU_CHOICES.save:
-            stats.save_to_file()
+            Stats().save_to_file()
             print(STATS_PRINT_MESSAGE.successSaveMessage)
-            stats_menu(stats)
+            stats_menu()
         case STATS_MENU_CHOICES.load:
             print(STATS_PRINT_MESSAGE.fileNameInput)
             filename = str(input())
-            stats.load_from_file(filename)
+            Stats().load_from_file(filename)
             print(STATS_PRINT_MESSAGE.successLoadMessage)
-            stats_menu(stats)
+            stats_menu()
         case STATS_MENU_CHOICES.back:
             main_menu()
 
