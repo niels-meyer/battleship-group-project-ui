@@ -1,5 +1,5 @@
 from typing import Dict, List, Sequence, Tuple, TypedDict
-
+from enum import Enum   
 # --- Config ---
 TConfigShips = Dict[str, TypedDict("TConfigShip", {
     "length": int,
@@ -33,3 +33,9 @@ TBoard = Sequence[Sequence[TBoardCell]]
 
 # --- PlayerAI ---
 TRemainingCells = Dict[str, List[str]]
+
+class EAIDifficulty(Enum):
+    BABY = "baby"
+    EASY = "easy"
+    MEDIUM = "medium"
+    HARD = "hard"
