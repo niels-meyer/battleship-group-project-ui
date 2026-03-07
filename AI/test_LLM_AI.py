@@ -1,5 +1,6 @@
-import asyncio
-from llm_ai import LLMM_AI
+from collections import defaultdict
+
+from AI.llm_ai import LLMM_AI
 from app_types import EAIDifficulty
 
 testBoard = (
@@ -10,40 +11,40 @@ testBoard = (
         {"is_shot": True, "ship": "Carrier"},
         {"is_shot": True, "ship": "Carrier"},
         {"is_shot": True, "ship": None},
-        {"is_shot": True, "ship": "Battleship"},
-        {"is_shot": True, "ship": "Battleship"},
-        {"is_shot": True, "ship": "Battleship"},
-        {"is_shot": True, "ship": "Battleship"},
-    ),
-    (
+        {"is_shot": True, "ship": None},
         {"is_shot": True, "ship": "Cruiser"},
         {"is_shot": True, "ship": None},
-        {"is_shot": True, "ship": None},
-        {"is_shot": True, "ship": "Destroyer"},
-        {"is_shot": True, "ship": None},
-        {"is_shot": True, "ship": None},
-        {"is_shot": True, "ship": None},
-        {"is_shot": True, "ship": "Submarine"},
-        {"is_shot": True, "ship": "Submarine"},
-        {"is_shot": True, "ship": "Submarine"},
-    ),
-    (
-        {"is_shot": True, "ship": "Cruiser"},
-        {"is_shot": True, "ship": None},
-        {"is_shot": True, "ship": None},
-        {"is_shot": False, "ship": "Destroyer"},
-        {"is_shot": True, "ship": None},
-        {"is_shot": True, "ship": None},
-        {"is_shot": True, "ship": None},
-        {"is_shot": True, "ship": None},
-        {"is_shot": False, "ship": None},
         {"is_shot": False, "ship": None},
     ),
     (
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": True, "ship": None},
+        {"is_shot": True, "ship": "Cruiser"},
+        {"is_shot": True, "ship": None},
+        {"is_shot": False, "ship": None},
+    ),
+    (
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
         {"is_shot": False, "ship": "Cruiser"},
         {"is_shot": False, "ship": None},
         {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
+    ),
+    (
+        {"is_shot": False, "ship": "Battleship"},
+        {"is_shot": False, "ship": "Battleship"},
+        {"is_shot": False, "ship": "Battleship"},
+        {"is_shot": False, "ship": "Battleship"},
         {"is_shot": False, "ship": None},
         {"is_shot": False, "ship": None},
         {"is_shot": False, "ship": None},
@@ -68,12 +69,48 @@ testBoard = (
         {"is_shot": False, "ship": None},
         {"is_shot": False, "ship": None},
         {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+    ),
+    (
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+    ),
+    (
         {"is_shot": False, "ship": None},
         {"is_shot": False, "ship": None},
         {"is_shot": False, "ship": None},
         {"is_shot": False, "ship": None},
         {"is_shot": False, "ship": None},
         {"is_shot": True, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+    ),
+    (
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": "Submarine"},
+        {"is_shot": False, "ship": "Submarine"},
+        {"is_shot": False, "ship": "Submarine"},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": "Destroyer"},
     ),
     (
         {"is_shot": False, "ship": None},
@@ -85,69 +122,59 @@ testBoard = (
         {"is_shot": False, "ship": None},
         {"is_shot": False, "ship": None},
         {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-    ),
-    (
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-    ),
-    (
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-    ),
-    (
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
-        {"is_shot": False, "ship": None},
+        {"is_shot": False, "ship": "Destroyer"},
     ),
 )
 
-def board_to_string(board):
-    letters = "abcdefghij"
-    output = "  1 2 3 4 5 6 7 8 9 10\n"
+def get_remaining_ships(board):
+    total_cells = defaultdict(int)
+    hit_cells = defaultdict(int)
 
-    for i, row in enumerate(board):
-        row_symbols = []
-
+    for row in board:
         for cell in row:
-            if not cell["is_shot"]:
-                row_symbols.append("~")
-            elif cell["ship"] is None:
-                row_symbols.append("M")
+            ship = cell["ship"]
+            if ship is None:
+                continue
+
+            total_cells[ship] += 1
+            if cell["is_shot"]:
+                hit_cells[ship] += 1
+
+    remaining_ships = []
+
+    for ship in total_cells:
+        if hit_cells[ship] < total_cells[ship]:
+            remaining_ships.append(ship)
+
+    return remaining_ships
+
+def board_to_string(board):
+    hits = []
+    missed_shots = []
+    remaining = []
+
+    for row_idx, row in enumerate(board):
+        row_letter = chr(ord('A') + row_idx)  # Convert 0->A, 1->B, etc.
+        for col_idx, cell in enumerate(row):
+            col_str = str(col_idx + 1)  # Convert 0-indexed to 1-indexed
+            coord = row_letter + col_str
+
+            if cell["is_shot"]:
+                if cell["ship"]:
+                    hits.append(coord)
+                else:
+                    missed_shots.append(coord)
             else:
-                row_symbols.append("H")
+                remaining.append(coord)
 
-        output += letters[i] + " " + " ".join(row_symbols) + "\n"
+    return {
+        "hits": hits,
+        "missed_shots": missed_shots,
+        "remaining": remaining
+    }
 
-    return output
-
-async def main():
-    testAI = LLMM_AI(difficulty=EAIDifficulty.HARD)
-    stringBoard = board_to_string(testBoard)
-    print(stringBoard)
-    print(await testAI.get_next_attack(testBoard))
-
-asyncio.run(main())
+testAI = LLMM_AI(difficulty=EAIDifficulty.HARD)
+stringBoard = board_to_string(testBoard)
+print(get_remaining_ships(testBoard))
+print(stringBoard)
+print(testAI.get_next_attack(stringBoard, remaining_ships=get_remaining_ships(testBoard)))
