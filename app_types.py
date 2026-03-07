@@ -37,5 +37,6 @@ TRemainingCells = Dict[str, List[str]]
 class EAIDifficulty(Enum):
     BABY = "baby"
     EASY = "easy"
-    MEDIUM = "medium"
+    NORMAL = "normal" 
     HARD = "hard"
+    IMPOSSIBLE = "impossible"

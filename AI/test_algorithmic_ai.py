@@ -1,4 +1,5 @@
-from algorithmic_ai import SimpleBattleshipAI
+from AI.algorithmic_ai import SimpleBattleshipAI
+from app_types import EAIDifficulty
 
 
 def create_initial_board():
@@ -199,7 +200,7 @@ def run_simulation(num_turns=50, verbose=False):
         print("=" * 50)
     
     board = create_initial_board()
-    ai = SimpleBattleshipAI()
+    ai = SimpleBattleshipAI(difficulty=EAIDifficulty.IMPOSSIBLE)
     
     if verbose:
         print_board(board, "Initial Board (S=Ship, .=Empty, X=Hit, O=Miss)")
@@ -277,4 +278,4 @@ if __name__ == "__main__":
     print("\n" + "="*50)
     print("V2: STATELESS ALGORITHM - 50 TURNS VERBOSE")
     print("="*50)
-    ai, board = run_simulation(num_turns=20, verbose=True)
+    ai, board = run_simulation(num_turns=17, verbose=True)
