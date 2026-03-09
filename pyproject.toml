@@ -1,0 +1,12 @@
+[project]
+name = "battleship-ui"
+version = "0.1.0"
+authors = [
+  { name="Niels Meyer", email="niels.meyer@students.fhnw.ch" },
+  { name="Alex Lengyel", email="alex.lengyel@students.fhnw.ch" },
+  { name="Héloïse Filâtre", email="heloise.filatre@students.fhnw.ch" }
+]
+readme = "README.md"
+
+[tool.setuptools.packages.find]
+where = ["src"]

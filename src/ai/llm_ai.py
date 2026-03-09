@@ -1,4 +1,4 @@
-from app_types import EAIDifficulty, TCoord, TRemainingCells
+from utils.app_types import EAIDifficulty, TCoord, TRemainingCells
 from ollama import chat, ChatResponse
 from typing import List, Dict
 import json

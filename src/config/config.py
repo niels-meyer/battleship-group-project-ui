@@ -1,7 +1,11 @@
-from app_types import TConfig, TConfigShips, TConfigRows, TConfigColumns, TConfigCellSymbols
 import json
+from pathlib import Path
 
-with open('config.json', 'r') as file:
+from utils.app_types import TConfig, TConfigShips, TConfigRows, TConfigColumns, TConfigCellSymbols
+
+_config_path = Path(__file__).with_name("config.json")
+
+with _config_path.open("r", encoding="utf-8") as file:
     _config: TConfig = json.load(file)
     _ships: TConfigShips = _config.get("ships", {})
     _rows: TConfigRows = _config.get("rows", [])

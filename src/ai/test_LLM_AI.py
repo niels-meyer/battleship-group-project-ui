@@ -1,7 +1,8 @@
 from collections import defaultdict
 
-from AI.llm_ai import LLMM_AI
-from app_types import EAIDifficulty
+from utils.app_types import EAIDifficulty
+
+from .llm_ai import LLMM_AI
 
 testBoard = (
     (

@@ -1,8 +1,8 @@
 import random
-from app_types import EAIDifficulty, TRemainingCells, TCoord, TShipCoords
-from player import Player
-from config import get_rows, get_columns, get_ships
-from utils import suggest_ship_end_coords, get_coords_between
+from core.player import Player
+from config.config import get_rows, get_columns, get_ships
+from utils.app_types import EAIDifficulty, TRemainingCells, TCoord, TShipCoords
+from utils.helper import suggest_ship_end_coords, get_coords_between
 
 class AI(Player):
     def __init__(self, name: str, difficulty: EAIDifficulty):
@@ -14,7 +14,6 @@ class AI(Player):
         return { row: get_columns().copy() for row in get_rows() }
 
     def _get_random_opponent_remaining_cell(self) -> TCoord | None:
-        # TODO: Improve AI shooting logic, make it smarter
         if not self._opponent_remaining_cells:
             return None
 

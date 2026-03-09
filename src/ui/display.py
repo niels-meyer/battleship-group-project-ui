@@ -1,8 +1,8 @@
 from typing import List
-from app_types import TBoard
-from config import get_rows, get_columns, get_cell_symbols
-from utils import print_empty_line
-from constants import COLOR_CYAN, COLOR_BOLD, COLOR_RESET, COLOR_GREEN, COLOR_YELLOW
+from utils.app_types import TBoard
+from config.config import get_rows, get_columns, get_cell_symbols
+from utils.helper import print_empty_line
+from utils.constants import COLOR_CYAN, COLOR_BOLD, COLOR_RESET, COLOR_GREEN, COLOR_YELLOW
 
 _cell_symbols = get_cell_symbols()
 _row_labels = get_rows()
