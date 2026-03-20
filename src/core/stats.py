@@ -1,7 +1,7 @@
 import json
 import uuid
 import os
-from constants import STATS_PRINT_MESSAGE
+from utils.constants import STATS_PRINT_MESSAGE
 
 class Stats:
     _instance = None

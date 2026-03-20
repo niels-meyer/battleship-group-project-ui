@@ -1,17 +1,18 @@
 import random
 from InquirerPy import inquirer
-from config import get_ships
-from stats import Stats
-from display import print_boards
-from utils import get_column_index, get_row_index, parse_coord, print_empty_line, suggest_ship_end_coords, get_coords_between, clear_screen
-from constants import COLOR_BOLD, COLOR_YELLOW, COLOR_RED, COLOR_GREEN, COLOR_RESET, COLOR_CYAN
-from player import Player
-from ai import AI
+from utils.app_types import EAIDifficulty
+from config.config import get_ships
+from .stats import Stats
+from ui.display import print_boards
+from utils.helper import get_column_index, get_row_index, parse_coord, print_empty_line, suggest_ship_end_coords, get_coords_between, clear_screen
+from utils.constants import COLOR_BOLD, COLOR_YELLOW, COLOR_RED, COLOR_GREEN, COLOR_RESET, COLOR_CYAN
+from .player import Player
+from ai.ai import AI
 
 class Game:
     def __init__(self):
         self._player = Player("player")
-        self._ai = AI("enemy")
+        self._ai = AI("enemy", difficulty=EAIDifficulty.BABY)
         self._is_player_turn = random.choice([True, False])
 
     def _change_turn(self) -> None:
@@ -74,6 +75,7 @@ class Game:
         turn_count = 0
         while self._player.ships.has_ships() and self._ai.ships.has_ships():
             clear_screen()
+            
             turn_count += 1
             round_count = (turn_count + 1) // 2
             print(f"{COLOR_BOLD}{COLOR_YELLOW}⏱ Round {round_count}{COLOR_RESET}")

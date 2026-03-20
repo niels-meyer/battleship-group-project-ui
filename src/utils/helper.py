@@ -1,7 +1,7 @@
 import os
 from typing import Sequence, List
-from app_types import TCoord, TBoard, TShipCoords
-from config import get_rows, get_columns
+from .app_types import TCoord, TBoard, TShipCoords
+from config.config import get_rows, get_columns
 
 _row_lookup = {row: i for i, row in enumerate(get_rows())}
 _column_lookup = {column: i for i, column in enumerate(get_columns())}

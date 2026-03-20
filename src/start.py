@@ -1,5 +1,5 @@
-from menu import main_menu
-from utils import clear_screen
+from ui.menu import main_menu
+from utils.helper import clear_screen
 
 def main():
     try:
