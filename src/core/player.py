@@ -1,6 +1,6 @@
-from app_types import TBoard, TCoord, TShipCoords, TShips
-from board import Board
-from ships import Ships
+from utils.app_types import TBoard, TCoord, TShipCoords, TShips
+from .board import Board
+from .ships import Ships
 
 class Player:
     def __init__(self, name: str):
