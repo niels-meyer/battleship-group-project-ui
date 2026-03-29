@@ -2,5 +2,5 @@
 __pycache__/
 
 # --- Project ---
-stats/
+database/battleship.db
 *.egg-info/
