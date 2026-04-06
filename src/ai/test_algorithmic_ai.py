@@ -1,281 +1,214 @@
-from .algorithmic_ai import SimpleBattleshipAI
+from __future__ import annotations
+
+from typing import Any, Callable, Dict, Iterable, Tuple
+
+import pytest
+
+from ai.algorithmic_ai import AIStrategy, SimpleBattleshipAI
 from utils.app_types import EAIDifficulty
 
 
-def create_initial_board():
-    """Create the initial game board with all ships placed."""
-    return (
-        (
-            {"is_shot": False, "ship": "Carrier"},
-            {"is_shot": False, "ship": "Carrier"},
-            {"is_shot": False, "ship": "Carrier"},
-            {"is_shot": False, "ship": "Carrier"},
-            {"is_shot": False, "ship": "Carrier"},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": "Cruiser"},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-        ),
-        (
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": "Cruiser"},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-        ),
-        (
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": "Cruiser"},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-        ),
-        (
-            {"is_shot": False, "ship": "Battleship"},
-            {"is_shot": False, "ship": "Battleship"},
-            {"is_shot": False, "ship": "Battleship"},
-            {"is_shot": False, "ship": "Battleship"},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-        ),
-        (
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-        ),
-        (
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-        ),
-        (
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-        ),
-        (
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-        ),
-        (
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": "Submarine"},
-            {"is_shot": False, "ship": "Submarine"},
-            {"is_shot": False, "ship": "Submarine"},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": "Destroyer"},
-        ),
-        (
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": None},
-            {"is_shot": False, "ship": "Destroyer"},
-        ),
+Board = Tuple[Tuple[Dict[str, Any], ...], ...]
+Coord = Tuple[int, int]
+
+
+def make_board(
+    board_size: int = 10,
+    ship_cells: Dict[Coord, str] | None = None,
+    shot_cells: Iterable[Coord] | None = None,
+) -> Board:
+    ship_cells = ship_cells or {}
+    shot_set = set(shot_cells or [])
+
+    return tuple(
+        tuple(
+            {
+                "is_shot": (row, col) in shot_set,
+                "ship": ship_cells.get((row, col)),
+            }
+            for col in range(board_size)
+        )
+        for row in range(board_size)
     )
 
 
-def update_board(board, shot_row, shot_col):
-    """
-    Update the board after a shot at the given coordinates.
-    If a ship is fully sunk, remove its ship value from all cells.
-    """
-    board_list = [list(row) for row in board]
-    cell = board_list[shot_row][shot_col]
-    
-    # Mark cell as shot
-    board_list[shot_row][shot_col] = {
-        "is_shot": True,
-        "ship": cell["ship"]
+@pytest.fixture
+def case_results() -> list[dict[str, Any]]:
+    return []
+
+
+def run_case(case: dict[str, Any], validator: Callable[[], None], case_results: list[dict[str, Any]]) -> None:
+    case["actual_result"] = ""
+    case["status"] = "fail"
+    case.setdefault("comments", "")
+
+    try:
+        validator()
+        case["actual_result"] = "Observed behavior matched expected result."
+        case["status"] = "pass"
+    except AssertionError as error:
+        case["actual_result"] = f"Assertion failed: {error}"
+        case["comments"] = "Defect found: behavior did not match expected result."
+        raise
+    finally:
+        case_results.append(case)
+
+def test_tc_001_impossible_targets_unshot_ship(case_results: list[dict[str, Any]]) -> None:
+    case = {
+        "id": "TC_001",
+        "title": "Impossible AI selects an unshot ship cell when one exists",
+        "preconditions": "Board contains at least one unshot ship cell.",
+        "steps": [
+            "Create AI with IMPOSSIBLE difficulty.",
+            "Provide board containing unshot ship cells.",
+            "Call decide_shot(board).",
+        ],
+        "test_data_input": {
+            "difficulty": "IMPOSSIBLE",
+            "ship_cells": [(2, 3), (7, 8)],
+            "shot_cells": [],
+        },
+        "expected_result": "Returned coordinate is one of the unshot ship cells.",
+        "actual_result": "",
+        "status": "",
+        "comments": "",
     }
-    
-    # If this was a hit, check if the ship is now fully sunk
-    if cell["ship"] is not None:
-        ship_name = cell["ship"]
-        # Count remaining unhit cells for this ship
-        remaining_hits = 0
-        for row in range(10):
-            for col in range(10):
-                if board_list[row][col]["ship"] == ship_name and not board_list[row][col]["is_shot"]:
-                    remaining_hits += 1
-        
-        # If no remaining hits, sink the ship (remove ship value from all cells)
-        if remaining_hits == 0:
-            for row in range(10):
-                for col in range(10):
-                    if board_list[row][col]["ship"] == ship_name:
-                        board_list[row][col] = {
-                            "is_shot": board_list[row][col]["is_shot"],
-                            "ship": None
-                        }
-    
-    # Convert back to tuple structure
-    return tuple(tuple(row) for row in board_list)
 
-
-def print_board(board, title="Board State"):
-    """Print a visual representation of the board."""
-    print(f"\n{title}")
-    print("   ", end="")
-    for col in range(10):
-        print(f"{col:2} ", end="")
-    print()
-    print("   " + "-" * 33)
-    
-    for row in range(10):
-        print(f"{row:2}|", end="")
-        for col in range(10):
-            cell = board[row][col]
-            if cell["is_shot"]:
-                if cell["ship"]:
-                    print(" X ", end="")  # Hit
-                else:
-                    print(" O ", end="")  # Miss
-            else:
-                if cell["ship"]:
-                    print(" S ", end="")  # Ship (unexposed)
-                else:
-                    print(" . ", end="")  # Empty
-        print("|")
-
-
-def run_simulation(num_turns=50, verbose=False):
-    """Simulate AI gameplay for a specified number of turns."""
-    if verbose:
-        print("=" * 50)
-        print("BATTLESHIP AI V2 SIMULATION")
-        print("=" * 50)
-    
-    board = create_initial_board()
     ai = SimpleBattleshipAI(difficulty=EAIDifficulty.IMPOSSIBLE)
-    
-    if verbose:
-        print_board(board, "Initial Board (S=Ship, .=Empty, X=Hit, O=Miss)")
-    
-    unsunk_count_history = []
-    strategy_history = []
-    
-    for turn in range(1, num_turns + 1):
-        # Get AI decision
-        shot_row, shot_col = ai.decide_shot(board)
-        
-        # Check result
-        cell = board[shot_row][shot_col]
-        is_hit = cell["ship"] is not None
-        
-        if verbose:
-            print(f"\n{'='*50}")
-            print(f"TURN {turn}/{num_turns}")
-            print(f"{'='*50}")
-            print(f"AI Strategy: {ai.current_strategy.value.upper()}")
-            print(f"AI Shoots at: ({shot_row}, {shot_col})", end="")
-        
-        if is_hit:
-            if verbose:
-                print(f" - HIT on {cell['ship']}! 🎯")
-        else:
-            if verbose:
-                print(f" - MISS! 💧")
-        
-        # Update board
-        board = update_board(board, shot_row, shot_col)
-        
-        if verbose:
-            print_board(board, f"Board after Turn {turn}")
-        
-        # Count unsunk hits on board
-        unsunk = sum(1 for r in range(10) for c in range(10) 
-                     if board[r][c]["is_shot"] and board[r][c]["ship"] is not None)
-        
-        if verbose:
-            print(f"\nAI Stats:")
-            print(f"  Shots Fired: {len(ai.last_shots)}")
-            print(f"  Unsunk Hits: {unsunk}")
-        
-        unsunk_count_history.append(unsunk)
-        strategy_history.append(ai.current_strategy.value)
-    
-    # Print final summary
-    if verbose:
-        print(f"\n{'='*50}")
-        print("SIMULATION COMPLETE")
-        print(f"{'='*50}")
-    
-    print(f"Final Stats after {num_turns} turns:")
-    print(f"  Shots fired: {len(ai.last_shots)}")
-    print(f"  Final unsunk hits: {unsunk_count_history[-1]}")
-    
-    # Count strategy switches
-    changes = sum(1 for i in range(1, len(strategy_history)) 
-                  if strategy_history[i] != strategy_history[i-1])
-    print(f"  Strategy switches: {changes}")
-    
-    print(f"\nStrategy Timeline:")
-    last_strategy = None
-    for turn, strategy in enumerate(strategy_history, 1):
-        if strategy != last_strategy:
-            unsunk = unsunk_count_history[turn-1]
-            print(f"  Turn {turn:2d}: → {strategy.upper():6} (unsunk ships: {unsunk})")
-            last_strategy = strategy
-    
-    return ai, board
+    board = make_board(ship_cells={(2, 3): "Destroyer", (7, 8): "Submarine"})
+
+    def validate() -> None:
+        shot = ai.decide_shot(board)
+        assert shot in {(2, 3), (7, 8)}
+
+    run_case(case, validate, case_results)
 
 
-if __name__ == "__main__":
-    print("\n" + "="*50)
-    print("V2: STATELESS ALGORITHM - 50 TURNS VERBOSE")
-    print("="*50)
-    ai, board = run_simulation(num_turns=17, verbose=True)
+def test_tc_002_hard_extends_known_ship_line(case_results: list[dict[str, Any]]) -> None:
+    case = {
+        "id": "TC_002",
+        "title": "Hard AI extends a horizontal hit group",
+        "preconditions": "Board has two adjacent horizontal hits on the same ship.",
+        "steps": [
+            "Create AI with HARD difficulty.",
+            "Provide board with hits at (3,0) and (3,1).",
+            "Call decide_shot(board).",
+        ],
+        "test_data_input": {
+            "difficulty": "HARD",
+            "ship_cells": [(3, 0), (3, 1), (3, 2)],
+            "shot_cells": [(3, 0), (3, 1)],
+        },
+        "expected_result": "Returned coordinate is (3,2) to continue destroying the ship.",
+        "actual_result": "",
+        "status": "",
+        "comments": "",
+    }
+
+    ai = SimpleBattleshipAI(difficulty=EAIDifficulty.HARD)
+    board = make_board(
+        ship_cells={(3, 0): "Cruiser", (3, 1): "Cruiser", (3, 2): "Cruiser"},
+        shot_cells=[(3, 0), (3, 1)],
+    )
+
+    def validate() -> None:
+        shot = ai.decide_shot(board)
+        assert shot == (3, 2)
+
+    run_case(case, validate, case_results)
+
+
+def test_tc_003_normal_never_repeats_shot(case_results: list[dict[str, Any]]) -> None:
+    case = {
+        "id": "TC_003",
+        "title": "Normal AI never returns an already-shot coordinate",
+        "preconditions": "Board contains several previously shot cells.",
+        "steps": [
+            "Create AI with NORMAL difficulty.",
+            "Provide board with existing shot history.",
+            "Call decide_shot(board).",
+        ],
+        "test_data_input": {
+            "difficulty": "NORMAL",
+            "shot_cells": [(0, 0), (1, 1), (2, 2), (4, 4)],
+        },
+        "expected_result": "Returned coordinate has not been shot before.",
+        "actual_result": "",
+        "status": "",
+        "comments": "",
+    }
+
+    ai = SimpleBattleshipAI(difficulty=EAIDifficulty.NORMAL)
+    previous_shots = {(0, 0), (1, 1), (2, 2), (4, 4)}
+    board = make_board(shot_cells=previous_shots)
+
+    def validate() -> None:
+        shot = ai.decide_shot(board)
+        assert shot not in previous_shots
+
+    run_case(case, validate, case_results)
+
+
+def test_tc_004_reset_clears_state(case_results: list[dict[str, Any]]) -> None:
+    case = {
+        "id": "TC_004",
+        "title": "Reset clears tracked shots and strategy",
+        "preconditions": "AI has non-empty shot history and non-default strategy.",
+        "steps": [
+            "Create AI instance and manually set state.",
+            "Call reset().",
+            "Inspect AI state fields.",
+        ],
+        "test_data_input": {
+            "initial_last_shots": [(5, 5)],
+            "initial_strategy": "DESTROY",
+        },
+        "expected_result": "Shot history is empty and strategy is SEARCH.",
+        "actual_result": "",
+        "status": "",
+        "comments": "",
+    }
+
+    ai = SimpleBattleshipAI(difficulty=EAIDifficulty.NORMAL)
+    ai.last_shots.add((5, 5))
+    ai.current_strategy = AIStrategy.DESTROY
+
+    def validate() -> None:
+        ai.reset()
+        assert ai.last_shots == set()
+        assert ai.current_strategy == AIStrategy.SEARCH
+
+    run_case(case, validate, case_results)
+
+
+def test_tc_005_find_unsunk_hits_returns_only_shot_ship_cells(case_results: list[dict[str, Any]]) -> None:
+    case = {
+        "id": "TC_005",
+        "title": "Unsunk hit detection returns only valid shot ship coordinates",
+        "preconditions": "Board contains mix of misses, hits, and unshot ship cells.",
+        "steps": [
+            "Create AI instance.",
+            "Call _find_unsunk_hits(board) with mixed board data.",
+            "Verify returned coordinates.",
+        ],
+        "test_data_input": {
+            "ship_cells": [(1, 1), (1, 2), (2, 2)],
+            "shot_cells": [(1, 1), (0, 0), (9, 9)],
+        },
+        "expected_result": "Only (1,1) is returned as an unsunk hit.",
+        "actual_result": "",
+        "status": "",
+        "comments": "",
+    }
+
+    ai = SimpleBattleshipAI()
+    board = make_board(
+        ship_cells={(1, 1): "Destroyer", (1, 2): "Destroyer", (2, 2): "Submarine"},
+        shot_cells=[(1, 1), (0, 0), (9, 9)],
+    )
+
+    def validate() -> None:
+        hits = ai._find_unsunk_hits(board)
+        assert hits == [(1, 1)]
+
+    run_case(case, validate, case_results)
