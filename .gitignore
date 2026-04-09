@@ -1,6 +1,7 @@
 # --- Python ---
 __pycache__/
+.venv/
 
 # --- Project ---
-stats/
+database/battleship.db
 *.egg-info/

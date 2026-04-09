@@ -1,7 +1,6 @@
 from InquirerPy import inquirer
 from config import config
 from utils.constants import MAIN_MENU_CHOICES, CONFIG_MENU_CHOICES, STATS_MENU_CHOICES, MENU_MESSAGE, STATS_MENU_CHOICES_NEW, STATS_MENU_CHOICES_VIEW, STATS_MESSAGE, STATS_TITLE_ART, CONFIG_MESSAGE, END_MESSAGE, STATS_PRINT_MESSAGE, STATS_VIEW_MESSAGE
-from core.stats import Stats
 from core.game import Game
 from utils.helper import clear_screen
 
@@ -32,53 +31,8 @@ def game_menu():
     main_menu()
 
 def stats_menu():
-    clear_screen()
-    if (Stats().name is None):
-        selection = inquirer.select(
-        message=STATS_MESSAGE,
-        choices=[STATS_MENU_CHOICES_NEW.create, STATS_MENU_CHOICES_NEW.load, STATS_MENU_CHOICES_NEW.back],
-        ).execute()
-        match selection:
-            case STATS_MENU_CHOICES_NEW.create:
-                print(STATS_PRINT_MESSAGE.usernNameInput)
-                username = str(input())
-                Stats().create_new(username)
-                Stats().save_to_file()
-                stats_menu()
-            case STATS_MENU_CHOICES_NEW.load:
-                print(STATS_PRINT_MESSAGE.fileNameInput)
-                filename = str(input())
-                Stats().load_from_file(filename)
-                stats_menu()
-            case STATS_MENU_CHOICES_NEW.back:
-                main_menu()
-
-    selection = inquirer.select(
-    message=STATS_TITLE_ART,
-    choices=[STATS_MENU_CHOICES.view, STATS_MENU_CHOICES.save, STATS_MENU_CHOICES.load, STATS_MENU_CHOICES.back],
-    ).execute()
-    match selection:
-        case STATS_MENU_CHOICES.view:
-            Stats().print_stats()
-            selection = inquirer.select(
-            choices=[STATS_MENU_CHOICES_VIEW.back],
-            message=STATS_VIEW_MESSAGE,
-            ).execute()
-            match selection:
-                case STATS_MENU_CHOICES_VIEW.back:
-                    stats_menu()
-        case STATS_MENU_CHOICES.save:
-            Stats().save_to_file()
-            print(STATS_PRINT_MESSAGE.successSaveMessage)
-            stats_menu()
-        case STATS_MENU_CHOICES.load:
-            print(STATS_PRINT_MESSAGE.fileNameInput)
-            filename = str(input())
-            Stats().load_from_file(filename)
-            print(STATS_PRINT_MESSAGE.successLoadMessage)
-            stats_menu()
-        case STATS_MENU_CHOICES.back:
-            main_menu()
+    pass
+    # clear_screen()
 
 def config_menu():
     clear_screen()
