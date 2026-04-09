@@ -1,7 +1,7 @@
 import random
 from typing import List, Tuple, Set
 from enum import Enum
-from utils.app_types import EAIDifficulty
+from src.utils.app_types import EAIDifficulty
 
 
 """"

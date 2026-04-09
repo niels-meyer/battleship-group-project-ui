@@ -1,7 +1,7 @@
 from typing import Sequence
-from utils.app_types import TBoard, TBoardShip, TCoord, TShipCoords
-from config.config import get_rows, get_columns
-from utils.helper import get_coord_index, get_row_index, get_column_index, get_row, get_column, get_coords_between
+from src.utils.app_types import TBoard, TBoardShip, TCoord, TShipCoords
+from src.config.config import get_rows, get_columns
+from src.utils.helper import get_coord_index, get_row_index, get_column_index, get_row, get_column, get_coords_between
 
 
 class Board:

@@ -1,12 +1,12 @@
 import random
 from InquirerPy import inquirer
-from utils.app_types import EAIDifficulty
-from config.config import get_ships
-from ui.display import print_boards
-from utils.helper import get_column_index, get_row_index, parse_coord, print_empty_line, suggest_ship_end_coords, get_coords_between, clear_screen
-from utils.constants import COLOR_BOLD, COLOR_YELLOW, COLOR_RED, COLOR_GREEN, COLOR_RESET, COLOR_CYAN
-from .player import Player
-from ai.ai import AI
+from src.utils.app_types import EAIDifficulty
+from src.config.config import get_ships
+from src.ui.display import print_boards
+from src.utils.helper import get_column_index, get_row_index, parse_coord, print_empty_line, suggest_ship_end_coords, get_coords_between, clear_screen
+from src.utils.constants import COLOR_BOLD, COLOR_YELLOW, COLOR_RED, COLOR_GREEN, COLOR_RESET, COLOR_CYAN
+from src.core.player import Player
+from src.ai.ai import AI
 
 class Game:
     def __init__(self):

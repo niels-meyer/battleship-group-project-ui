@@ -1,5 +1,5 @@
-from .algorithmic_ai import SimpleBattleshipAI
-from utils.app_types import EAIDifficulty
+from src.ai.algorithmic_ai import SimpleBattleshipAI
+from src.utils.app_types import EAIDifficulty
 
 
 def create_initial_board():
