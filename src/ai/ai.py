@@ -1,8 +1,8 @@
 import random
-from core.player import Player
-from config.config import get_rows, get_columns, get_ships
-from utils.app_types import EAIDifficulty, TRemainingCells, TCoord, TShipCoords
-from utils.helper import suggest_ship_end_coords, get_coords_between
+from src.core.player import Player
+from src.config.config import get_rows, get_columns, get_ships
+from src.utils.app_types import EAIDifficulty, TRemainingCells, TCoord, TShipCoords
+from src.utils.helper import suggest_ship_end_coords, get_coords_between
 
 class AI(Player):
     def __init__(self, name: str, difficulty: EAIDifficulty):

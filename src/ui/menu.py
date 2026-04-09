@@ -1,8 +1,8 @@
 from InquirerPy import inquirer
-from ..config import config
-from ..utils.constants import MAIN_MENU_CHOICES, CONFIG_MENU_CHOICES, MENU_MESSAGE, CONFIG_MESSAGE, END_MESSAGE
-from ..core.game import Game
-from ..utils.helper import clear_screen
+from src.config import config
+from src.utils.constants import MAIN_MENU_CHOICES, CONFIG_MENU_CHOICES, MENU_MESSAGE, CONFIG_MESSAGE, END_MESSAGE
+from src.core.game import Game
+from src.utils.helper import clear_screen
 
 def main_menu():
     clear_screen()
