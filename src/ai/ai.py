@@ -1,17 +1,11 @@
 import random
 from typing import Any
-
-from ai.algorithmic_ai import SimpleBattleshipAI
-from config.config import get_columns, get_rows, get_ships
-from core.player import Player
-from utils.app_types import EAIDifficulty, TBoard, TCoord, TRemainingCells, TShipCoords
-from utils.helper import get_coords_between, suggest_ship_end_coords
-
-try:
-    from ai.llm_ai import LLMM_AI
-except Exception:
-    LLMM_AI = None
-
+from src.ai.algorithmic_ai import SimpleBattleshipAI
+from src.ai.llm_ai import LLMM_AI
+from src.core.player import Player
+from src.config.config import get_rows, get_columns, get_ships
+from src.utils.app_types import EAIDifficulty, TBoard, TRemainingCells, TCoord, TShipCoords
+from src.utils.helper import suggest_ship_end_coords, get_coords_between
 
 class AI(Player):
     def __init__(self, name: str, difficulty: EAIDifficulty):

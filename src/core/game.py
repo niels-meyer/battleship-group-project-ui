@@ -1,22 +1,26 @@
 import random
 from InquirerPy import inquirer
-from utils.app_types import EAIDifficulty
-from config.config import get_ships
-from .stats import Stats
-from ui.display import print_boards
-from utils.helper import get_column_index, get_row_index, parse_coord, print_empty_line, suggest_ship_end_coords, get_coords_between, clear_screen
-from utils.constants import COLOR_BOLD, COLOR_YELLOW, COLOR_RED, COLOR_GREEN, COLOR_RESET, COLOR_CYAN
-from .player import Player
-from ai.ai import AI
+from src.utils.app_types import EAIDifficulty
+from src.config.config import get_ships
+from src.ui.display import print_boards
+from src.utils.helper import get_column_index, get_row_index, parse_coord, print_empty_line, suggest_ship_end_coords, get_coords_between, clear_screen
+from src.utils.constants import COLOR_BOLD, COLOR_YELLOW, COLOR_RED, COLOR_GREEN, COLOR_RESET, COLOR_CYAN
+from src.core.player import Player
+from src.ai.ai import AI
 
 class Game:
     def __init__(self):
         self._player = Player("player")
         self._ai = AI("enemy", difficulty=EAIDifficulty.NORMAL)
-        self._is_player_turn = random.choice([True, False])
+        self._does_player_start = random.choice([True, False])
+        self._is_player_turn = self._does_player_start
+        self._number_of_rounds = 1
 
     def _change_turn(self) -> None:
         self._is_player_turn = not self._is_player_turn
+
+        if self._is_player_turn == self._does_player_start:
+            self._number_of_rounds += 1
 
     def _setup_board(self) -> None:
         ships = get_ships()
@@ -117,6 +121,11 @@ class Game:
             if self._player.ships.has_ships() and self._ai.ships.has_ships():
                 input(f"{COLOR_BOLD}Press Enter to continue...{COLOR_RESET}")
 
+        self._player.save_match(
+            number_of_rounds = self._number_of_rounds,
+            has_player_won = self._player.ships.has_ships()
+        )
+
         # --- Declare winner ---
         clear_screen()
         if self._player.ships.has_ships():
@@ -132,10 +141,6 @@ class Game:
             print("║   Better luck next time!    ║")
             print("╚═════════════════════════════╝")
             print(f"{COLOR_RESET}")
-
-        # Only update stats if it has been initialized (singleton)
-        if Stats().id is not None:
-            Stats().update_stats(self._player.ships.has_ships())
         
         input(f"{COLOR_BOLD}Press Enter to return to main menu...{COLOR_RESET}")
 

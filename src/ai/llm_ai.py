@@ -4,8 +4,8 @@ from typing import Any
 
 from ollama import chat
 
-from utils.app_types import EAIDifficulty, TRemainingCells, TCoord
-from utils.helper import parse_coord
+from src.utils.app_types import EAIDifficulty, TRemainingCells, TCoord
+from src.utils.helper import parse_coord
 
 class LLMM_AI:
     def __init__(self, difficulty: EAIDifficulty, model: str = "mixtral:8x22b"):

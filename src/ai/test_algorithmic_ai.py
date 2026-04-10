@@ -4,8 +4,8 @@ from typing import Any, Callable, Dict, Iterable, Tuple
 
 import pytest
 
-from ai.algorithmic_ai import AIStrategy, SimpleBattleshipAI
-from utils.app_types import EAIDifficulty
+from src.ai.algorithmic_ai import AIStrategy, SimpleBattleshipAI
+from src.utils.app_types import EAIDifficulty
 
 
 Board = Tuple[Tuple[Dict[str, Any], ...], ...]
