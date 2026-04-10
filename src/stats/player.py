@@ -28,3 +28,5 @@ def get_player_by_name(name: str) -> Optional[Player]:
         statement = select(Player).where(Player.name == name)
         player = session.exec(statement).first()
         return player
+
+from src.stats.match import Match

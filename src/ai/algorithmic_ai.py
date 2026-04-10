@@ -2,7 +2,7 @@ import random
 from enum import Enum
 from typing import List, Set
 
-from utils.app_types import EAIDifficulty, TBoard, TCoordIndex
+from src.utils.app_types import EAIDifficulty, TBoard, TCoordIndex
 
 
 class AIStrategy(Enum):

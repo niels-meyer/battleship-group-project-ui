@@ -24,3 +24,5 @@ def get_all_matches() -> List[Match]:
     with next(get_session()) as session:
         matches = session.exec(select(Match)).all()
         return matches
+
+from src.stats.player import Player
