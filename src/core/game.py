@@ -12,7 +12,7 @@ from ai.ai import AI
 class Game:
     def __init__(self):
         self._player = Player("player")
-        self._ai = AI("enemy", difficulty=EAIDifficulty.BABY)
+        self._ai = AI("enemy", difficulty=EAIDifficulty.NORMAL)
         self._is_player_turn = random.choice([True, False])
 
     def _change_turn(self) -> None:
