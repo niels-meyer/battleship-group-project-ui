@@ -18,6 +18,7 @@ env/
 # --- Project ---
 stats/
 *.egg-info/
+database/battleship.db
 
 # --- IDE / editor ---
 .vscode/
