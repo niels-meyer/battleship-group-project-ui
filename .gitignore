@@ -1,7 +1,31 @@
 # --- Python ---
 __pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# --- Virtual environments ---
 .venv/
+venv/
+env/
 
 # --- Project ---
-database/battleship.db
+stats/
 *.egg-info/
+database/battleship.db
+
+# --- IDE / editor ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- OS junk ---
+Thumbs.db
+Desktop.ini

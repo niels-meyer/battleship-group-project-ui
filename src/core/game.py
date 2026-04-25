@@ -11,7 +11,7 @@ from src.ai.ai import AI
 class Game:
     def __init__(self):
         self._player = Player("player")
-        self._ai = AI("enemy", difficulty=EAIDifficulty.BABY)
+        self._ai = AI("enemy", difficulty=EAIDifficulty.NORMAL)
         self._does_player_start = random.choice([True, False])
         self._is_player_turn = self._does_player_start
         self._number_of_rounds = 1

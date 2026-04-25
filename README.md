@@ -19,146 +19,353 @@ Prepare the project with a virtual environment and install dependencies:
 
    This creates an isolated Python environment in the `.venv` folder.
 
-2. Activate the virtual environment:
+ # Battleship Group Project UI
 
-   ```bash
-   source .venv/bin/activate
-   ```
+![UI Showcase](docs/ui-images/ui_showcase.png)
 
-   This switches your current terminal to use the `.venv` Python and pip.
+---
 
-3. Install packages from requirements.txt:
-   ```bash
-   pip install -r requirements.txt
-   ```
-   This installs all required dependencies into the active virtual environment.
+This project is a console-based Battleship game written in Python.
 
-## Updating local dependencies
+It aims to:
 
-If a package has been added/updated and updated `requirements.txt`, you only need to sync your local environment:
+- provide a playable Battleship game against AI
+- demonstrate clean separation between UI, game logic, and helper utilities
+- support multiple AI difficulty levels
+- keep the code testable and maintainable
 
-1. Activate the virtual environment:
+---
 
-   ```bash
-   source .venv/bin/activate
-   ```
+## 📝 Application Requirements
 
-2. Install/update dependencies from `requirements.txt`:
-   ```bash
-   pip install -r requirements.txt
-   ```
-   This installs any missing packages and updates versions to match the project file.
+### Problem
 
-## Adding a new package (contributors)
+Battleship is a turn-based strategy game where players must place ships, guess enemy ship positions, and avoid repeating shots.
 
-Only use this when you are the one introducing a new dependency:
+---
 
-1. Activate the virtual environment:
+### Scenario
 
-   ```bash
-   source .venv/bin/activate
-   ```
+The application allows users to:
 
-2. Install the package:
+- place ships on a board
+- shoot at enemy coordinates
+- play against AI opponents with different difficulty levels
+- track wins/losses via the stats system
 
-   ```bash
-   pip install <package-name>
-   ```
+---
 
-3. Save the updated environment to `requirements.txt`:
-   ```bash
-   pip freeze > requirements.txt
-   ```
+## 📖 User Stories
 
-## Deactivating the environment
+### 1. Start a Game
+**As a user, I want to start a new Battleship match from the main menu.**
 
-When you stop working on the project, you can deactivate the environment with:
+- **Inputs:** menu selection
+- **Outputs:** active game session
 
-```bash
-deactivate
+---
+
+### 2. Place Ships
+**As a user, I want to place my ships on the board.**
+
+- **Inputs:** start coordinate, end coordinate
+- **Outputs:** placed ships on the player board
+
+---
+
+### 3. Shoot at Enemy Board
+**As a user, I want to enter a coordinate to shoot at the enemy board.**
+
+- **Inputs:** coordinate (`row`, `column`)
+- **Outputs:** hit or miss result, updated board state
+
+---
+
+### 4. Play Against AI
+**As a user, I want to play against an AI opponent with different difficulty levels.**
+
+- **Inputs:** selected difficulty
+- **Outputs:** AI moves based on the selected strategy
+
+---
+
+### 5. View and Save Stats
+**As a user, I want to view and save my statistics.**
+
+- **Inputs:** username, stats menu selection
+- **Outputs:** stored stats, saved/loaded profile
+
+---
+
+## 🧩 Use Cases
+
+![UML Use Case Diagram](docs/architecture-diagrams/uml_use_case_diagram.png)
+
+### Main Use Cases
+
+- Start Game
+- Place Ships
+- Shoot at Enemy Board
+- Use AI Opponent
+- View Stats
+
+### Actors
+
+- Player
+- AI Opponent
+- Stats User
+
+---
+
+### Wireframes / Mockups
+
+> 🚧 Add screenshots of the wireframes or gameplay screens you chose to implement.
+
+![Wireframes – Home/Gameplay](docs/ui-images/wireframes.png)
+
+---
+
+## 🏛️ Architecture
+
+![UML Class Diagram](docs/architecture-diagrams/uml_class_architecture.png)
+
+### Layers
+
+- **UI:** terminal-based menus and prompts
+- **Application logic:** game loop, turn handling, stats flow
+- **Domain/Core:** board, player, ships, and statistics
+- **Helpers:** coordinate parsing, placement validation, display utilities
+
+### Design Decisions
+
+- Separate core game logic from UI prompts
+- Keep AI behavior behind a dedicated AI class
+- Use helper functions for coordinate and board utilities
+
+### Patterns Used
+
+- Game loop orchestration
+- Strategy-like AI difficulty handling
+- Utility/helper pattern for shared logic
+
+---
+
+## 🗄️ Database and ORM
+
+![ER Diagram](docs/architecture-diagrams/er_diagram.png)
+
+This project currently does not use a database or ORM.
+
+### Entities
+
+> 🚧 Not applicable in the current version.
+
+### Relationships
+
+> 🚧 Not applicable in the current version.
+
+---
+
+## ✅ Project Requirements
+
+---
+
+> 🚧 Requirements act as a contract: implement and demonstrate each point below.
+
+Each app must meet the following criteria in order to be accepted (see also the official project guidelines PDF on Moodle):
+
+1. Interactive application flow
+2. Data validation in the app
+3. Clear separation of game logic and state handling
+
+---
+
+### 1. Interactive App
+
+The application interacts with the user via the terminal. Users can:
+
+- navigate the main menu
+- create or load stats
+- place ships
+- shoot at coordinates
+- observe board updates after each turn
+
+---
+
+### 2. Data Validation
+
+The application validates user input to ensure correct coordinates and legal ship placement.
+
+- coordinate format is checked before use
+- ship placement is checked against board boundaries and overlap
+- repeated shots are prevented
+
+---
+
+### 3. Game State Management
+
+Game state is managed in the core classes:
+
+- `Board` stores ship and shot state
+- `Player` combines board and ships
+- `AI` controls enemy shot selection and ship placement
+- `Stats` stores profile and game results
+
+---
+
+## ⚙️ Implementation
+
+### Technology
+
+- Python
+- InquirerPy
+- pytest
+- JSON-based persistence for stats
+
+### Libraries Used
+
+- **InquirerPy** – menu prompts
+- **pytest** – testing
+- **json** – stats persistence
+- **random** – AI shot selection and turn order
+
+---
+
+## 📂 Repository Structure
+
+```text
+src/
+├── start.py
+├── ai/
+│   ├── ai.py
+│   ├── algorithmic_ai.py
+│   ├── llm_ai.py
+│   └── test_algorithmic_ai.py
+├── config/
+│   ├── config.py
+│   └── config.json
+├── core/
+│   ├── board.py
+│   ├── game.py
+│   ├── player.py
+│   ├── ships.py
+│   └── stats.py
+├── ui/
+│   ├── display.py
+│   └── menu.py
+└── utils/
+    ├── app_types.py
+    ├── constants.py
+    └── helper.py
 ```
 
-This returns your terminal to the system Python environment.
+---
 
-(You do not have to deactivate if you are just closing that terminal window, but deactivating is recommended when you want to continue using the same terminal for other projects.)
+### How to Run
 
-## How to run
+#### 1. Project Setup
+
+- Python 3.10+ is required
+- Create and activate a virtual environment:
+
+  **Windows:**
+  ```bash
+  python -m venv .venv
+  .venv\Scripts\Activate.ps1
+  ```
+
+- Install dependencies:
+  ```bash
+  pip install -r requirements.txt
+  ```
+
+#### 2. Configuration
+
+> 🚧 Add configuration details here if needed.
+
+#### 3. Launch
 
 From the project root:
 
 ```bash
-python start.py
+python src/start.py
 ```
 
-## Gameplay
+#### 4. Usage
 
-1. **Ship placement**
-   - After starting a game, you place each ship manually.
-   - Enter a start coordinate like `a 1` when prompted.
-   - The game will suggest valid end coordinates based on ship length and board rules.
-   - Choose an end coordinate from the list to place the ship.
-   - The AI places the same ship type automatically on its own board.
+1. Start the application from the main menu.
+2. Create or load a stats profile if needed.
+3. Place all ships on the board.
+4. Shoot at enemy coordinates on your turn.
+5. Continue until one side loses all ships.
 
-2. **Taking turns**
-   - The first turn (player or AI) is chosen at random.
-   - On your turn, enter a coordinate (e.g. `c 5`) to shoot.
-   - The game prevents you from shooting the same cell twice.
-   - The AI takes random valid shots on your board.
+---
 
-3. **Winning and losing**
-   - Each ship tracks its remaining coordinates.
-   - When all coordinates of all ships for a player are hit, that player loses.
-   - The game prints a win or loss message at the end of the match.
+## 🧪 Testing
 
-## Features
+> 🚧 Explain what you test and how to run tests.
 
-- Classic fleet containing one Carrier, a Battleship, a Cruiser, a Submarine and a Destroyer; ship sizes are defined in `config.json`.
-- 10×10 configurable board with customizable row/column labels and cell symbols via `config.json`.
-- Human vs AI gameplay with random AI ship placement and shooting.
-- Player stats (wins, losses, score, username) saved and loaded from JSON files.
+**Test mix:**
 
-## Configuration
+- Unit tests for board and ship handling
+- AI strategy tests for shot selection
+- Integration tests for game flow
 
-Game board and symbols are controlled by `config.json`:
+Current automated AI test cases are in [src/ai/test_algorithmic_ai.py](src/ai/test_algorithmic_ai.py):
 
-- `rows` and `columns` define board dimensions and labels.
-- `ships` define ship names and lengths.
-- `cell_symbols` define how cells are rendered (empty, ship, hit, miss).
+| Test case ID | Title |
+|-------------|-------|
+| TC_001 | Impossible AI selects an unshot ship cell when one exists |
+| TC_002 | Hard AI extends a horizontal hit group |
+| TC_003 | Normal AI never returns an already-shot coordinate |
+| TC_004 | Reset clears tracked shots and strategy |
+| TC_005 | Unsunk hit detection returns only valid shot ship coordinates |
 
-You can tweak these to change board size, fleet composition, or symbols, as long as the code assumptions (e.g., rectangular board) are preserved.
+Run tests with:
 
-## Project structure
+```bash
+pytest
+```
 
-- `start.py` – Entry point that shows the main menu and starts the game.
-- `menu.py` – Main menu and stats menu logic.
-- `game.py` – Core game loop: ship placement, taking shots, turn switching, win detection.
-- `board.py` – Board representation, ship placement on the grid, and handling shots.
-- `player.py` – Player wrapper combining a `Board` and `Ships` collection.
-- `ai.py` – AI player with random ship placement and shooting logic.
-- `ships.py` – Manages ship coordinates and tracking when ships are sunk.
-- `utils.py` – Coordinate parsing, validation, and helper functions for ship placement.
-- `config.json` – Configuration for rows, columns, ship sizes, and display symbols.
-- `stats.py` – Player statistics model with JSON-based persistence.
-- `constants.py` – Text constants for menu messages and choices.
-- `app_types.py` – Type aliases used across the project (not shown here but referenced).
+### Template for writing test cases
 
-## Stats system
+1. Test case ID – unique identifier
+2. Test case title/description – what the test covers
+3. Preconditions – required setup
+4. Test steps – actions performed
+5. Test data/input
+6. Expected result
+7. Actual result
+8. Status – pass or fail
+9. Comments – additional notes
 
-The `Stats` class tracks:
+---
 
-- Player name.
-- Unique ID (UUID).
-- Number of wins and losses.
-- ELO-like score (starting at 500).
+## 👥 Team & Contributions
 
-From the **Stats** menu, you can:
+> 🚧 Fill in the names of all team members and describe their individual contributions below.
 
-- View current stats.
-- Save stats to a JSON file under `stats/<id>.json`.
-- Load stats from an existing JSON file.
+| Name      | Contribution |
+|-----------|--------------|
+| Student A | UI and menu flow |
+| Student B | Core game logic and board handling |
+| Student C | AI logic and stats |
 
-The ELO-like score is updated after each game using simple increments/decrements.
+---
 
-## Possible improvements
+## 🤝 Contributing
 
-- Improve AI logic for smarter ship placement and shooting.
+> 🚧 This is a template repository for student projects.  
+> 🚧 Do not change this section in your final submission.
+
+- Use this repository as a starting point by importing it into your own GitHub account  
+- Work only within your own copy — do not push to the original template  
+- Commit regularly to track your progress  
+
+---
+
+## 📝 License
+
+This project is provided for educational use only as part of the Advanced Programming module.
+
+[MIT License](LICENSE)
