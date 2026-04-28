@@ -1,9 +1,16 @@
 from InquirerPy import inquirer
+from pathlib import Path
 from src.config import config
 from src.utils.constants import MAIN_MENU_CHOICES, CONFIG_MENU_CHOICES, MENU_MESSAGE, CONFIG_MESSAGE, END_MESSAGE
 from src.core.game import Game
 from src.utils.helper import clear_screen
-from nicegui import ui
+from nicegui import app, ui
+
+BASE_DIR = Path(__file__).resolve().parents[2]
+ASSETS_DIR = BASE_DIR / 'assets'
+MENU_BACKGROUND_IMAGE = '/assets/menu-background.png'
+MENU_CARD_STYLE = 'background: rgba(0, 0, 0, 0.38); border-radius: 10px; color: #264026;'
+MENU_BUTTON_STYLE = 'background-color: #0b2d14; color: #f5fff5;'
 
 # Keep shared state
 #_stats = Stats()
@@ -31,22 +38,33 @@ def _stats_text() -> str:
     )
 
 
+def _menu_button(label: str, on_click, extra_classes: str = '') -> None:
+    classes = f'w-full {extra_classes}'.strip()
+    ui.button(label, on_click=on_click).classes(classes).style(MENU_BUTTON_STYLE)
+
+
 def _render_main_menu() -> None:
     _clear_container()
 
     with _main_container:
-        with ui.column().classes('w-full items-center mt-10'):
+        with ui.column().classes('w-full min-h-screen items-center justify-center px-4').style(
+            f'background-image: linear-gradient(rgba(10, 25, 10, 0.35), rgba(10, 25, 10, 0.35)), url("{MENU_BACKGROUND_IMAGE}"); '
+            'background-size: cover; background-position: center; background-repeat: no-repeat;'
+        ):
             _show_header('Battleship', 'NiceGUI menu')
 
-            with ui.card().classes('w-full max-w-md p-6'):
-                ui.label('Choose an option').classes('text-lg mb-2')
-                ui.button('Start Game', on_click=game_menu).classes('w-full mb-2')
-                ui.button('Stats', on_click=stats_menu).classes('w-full mb-2')
-                ui.button('Config', on_click=config_menu).classes('w-full mb-2')
-                ui.button('Exit', on_click=exit_menu).classes('w-full')
+            with ui.card().classes('w-full max-w-md p-6').style(MENU_CARD_STYLE):
+                ui.label('Choose an option').classes('text-lg mb-2 font-semibold')
+                _menu_button('Start Game', game_menu, 'mb-2')
+                _menu_button('Stats', stats_menu, 'mb-2')
+                _menu_button('Config', config_menu, 'mb-2')
+                _menu_button('Exit', exit_menu)
 
 
 def main_menu():
+    if ASSETS_DIR.exists():
+        app.add_static_files('/assets', str(ASSETS_DIR))
+
     @ui.page('/')
     def index_page():
         global _main_container
@@ -80,7 +98,7 @@ def game_menu():
                 ui.label('The NiceGUI grid will go here next.').classes('text-lg mb-2')
                 ui.label(
                     'For now, this page is the frontend placeholder for the future Battleship board.'
-                ).classes('text-gray-700 mb-4')
+                ).classes('text-white-700 mb-4')
 
                 def start_cli_game():
                     try:
