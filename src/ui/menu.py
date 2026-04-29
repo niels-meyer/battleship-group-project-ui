@@ -9,8 +9,8 @@ from nicegui import app, ui
 BASE_DIR = Path(__file__).resolve().parents[2]
 ASSETS_DIR = BASE_DIR / 'assets'
 MENU_BACKGROUND_IMAGE = '/assets/menu-background.png'
-MENU_CARD_STYLE = 'background: rgba(0, 0, 0, 0.38); border-radius: 10px; color: #264026;'
-MENU_BUTTON_STYLE = 'background-color: #0b2d14; color: #f5fff5;'
+MENU_CARD_STYLE = 'background: rgba(0, 0, 0, 0.58); border-radius: 10px; color: #ffffff;'
+MENU_BUTTON_PROPS = 'color=green-10 text-color=white'
 
 # Keep shared state
 #_stats = Stats()
@@ -24,9 +24,9 @@ def _clear_container():
 
 
 def _show_header(title: str, subtitle: str | None = None) -> None:
-    ui.label(title).classes('text-3xl font-bold')
+    ui.label(title).classes('text-5xl font-bold text-gray-200 mb-2')
     if subtitle:
-        ui.label(subtitle).classes('text-base text-gray-600 mb-4')
+        ui.label(subtitle).classes('text-base text-gray-300 mb-4')
 
 
 def _stats_text() -> str:
@@ -40,7 +40,7 @@ def _stats_text() -> str:
 
 def _menu_button(label: str, on_click, extra_classes: str = '') -> None:
     classes = f'w-full {extra_classes}'.strip()
-    ui.button(label, on_click=on_click).classes(classes).style(MENU_BUTTON_STYLE)
+    ui.button(label, on_click=on_click).classes(classes).props(MENU_BUTTON_PROPS)
 
 
 def _render_main_menu() -> None:
@@ -51,13 +51,13 @@ def _render_main_menu() -> None:
             f'background-image: linear-gradient(rgba(10, 25, 10, 0.35), rgba(10, 25, 10, 0.35)), url("{MENU_BACKGROUND_IMAGE}"); '
             'background-size: cover; background-position: center; background-repeat: no-repeat;'
         ):
-            _show_header('Battleship', 'NiceGUI menu')
+            _show_header('Battleship', 'Welcome to the Battleship game against AI!')
 
-            with ui.card().classes('w-full max-w-md p-6').style(MENU_CARD_STYLE):
-                ui.label('Choose an option').classes('text-lg mb-2 font-semibold')
+            with ui.card().classes('w-full max-w-md p-12').style(MENU_CARD_STYLE):
+                ui.label('CHOOSE AN OPTION').classes('text-lg text-green-800 mb-2 font-bold')
                 _menu_button('Start Game', game_menu, 'mb-2')
                 _menu_button('Stats', stats_menu, 'mb-2')
-                _menu_button('Config', config_menu, 'mb-2')
+   #            _menu_button('Config', config_menu, 'mb-2')
                 _menu_button('Exit', exit_menu)
 
 
@@ -84,7 +84,7 @@ def exit_menu():
             with ui.card().classes('w-full max-w-md p-6'):
                 ui.markdown(f'```text\n{END_MESSAGE}\n```')
                 ui.label('Close the browser tab to exit the app.').classes('mt-2')
-                ui.button('Back to Main Menu', on_click=_render_main_menu).classes('w-full mt-4')
+                ui.button('Back to Main Menu', on_click=_render_main_menu).classes('w-full mt-4').props(MENU_BUTTON_PROPS)
 
 
 def game_menu():
@@ -94,11 +94,8 @@ def game_menu():
         with ui.column().classes('w-full items-center mt-10'):
             _show_header('Game')
 
-            with ui.card().classes('w-full max-w-xl p-6'):
-                ui.label('The NiceGUI grid will go here next.').classes('text-lg mb-2')
-                ui.label(
-                    'For now, this page is the frontend placeholder for the future Battleship board.'
-                ).classes('text-white-700 mb-4')
+            with ui.card().classes('w-full max-w-xl p-12'):
+                ui.label('Start Your Game now').classes('text-lg mb-2')
 
                 def start_cli_game():
                     try:
@@ -106,8 +103,8 @@ def game_menu():
                     except Exception as e:
                         ui.notify(f'Error while starting the game: {e}', type='negative')
 
-                ui.button('Start Current CLI Game', on_click=start_cli_game).classes('w-full mb-2')
-                ui.button('Back to Main Menu', on_click=_render_main_menu).classes('w-full')
+                ui.button('Start your Game', on_click=start_cli_game).classes('w-full mb-2').props(MENU_BUTTON_PROPS)
+                ui.button('Back to Main Menu', on_click=_render_main_menu).classes('w-full').props(MENU_BUTTON_PROPS)
 
 
 def stats_menu():
@@ -117,7 +114,7 @@ def stats_menu():
         with ui.column().classes('w-full items-center mt-10'):
             _show_header('Stats')
 
-            with ui.card().classes('w-full max-w-xl p-6'):
+            with ui.card().classes('w-full max-w-xl p-12'):
                 if _stats.name is None:
                     ui.label('No stats profile loaded').classes('text-lg mb-4')
 
@@ -147,9 +144,9 @@ def stats_menu():
                         except Exception as e:
                             ui.notify(f'Error: {e}', type='negative')
 
-                    ui.button('Create New Profile', on_click=create_profile).classes('w-full mb-2')
-                    ui.button('Load Profile', on_click=load_profile).classes('w-full mb-2')
-                    ui.button('Back to Main Menu', on_click=_render_main_menu).classes('w-full')
+                    ui.button('Create New Profile', on_click=create_profile).classes('w-full mb-2').props(MENU_BUTTON_PROPS)
+                    ui.button('Load Profile', on_click=load_profile).classes('w-full mb-2').props(MENU_BUTTON_PROPS)
+                    ui.button('Back to Main Menu', on_click=_render_main_menu).classes('w-full').props(MENU_BUTTON_PROPS)
                     return
 
                 ui.markdown(f'```text\n{_stats_text()}\n```').classes('w-full mb-4')
@@ -177,10 +174,10 @@ def stats_menu():
                     except Exception as e:
                         ui.notify(f'Error: {e}', type='negative')
 
-                ui.button('View Stats', on_click=view_stats).classes('w-full mb-2')
-                ui.button('Save Stats', on_click=save_stats).classes('w-full mb-2')
-                ui.button('Load Stats from File', on_click=load_stats).classes('w-full mb-2')
-                ui.button('Back to Main Menu', on_click=_render_main_menu).classes('w-full')
+                ui.button('View Stats', on_click=view_stats).classes('w-full mb-2').props(MENU_BUTTON_PROPS)
+                ui.button('Save Stats', on_click=save_stats).classes('w-full mb-2').props(MENU_BUTTON_PROPS)
+                ui.button('Load Stats from File', on_click=load_stats).classes('w-full mb-2').props(MENU_BUTTON_PROPS)
+                ui.button('Back to Main Menu', on_click=_render_main_menu).classes('w-full').props(MENU_BUTTON_PROPS)
 
 
 def config_menu():
@@ -190,9 +187,9 @@ def config_menu():
         with ui.column().classes('w-full items-center mt-10'):
             _show_header('Configuration')
 
-            with ui.card().classes('w-full max-w-2xl p-6'):
+            with ui.card().classes('w-full max-w-2xl p-12'):
                 ui.markdown(f'```text\n{create_config()}\n```')
-                ui.button('Back to Main Menu', on_click=_render_main_menu).classes('w-full mt-4')
+                ui.button('Back to Main Menu', on_click=_render_main_menu).classes('w-full mt-4').props(MENU_BUTTON_PROPS)
 
 
 def create_config():
