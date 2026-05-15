@@ -3,7 +3,7 @@ from sqlmodel import Field, Relationship, SQLModel, select
 from database.db import get_session
 
 if TYPE_CHECKING:
-    from .player import Player
+    from database.player import Player
 
 class Match(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -14,7 +14,11 @@ class Match(SQLModel, table=True):
 
 def create_match(player_id: int, number_of_rounds: int, has_player_won: bool) -> Match:
     with next(get_session()) as session:
-        match = Match(player_id=player_id, number_of_rounds=number_of_rounds, has_player_won=has_player_won)
+        match = Match(
+            player_id=player_id,
+            number_of_rounds=number_of_rounds,
+            has_player_won=has_player_won,
+        )
         session.add(match)
         session.commit()
         session.refresh(match)
@@ -22,7 +26,8 @@ def create_match(player_id: int, number_of_rounds: int, has_player_won: bool) ->
 
 def get_all_matches() -> List[Match]:
     with next(get_session()) as session:
-        matches = session.exec(select(Match)).all()
-        return matches
+        return list(session.exec(select(Match)).all())
 
-from src.stats.player import Player
+def get_matches_by_player_id(player_id: int) -> List[Match]:
+    with next(get_session()) as session:
+        return list(session.exec(select(Match).where(Match.player_id == player_id)).all())

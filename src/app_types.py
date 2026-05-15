@@ -1,5 +1,6 @@
 from typing import Dict, List, Sequence, Tuple, TypedDict
-from enum import Enum   
+from enum import Enum
+
 # --- Config ---
 TConfigShips = Dict[str, TypedDict("TConfigShip", {
     "length": int,
@@ -19,16 +20,16 @@ TConfigCellSymbols = TypedDict("TConfigCellSymbols", {
 })
 
 # --- Coord ---
-TCoord = Tuple[str, str] # ("row", "column") e.g. ("a", "1"), ("b", "10")
-TCoordIndex = Tuple[int, int] # (row_index, column_index) e.g. (0, 0), (1, 9)
+TCoord = Tuple[str, str]
+TCoordIndex = Tuple[int, int]
 
 # --- Ships ---
 TShipCoords = List[TCoord]
-TShips = Dict[str, TShipCoords] # e.g. { "Carrier": ["a 1", "a 2", "a 3", "a 4", "a 5"] }
+TShips = Dict[str, TShipCoords]
 
 # --- Board ---
 TBoardShip = str | None
-TBoardCell = TypedDict("TBoardCell", { "is_shot": bool, "ship": TBoardShip })
+TBoardCell = TypedDict("TBoardCell", {"is_shot": bool, "ship": TBoardShip})
 TBoard = Sequence[Sequence[TBoardCell]]
 
 # --- PlayerAI ---
@@ -37,6 +38,6 @@ TRemainingCells = Dict[str, List[str]]
 class EAIDifficulty(Enum):
     BABY = "baby"
     EASY = "easy"
-    NORMAL = "normal" 
+    NORMAL = "normal"
     HARD = "hard"
     IMPOSSIBLE = "impossible"

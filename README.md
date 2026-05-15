@@ -19,9 +19,76 @@ Prepare the project with a virtual environment and install dependencies:
 
    This creates an isolated Python environment in the `.venv` folder.
 
- # Battleship Group Project UI
+2. Activate the virtual environment:
 
-![UI Showcase](docs/ui-images/ui_showcase.png)
+   ```bash
+   source .venv/bin/activate
+   ```
+
+   This switches your current terminal to use the `.venv` Python and pip.
+
+3. Install packages from requirements.txt:
+   ```bash
+   pip install -r requirements.txt
+   ```
+   This installs all required dependencies into the active virtual environment.
+
+## Updating local dependencies
+
+If a package has been added/updated and updated `requirements.txt`, you only need to sync your local environment:
+
+1. Activate the virtual environment:
+
+   ```bash
+   source .venv/bin/activate
+   ```
+
+2. Install/update dependencies from `requirements.txt`:
+   ```bash
+   pip install -r requirements.txt
+   ```
+   This installs any missing packages and updates versions to match the project file.
+
+## Adding a new package (contributors)
+
+Only use this when you are the one introducing a new dependency:
+
+1. Activate the virtual environment:
+
+   ```bash
+   source .venv/bin/activate
+   ```
+
+2. Install the package:
+
+   ```bash
+   pip install <package-name>
+   ```
+
+3. Save the updated environment to `requirements.txt`:
+   ```bash
+   pip freeze > requirements.txt
+   ```
+
+## Deactivating the environment
+
+When you stop working on the project, you can deactivate the environment with:
+
+```bash
+deactivate
+```
+
+This returns your terminal to the system Python environment.
+
+(You do not have to deactivate if you are just closing that terminal window, but deactivating is recommended when you want to continue using the same terminal for other projects.)
+
+## How to run
+
+From the project root:
+
+```bash
+python start.py
+```
 
 ---
 
@@ -58,6 +125,7 @@ The application allows users to:
 ## 📖 User Stories
 
 ### 1. Start a Game
+
 **As a user, I want to start a new Battleship match from the main menu.**
 
 - **Inputs:** menu selection
@@ -66,6 +134,7 @@ The application allows users to:
 ---
 
 ### 2. Place Ships
+
 **As a user, I want to place my ships on the board.**
 
 - **Inputs:** start coordinate, end coordinate
@@ -74,6 +143,7 @@ The application allows users to:
 ---
 
 ### 3. Shoot at Enemy Board
+
 **As a user, I want to enter a coordinate to shoot at the enemy board.**
 
 - **Inputs:** coordinate (`row`, `column`)
@@ -82,6 +152,7 @@ The application allows users to:
 ---
 
 ### 4. Play Against AI
+
 **As a user, I want to play against an AI opponent with different difficulty levels.**
 
 - **Inputs:** selected difficulty
@@ -90,6 +161,7 @@ The application allows users to:
 ---
 
 ### 5. View and Save Stats
+
 **As a user, I want to view and save my statistics.**
 
 - **Inputs:** username, stats menu selection
@@ -234,13 +306,15 @@ Game state is managed in the core classes:
 ## 📂 Repository Structure
 
 ```text
+start.py
+test.py
+
 src/
-├── start.py
+├── app_types.py
 ├── ai/
 │   ├── ai.py
 │   ├── algorithmic_ai.py
-│   ├── llm_ai.py
-│   └── test_algorithmic_ai.py
+│   └── llm_ai.py
 ├── config/
 │   ├── config.py
 │   └── config.json
@@ -248,15 +322,33 @@ src/
 │   ├── board.py
 │   ├── game.py
 │   ├── player.py
-│   ├── ships.py
-│   └── stats.py
+│   └── ships.py
 ├── ui/
-│   ├── display.py
-│   └── menu.py
+│   ├── app.py
+│   ├── constants.py
+│   ├── styles.py
+│   └── pages/
+│       ├── player_selector_page.py
+│       ├── main_menu_page.py
+│       ├── stats_page.py
+│       ├── help_page.py
+│       ├── game_page.py
+│       └── helpers/
+│           ├── access_control.py
+│           ├── navigation.py
+│           ├── player_selection.py
+│           └── storage_session.py
 └── utils/
-    ├── app_types.py
-    ├── constants.py
-    └── helper.py
+    └── helpers.py
+
+tests/
+└── ai/
+    └── algorithmic_ai.test.py
+
+database/
+├── db.py
+├── player.py
+└── match.py
 ```
 
 ---
@@ -269,6 +361,7 @@ src/
 - Create and activate a virtual environment:
 
   **Windows:**
+
   ```bash
   python -m venv .venv
   .venv\Scripts\Activate.ps1
@@ -288,7 +381,7 @@ src/
 From the project root:
 
 ```bash
-python src/start.py
+python start.py
 ```
 
 #### 4. Usage
@@ -311,20 +404,20 @@ python src/start.py
 - AI strategy tests for shot selection
 - Integration tests for game flow
 
-Current automated AI test cases are in [src/ai/test_algorithmic_ai.py](src/ai/test_algorithmic_ai.py):
+Current automated AI test cases are in [tests/ai/algorithmic_ai.test.py](tests/ai/algorithmic_ai.test.py):
 
-| Test case ID | Title |
-|-------------|-------|
-| TC_001 | Impossible AI selects an unshot ship cell when one exists |
-| TC_002 | Hard AI extends a horizontal hit group |
-| TC_003 | Normal AI never returns an already-shot coordinate |
-| TC_004 | Reset clears tracked shots and strategy |
-| TC_005 | Unsunk hit detection returns only valid shot ship coordinates |
+| Test case ID | Title                                                         |
+| ------------ | ------------------------------------------------------------- |
+| TC_001       | Impossible AI selects an unshot ship cell when one exists     |
+| TC_002       | Hard AI extends a horizontal hit group                        |
+| TC_003       | Normal AI never returns an already-shot coordinate            |
+| TC_004       | Reset clears tracked shots and strategy                       |
+| TC_005       | Unsunk hit detection returns only valid shot ship coordinates |
 
 Run tests with:
 
 ```bash
-pytest
+python test.py
 ```
 
 ### Template for writing test cases
@@ -345,11 +438,11 @@ pytest
 
 > 🚧 Fill in the names of all team members and describe their individual contributions below.
 
-| Name      | Contribution |
-|-----------|--------------|
-| Student A | UI and menu flow |
+| Name      | Contribution                       |
+| --------- | ---------------------------------- |
+| Student A | UI and menu flow                   |
 | Student B | Core game logic and board handling |
-| Student C | AI logic and stats |
+| Student C | AI logic and stats                 |
 
 ---
 
@@ -358,9 +451,9 @@ pytest
 > 🚧 This is a template repository for student projects.  
 > 🚧 Do not change this section in your final submission.
 
-- Use this repository as a starting point by importing it into your own GitHub account  
-- Work only within your own copy — do not push to the original template  
-- Commit regularly to track your progress  
+- Use this repository as a starting point by importing it into your own GitHub account
+- Work only within your own copy — do not push to the original template
+- Commit regularly to track your progress
 
 ---
 

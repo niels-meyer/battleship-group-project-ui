@@ -19,6 +19,7 @@ env/
 stats/
 *.egg-info/
 database/battleship.db
+.nicegui/
 
 # --- IDE / editor ---
 .vscode/

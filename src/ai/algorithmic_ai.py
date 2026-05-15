@@ -1,16 +1,13 @@
 import random
 from enum import Enum
 from typing import List, Set
-
-from src.utils.app_types import EAIDifficulty, TBoard, TCoordIndex
-
+from src.app_types import EAIDifficulty, TBoard, TCoordIndex
 
 class AIStrategy(Enum):
     # Enum for high-level AI behavior.
 
     SEARCH = "search"
     DESTROY = "destroy"
-
 
 class SimpleBattleshipAI:
     # Battleship AI with NORMAL, HARD and IMPOSSIBLE difficulties.

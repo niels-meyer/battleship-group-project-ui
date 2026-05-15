@@ -1,7 +1,6 @@
 import json
 from pathlib import Path
-
-from src.utils.app_types import TConfig, TConfigShips, TConfigRows, TConfigColumns, TConfigCellSymbols
+from src.app_types import TConfig, TConfigShips, TConfigRows, TConfigColumns, TConfigCellSymbols
 
 _config_path = Path(__file__).with_name("config.json")
 
