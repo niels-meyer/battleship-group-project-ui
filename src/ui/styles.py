@@ -1,0 +1,5 @@
+PAGE_CLASS = "w-full items-center q-pa-xl gap-4"
+CARD_MEDIUM_CLASS = "w-full max-w-2xl q-pa-lg"
+BUTTON_COLUMN_CLASS = "w-full gap-2"
+TITLE_CLASS = "text-h4 text-weight-bold"
+FULL_WIDTH_CLASS = "w-full"

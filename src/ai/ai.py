@@ -1,11 +1,14 @@
 import random
 from typing import Any
 from src.ai.algorithmic_ai import SimpleBattleshipAI
-from src.ai.llm_ai import LLMM_AI
-from src.core.player import Player
+try:
+    from src.ai.llm_ai import LLMM_AI
+except ImportError:
+    LLMM_AI = None
+from src.app_types import EAIDifficulty, TRemainingCells, TCoord, TShipCoords, TBoard
 from src.config.config import get_rows, get_columns, get_ships
-from src.utils.app_types import EAIDifficulty, TBoard, TRemainingCells, TCoord, TShipCoords
-from src.utils.helper import suggest_ship_end_coords, get_coords_between
+from src.core.player import Player
+from src.utils.helpers import suggest_ship_end_coords, get_coords_between
 
 class AI(Player):
     def __init__(self, name: str, difficulty: EAIDifficulty):
@@ -25,28 +28,48 @@ class AI(Player):
         return (row, column)
 
     def get_random_ship_placement_coords(self, ship_length: int) -> TShipCoords:
-        start_coord = (random.choice(get_rows()), random.choice(get_columns()))
-        valid_end_coords = suggest_ship_end_coords(self.board, start_coord, ship_length)
-
+        # TODO: Improve AI ship placement logic, make it smarter
+        rows = get_rows()
+        columns = get_columns()
+        
+        start_coord = (random.choice(rows), random.choice(columns))
+        
+        valid_end_coords = suggest_ship_end_coords(self.board.get_board(), start_coord, ship_length)
+        
         if not valid_end_coords:
             return self.get_random_ship_placement_coords(ship_length)
 
         end_coord = random.choice(valid_end_coords)
         return get_coords_between(start_coord, end_coord)
 
-    def place_ship(self, ship_name) -> None:
-        ship_length = get_ships()[ship_name]["length"]
-        super().place_ship(ship_name, self.get_random_ship_placement_coords(ship_length))
+    # --- Override ---
+    def place_ship(self, ship_name: str, ship_coords: TShipCoords | None = None) -> None:
+        ships = get_ships()
+        ship_length = ships[ship_name]["length"]
+        if ship_coords is None:
+            ship_coords = self.get_random_ship_placement_coords(ship_length)
 
-    def shoot_player(self, player: Player) -> None:
-        if self.difficulty == EAIDifficulty.BABY:
-            coord = self._get_random_opponent_remaining_cell()
-        elif self.difficulty == EAIDifficulty.EASY:
-            coord = self._get_llm_ai_coord(player)
-        elif self.difficulty in (EAIDifficulty.NORMAL, EAIDifficulty.HARD, EAIDifficulty.IMPOSSIBLE):
+        super().place_ship(ship_name, ship_coords)
+
+    def _select_target_coord(self, player: "Player") -> TCoord:
+        """Select a target coordinate routed by difficulty level."""
+        if self.difficulty in (EAIDifficulty.NORMAL, EAIDifficulty.HARD, EAIDifficulty.IMPOSSIBLE):
             coord = self._get_algorithmic_ai_coord(player)
-        else:
-            coord = None
+            if coord is not None:
+                return coord
+        if self.difficulty == EAIDifficulty.EASY:
+            coord = self._get_llm_ai_coord(player)
+            if coord is not None:
+                return coord
+        coord = self._get_random_opponent_remaining_cell()
+        if coord is None:
+            raise RuntimeError("No remaining target cells available for AI")
+        return coord
+
+    def shoot_player(self, player: Player, coord: TCoord | None = None) -> bool:
+        """Shoots at the provided coord or picks one automatically if missing."""
+        if coord is None:
+            coord = self._select_target_coord(player)
 
         if coord is None or not self._is_valid_remaining_coord(coord):
             coord = self._get_random_opponent_remaining_cell()
@@ -60,7 +83,13 @@ class AI(Player):
         if not self._opponent_remaining_cells[row]:
             del self._opponent_remaining_cells[row]
 
-        super().shoot_player(player, coord)
+        return super().shoot_player(player, coord)
+
+    def shoot_player_with_coord(self, player: Player) -> tuple[TCoord, bool]:
+        """Selects a coordinate based on difficulty and shoots. Returns (coord, was_hit)."""
+        coord = self._select_target_coord(player)
+        hit = self.shoot_player(player, coord)
+        return coord, hit
 
     def _is_valid_remaining_coord(self, coord: TCoord) -> bool:
         row, column = coord

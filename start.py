@@ -1,14 +1,14 @@
-from src.ui.menu import main_menu
 from database.db import create_db_and_tables
-from src.utils.helper import clear_screen
+from src.ui.app import run_app
+
 
 def main():
     try:
         create_db_and_tables()
-        main_menu()
+        run_app()
     except KeyboardInterrupt:
-        clear_screen()
-    
-if __name__ in {"__main__", "__mp_main__"}:
+        print("\nShutting down Battleship...")
+
+
+if __name__ == "__main__":
     main()
-    

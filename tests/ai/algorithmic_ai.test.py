@@ -1,22 +1,20 @@
 from __future__ import annotations
 
-from typing import Any, Callable, Dict, Iterable, Tuple
+from typing import Any, Callable, Dict, Iterable
 
 import pytest
 
 from src.ai.algorithmic_ai import AIStrategy, SimpleBattleshipAI
-from src.utils.app_types import EAIDifficulty
+from src.app_types import EAIDifficulty, TBoard, TCoordIndex
 
-
-Board = Tuple[Tuple[Dict[str, Any], ...], ...]
-Coord = Tuple[int, int]
+Coord = TCoordIndex
 
 
 def make_board(
     board_size: int = 10,
     ship_cells: Dict[Coord, str] | None = None,
     shot_cells: Iterable[Coord] | None = None,
-) -> Board:
+) -> TBoard:
     ship_cells = ship_cells or {}
     shot_set = set(shot_cells or [])
 

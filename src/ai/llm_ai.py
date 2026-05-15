@@ -1,11 +1,9 @@
 import json
 import re
 from typing import Any
-
 from ollama import chat
-
-from src.utils.app_types import EAIDifficulty, TRemainingCells, TCoord
-from src.utils.helper import parse_coord
+from src.app_types import EAIDifficulty, TCoord, TRemainingCells
+from src.utils.helpers import parse_coord
 
 class LLMM_AI:
     def __init__(self, difficulty: EAIDifficulty, model: str = "mixtral:8x22b"):
@@ -29,9 +27,9 @@ Only use remaining coordinates as possible targets.
 - Destroyer: 2 cells
 
 Current board state:
-- Hits: {board['hits']}
-- Missed shots: {board['missed_shots']}
-- Remaining unknown cells: {board['remaining']}
+- Hits: {board["hits"]}
+- Missed shots: {board["missed_shots"]}
+- Remaining unknown cells: {board["remaining"]}
 
 Remaining ships you know are still afloat:
 - Remaining ships: {remaining_ships}
@@ -56,7 +54,6 @@ Think like a real player. Make your next attack decision.
                 "temperature": 0
             },
             stream=False
-            
         )
         return self._parse_coord(response.message.content, set(board["remaining"]))
 

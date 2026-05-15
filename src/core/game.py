@@ -1,148 +1,104 @@
 import random
-from InquirerPy import inquirer
-from src.utils.app_types import EAIDifficulty
+from typing import Optional
+from src.app_types import EAIDifficulty, TCoord, TBoard
 from src.config.config import get_ships
-from src.ui.display import print_boards
-from src.utils.helper import get_column_index, get_row_index, parse_coord, print_empty_line, suggest_ship_end_coords, get_coords_between, clear_screen
-from src.utils.constants import COLOR_BOLD, COLOR_YELLOW, COLOR_RED, COLOR_GREEN, COLOR_RESET, COLOR_CYAN
 from src.core.player import Player
+from src.utils.helpers import suggest_ship_end_coords, get_coords_between, get_row_index, get_column_index
 from src.ai.ai import AI
 
+
 class Game:
-    def __init__(self):
-        self._player = Player("player")
-        self._ai = AI("enemy", difficulty=EAIDifficulty.NORMAL)
+    def __init__(self, player_name: str):
+        self._player = Player(player_name)
+        self._ai = AI("enemy", difficulty=EAIDifficulty.BABY)
         self._does_player_start = random.choice([True, False])
         self._is_player_turn = self._does_player_start
         self._number_of_rounds = 1
+        self._ships_to_place = list(get_ships().items())
+        self._current_ship_index = 0
 
     def _change_turn(self) -> None:
         self._is_player_turn = not self._is_player_turn
-
         if self._is_player_turn == self._does_player_start:
             self._number_of_rounds += 1
 
-    def _setup_board(self) -> None:
-        ships = get_ships()
+    # --- Ship Placement ---
 
-        # --- Ship placement ---
-        for ship_name, ship_data in ships.items():
-            ship_length = ship_data["length"]
-            is_ship_placed: bool = False
+    @property
+    def all_ships_placed(self) -> bool:
+        return self._current_ship_index >= len(self._ships_to_place)
 
-            clear_screen()
-            print(f"{COLOR_BOLD}{COLOR_YELLOW}⚓ Place your ships.{COLOR_RESET}")
-            print_empty_line(2)
-            print(f"{COLOR_BOLD}Ship: {COLOR_RESET}{ship_name}")
-            print(f"{COLOR_BOLD}Length: {COLOR_RESET}{ship_length}")
-            print_boards(self._player.board.get_board(), self._ai.board.get_board())
+    def get_current_ship(self) -> Optional[tuple[str, int]]:
+        """Returns (name, length) for the ship currently being placed, or None if all placed."""
+        if self.all_ships_placed:
+            return None
+        name, data = self._ships_to_place[self._current_ship_index]
+        return name, data["length"]
 
-            while not is_ship_placed:
-                # --- Player ---
-                try:
-                    start_input_coord = input(f"Enter start coordinate: ")
-                    start_coord = parse_coord(start_input_coord)
-                except ValueError as e:
-                    print(f"{COLOR_RED}✗ {e}{COLOR_RESET}")
-                    print_empty_line()
-                    continue
+    def get_valid_end_coords(self, start_coord: TCoord) -> list[TCoord]:
+        """Returns legal end coordinates for the current ship starting at start_coord."""
+        current = self.get_current_ship()
+        if current is None:
+            return []
+        _, length = current
+        return suggest_ship_end_coords(self._player.board.get_board(), start_coord, length)
 
-                valid_end_coords = suggest_ship_end_coords(self._player.board, start_coord, ship_length)
+    def place_player_ship(self, start_coord: TCoord, end_coord: TCoord) -> None:
+        """Places the current ship for both the player and the AI, then advances to the next ship."""
+        current = self.get_current_ship()
+        if current is None:
+            return
+        ship_name, _ = current
+        ship_coords = get_coords_between(start_coord, end_coord)
+        self._player.place_ship(ship_name, ship_coords)
+        self._ai.place_ship(ship_name)
+        self._current_ship_index += 1
 
-                if not len(valid_end_coords):
-                    print(f"{COLOR_RED}✗ Ship cannot be placed there, overlaps or out of bounds.{COLOR_RESET}")
-                    print_empty_line()
-                    continue
-                
-                end_input_coord = inquirer.select(
-                    message="Choose legal end coordinate:",
-                    choices=[f"{row} {column}" for row, column in valid_end_coords]+["Back"]
-                ).execute()
+    # --- Shooting ---
 
-                if end_input_coord == "Back":
-                    print_empty_line()
-                    continue
+    @property
+    def is_player_turn(self) -> bool:
+        return self._is_player_turn
 
-                end_coord = parse_coord(end_input_coord)
-                ship_coords = get_coords_between(start_coord, end_coord)
+    def is_valid_shot(self, coord: TCoord) -> bool:
+        """Returns True if the coord has not already been shot on the AI's board."""
+        row_i = get_row_index(coord[0])
+        col_i = get_column_index(coord[1])
+        return not self._ai.board.get_board()[row_i][col_i]["is_shot"]
 
-                self._player.place_ship(ship_name, ship_coords)
+    def player_shoot(self, coord: TCoord) -> bool:
+        """Executes the player's shot. Returns True if it was a hit."""
+        hit = self._player.shoot_player(self._ai, coord)
+        self._change_turn()
+        return hit
 
-                # --- AI ---
-                self._ai.place_ship(ship_name)
+    def ai_shoot(self) -> tuple[TCoord, bool]:
+        """Executes the AI's shot. Returns (coord, was_hit)."""
+        coord, hit = self._ai.shoot_player_with_coord(self._player)
+        self._change_turn()
+        return coord, hit
 
-                clear_screen()
+    # --- Board Access ---
 
-                is_ship_placed = True
+    def get_player_board(self) -> TBoard:
+        return self._player.board.get_board()
 
-        # --- Shooting ---
-        turn_count = 0
-        while self._player.ships.has_ships() and self._ai.ships.has_ships():
-            clear_screen()
-            
-            turn_count += 1
-            round_count = (turn_count + 1) // 2
-            print(f"{COLOR_BOLD}{COLOR_YELLOW}⏱ Round {round_count}{COLOR_RESET}")
+    def get_ai_board(self) -> TBoard:
+        return self._ai.board.get_board()
 
-            if self._is_player_turn:
-                # --- Player ---
-                print(f"{COLOR_BOLD}{COLOR_YELLOW}⚔ Your turn to shoot.{COLOR_RESET}")
-                print_boards(self._player.board.get_board(), self._ai.board.get_board())
+    # --- Game State ---
 
-                # --- Player ---
-                has_not_shot = True
-                while has_not_shot:
-                    try:
-                        shoot_input_coord = input(f"Enter coordinate to shoot: ")
-                        shoot_coord = parse_coord(shoot_input_coord)
+    @property
+    def is_game_over(self) -> bool:
+        return not self._player.ships.has_ships() or not self._ai.ships.has_ships()
 
-                        if self._ai.board.get_board()[get_row_index(shoot_coord[0])][get_column_index(shoot_coord[1])]["is_shot"]:
-                            raise ValueError(f"You have already shot at `{shoot_coord[0]} {shoot_coord[1]}`. Try again.")
-                    except ValueError as e:
-                        print(f"{COLOR_RED}✗ {e}{COLOR_RESET}")
-                        print_empty_line()
-                        continue
-                    has_not_shot = False
+    @property
+    def has_player_won(self) -> bool:
+        return self._player.ships.has_ships()
 
-                self._player.shoot_player(self._ai, shoot_coord)
-
-                print_boards(self._player.board.get_board(), self._ai.board.get_board(), show_legend=False)
-            else:
-                # --- AI ---
-                print(f"{COLOR_BOLD}{COLOR_YELLOW}⚔ Enemy's turn to shoot.{COLOR_RESET}")
-                print_empty_line(2)
-
-                self._ai.shoot_player(self._player)
-
-                print_boards(self._player.board.get_board(), self._ai.board.get_board())
-            
-            self._change_turn()
-            
-            if self._player.ships.has_ships() and self._ai.ships.has_ships():
-                input(f"{COLOR_BOLD}Press Enter to continue...{COLOR_RESET}")
-
+    def finish(self) -> None:
+        """Persists the match outcome to the database."""
         self._player.save_match(
-            number_of_rounds = self._number_of_rounds,
-            has_player_won = self._player.ships.has_ships()
+            number_of_rounds=self._number_of_rounds,
+            has_player_won=self.has_player_won,
         )
-
-        # --- Declare winner ---
-        clear_screen()
-        if self._player.ships.has_ships():
-            print(f"{COLOR_BOLD}{COLOR_GREEN}")
-            print("╔════════════════════════════════════╗")
-            print("║  🎉 CONGRATULATIONS! YOU WON! 🎉   ║")
-            print("╚════════════════════════════════════╝")
-            print(f"{COLOR_RESET}")
-        else:
-            print(f"{COLOR_BOLD}{COLOR_RED}")
-            print("╔═════════════════════════════╗")
-            print("║   GAME OVER - YOU LOST! 😢  ║")
-            print("║   Better luck next time!    ║")
-            print("╚═════════════════════════════╝")
-            print(f"{COLOR_RESET}")
-        
-        input(f"{COLOR_BOLD}Press Enter to return to main menu...{COLOR_RESET}")
-
-    def start(self) -> None:
-        self._setup_board()
