@@ -1,4 +1,4 @@
-from database.db import create_db_and_tables
+from src.database.db import create_db_and_tables
 from src.ui.app import run_app
 
 

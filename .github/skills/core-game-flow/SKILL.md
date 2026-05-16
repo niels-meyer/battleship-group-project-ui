@@ -97,8 +97,8 @@ game.finish()                  # persists match to DB via Player.save_match()
 
 All coordinates follow the convention defined in **project-guidelines**:
 `TCoord = Tuple[str, str]` — `("row_letter", "column_string")`, e.g. `("a", "1")`, `("j", "10")`.
-Row letters come from `config.get_rows()` (a–j by default).
-Column strings come from `config.get_columns()` (1–10 by default).
+Row letters come from `ROWS` in `src/constants.py` (a–j by default).
+Column strings come from `COLUMNS` in `src/constants.py` (1–10 by default).
 
 - Convert with `get_row_index(row)` / `get_column_index(col)` in `src/utils/helpers.py`.
 - Parse user text input with `parse_coord(input_str)` in `src/utils/helpers.py` — raises `ValueError` on bad format.
@@ -140,8 +140,8 @@ def _change_turn(self):
 ```python
 game.finish()
 # internally calls:
-# player.save_match(number_of_rounds=..., has_player_won=game.has_player_won)
-# which calls: create_match(player_id, rounds, won) in database/match.py
+# player.save_match(number_of_rounds=..., has_player_won=game.has_player_won, ai_difficulty=...)
+# which calls: create_match(player_id, rounds, won, ai_difficulty) in database/match.py
 ```
 
 `has_player_won` is `True` when `player.ships.has_ships()` is still `True` after the loop.
@@ -157,7 +157,7 @@ game.finish()
 ## Pitfalls
 
 - **`is_valid_shot` only checks the AI board**: use it before calling `player_shoot`.
-- **Config is static**: `get_ships()`, `get_rows()`, `get_columns()` are loaded once at import. Changing `config.json` requires an app restart.
+- **Constants are static**: `ROWS`, `COLUMNS`, and `SHIPS` are defined in `src/constants.py` and loaded once at import. Changing them requires an app restart.
 - **`create_db_and_tables()` must be called before any DB operation**: `Player.__init__` immediately creates/fetches a player row — ensure DB is initialised before `Game(player_name)` is called.
 
 ## Skill Boundary

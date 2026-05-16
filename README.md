@@ -1,6 +1,6 @@
 # Battleship Game
 
-A console-based Battleship game written in Python.
+A web-based Battleship game built with Python and NiceGUI.
 
 ## Requirements
 
@@ -92,7 +92,7 @@ python start.py
 
 ---
 
-This project is a console-based Battleship game written in Python.
+This project is a web-based Battleship game built with Python and NiceGUI.
 
 It aims to:
 
@@ -315,6 +315,12 @@ src/
 │   ├── ai.py
 │   ├── algorithmic_ai.py
 │   └── llm_ai.py
+├── assets/
+│   └── menu-background.png
+├── database/
+│   ├── db.py
+│   ├── player.py
+│   └── match.py
 ├── config/
 │   ├── config.py
 │   └── config.json
@@ -343,12 +349,7 @@ src/
 
 tests/
 └── ai/
-    └── algorithmic_ai.test.py
-
-database/
-├── db.py
-├── player.py
-└── match.py
+   └── algorithmic_ai_test.py
 ```
 
 ---
@@ -404,7 +405,7 @@ python start.py
 - AI strategy tests for shot selection
 - Integration tests for game flow
 
-Current automated AI test cases are in [tests/ai/algorithmic_ai.test.py](tests/ai/algorithmic_ai.test.py):
+Current automated AI test cases are in [tests/ai/algorithmic_ai_test.py](tests/ai/algorithmic_ai_test.py):
 
 | Test case ID | Title                                                         |
 | ------------ | ------------------------------------------------------------- |
@@ -417,7 +418,7 @@ Current automated AI test cases are in [tests/ai/algorithmic_ai.test.py](tests/a
 Run tests with:
 
 ```bash
-python test.py
+pytest
 ```
 
 ### Template for writing test cases

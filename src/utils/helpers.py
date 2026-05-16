@@ -1,9 +1,9 @@
 from typing import Sequence
 from src.app_types import TBoard, TCoord, TShipCoords
-from src.config.config import get_columns, get_rows
+from src.constants import COLUMNS, ROWS
 
-_row_lookup = {row: i for i, row in enumerate(get_rows())}
-_column_lookup = {column: i for i, column in enumerate(get_columns())}
+_row_lookup = {row: i for i, row in enumerate(ROWS)}
+_column_lookup = {column: i for i, column in enumerate(COLUMNS)}
 
 def is_row_exists(row: str) -> bool:
     return row in _row_lookup
@@ -12,12 +12,10 @@ def is_column_exists(column: str) -> bool:
     return column in _column_lookup
 
 def get_row(row_index: int) -> str | None:
-    rows = get_rows()
-    return rows[row_index] if 0 <= row_index < len(rows) else None
+    return ROWS[row_index] if 0 <= row_index < len(ROWS) else None
 
 def get_column(column_index: int) -> str | None:
-    columns = get_columns()
-    return columns[column_index] if 0 <= column_index < len(columns) else None
+    return COLUMNS[column_index] if 0 <= column_index < len(COLUMNS) else None
 
 def get_row_index(row: str) -> int:
     if not is_row_exists(row):
@@ -61,7 +59,7 @@ def is_ship_placeable(board: TBoard, start_coord: TCoord, end_coord: TCoord) -> 
     ship_coords: Sequence[TCoord] = get_coords_between(start_coord, end_coord)
     if not ship_coords:
         return False
-    rows_length, columns_length = len(get_rows()), len(get_columns())
+    rows_length, columns_length = len(ROWS), len(COLUMNS)
     for row, column in ship_coords:
         row_i, column_i = get_row_index(row), get_column_index(column)
         if row_i >= rows_length or column_i >= columns_length:

@@ -1,12 +1,16 @@
-"""UI constants: routes, keys, and labels used across multiple pages."""
+"""UI constants: routes, keys, and shared labels."""
 
-# Session storage key
+# Session Storage Keys
 CURRENT_PLAYER_KEY = "current_player"
-# Route paths
+CURRENT_AI_DIFFICULTY_KEY = "ai_difficulty"
+
+# Route Paths
 ROOT_ROUTE = "/"
 MENU_ROUTE = "/menu"
 STATS_ROUTE = "/stats"
 HELP_ROUTE = "/help"
 GAME_ROUTE = "/game"
-# UI labels
+
+# Shared UI Labels
+APP_TITLE = "Battleship"
 BACK_LABEL = "Back to Main Menu"

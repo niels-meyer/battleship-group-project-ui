@@ -1,5 +1,5 @@
 from src.app_types import TBoard, TBoardShip, TCoord, TShipCoords
-from src.config.config import get_rows, get_columns
+from src.constants import ROWS, COLUMNS
 from src.utils.helpers import get_coord_index, get_row_index, get_column_index
 
 
@@ -9,8 +9,8 @@ class Board:
 
     def _generate_empty_board(self) -> TBoard:
         return tuple(
-            tuple({"is_shot": False, "ship": None} for _ in get_columns())
-            for _ in get_rows()
+            tuple({"is_shot": False, "ship": None} for _ in COLUMNS)
+            for _ in ROWS
         )
 
     def get_board(self) -> TBoard:
