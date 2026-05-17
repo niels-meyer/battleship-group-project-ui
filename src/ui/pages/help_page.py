@@ -7,7 +7,7 @@ from src.ui.pages.helpers.navigation import redirect_to_root
 from src.ui.styles import CARD_WIDE_CLASS, FULL_WIDTH_CLASS, PAGE_CLASS, SECTION_HEADING_CLASS, TITLE_CLASS
 
 # Text Constants
-TITLE = "How to Play Battleship"
+TITLE = "Help"
 OVERVIEW_HEADING = "Overview"
 _GRID_ROWS = len(ROWS)
 _GRID_COLS = len(COLUMNS)
