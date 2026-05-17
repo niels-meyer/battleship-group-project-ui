@@ -6,13 +6,15 @@ from src.ui.styles import CARD_MEDIUM_CLASS, FULL_WIDTH_CLASS, PAGE_CLASS, TITLE
 
 # Text Constants
 HELP_TITLE = "Help"
-HELP_INTRO_TEXT = "Game setup and play are now event-driven through NiceGUI."
-HELP_MIGRATION_TEXT = "Ship placement and battle boards are being migrated from CLI to full UI screens."
-HELP_START_GAME_TEXT = "Use Start Game to enter the in-progress game flow."
+HELP_INTRO_TEXT = "Battleship is a two-player strategy game played on a 10×10 grid."
+HELP_PLACEMENT_TEXT = "Place your five ships on the board by selecting a start cell and then an end cell."
+HELP_SHOOTING_TEXT = "Take turns firing at the enemy grid. A hit is marked with □, a miss with x."
+HELP_WIN_TEXT = "Win by sinking all five enemy ships before the AI sinks yours."
 HELP_BULLET_TEXT = (
     HELP_INTRO_TEXT,
-    HELP_MIGRATION_TEXT,
-    HELP_START_GAME_TEXT,
+    HELP_PLACEMENT_TEXT,
+    HELP_SHOOTING_TEXT,
+    HELP_WIN_TEXT,
 )
 
 @ui.page(HELP_ROUTE)

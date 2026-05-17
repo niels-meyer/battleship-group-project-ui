@@ -32,13 +32,6 @@ code quality across the project.
 - **Constant Extraction**: Extract text, values, and styles into named constants. Keep file-local constants at the top of the file if they are used only in that file, grouped by category (`# Text Constants`, `# Value Constants`, `# Style Constants`). Move constants to shared modules when used across multiple files—place them in appropriate location like `src/ui/constants.py`, `src/ui/styles.py`, or create similar shared locations in other modules as needed.
 - **UI Readability**: When a page builds several NiceGUI components, store the meaningful components in local variables when it improves readability instead of keeping the whole layout as one long inline block.
 
-## Code Organization: Testing
-
-- Place all tests under `tests/` at the repository root.
-- Mirror the `src/` folder structure inside `tests/` to keep source-to-test mapping predictable.
-- Name test files using suffix-style pytest naming: `*_test.py`.
-- Run tests with `pytest`; default discovery should find tests without custom `python_files` overrides.
-
 ## Topic References
 
 - OOP principles: `references/01-oop-principles.md`
