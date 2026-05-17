@@ -4,6 +4,10 @@ from src.ui.pages.help_page import help_page
 from src.ui.pages.main_menu_page import main_menu_page
 from src.ui.pages.player_selector_page import player_selector_page
 from src.ui.pages.stats_page import stats_page
+from src.ui.constants import APP_TITLE
+
+# Value Constants
+DEV_STORAGE_SECRET = "dev-secret"
 
 REGISTERED_PAGES = (
     player_selector_page,
@@ -15,7 +19,7 @@ REGISTERED_PAGES = (
 
 def run_app() -> None:
     ui.run(
-        title="Battleship",
+        title=APP_TITLE,
         reload=False,
-        storage_secret="dev-secret",
+        storage_secret=DEV_STORAGE_SECRET,
     )

@@ -1,5 +1,6 @@
 import random
 from enum import Enum
+from collections import deque
 from typing import List, Set
 from src.app_types import EAIDifficulty, TBoard, TCoordIndex
 
@@ -12,15 +13,15 @@ class AIStrategy(Enum):
 class SimpleBattleshipAI:
     # Battleship AI with NORMAL, HARD and IMPOSSIBLE difficulties.
 
-    def __init__(self, board_size: int = 10, difficulty: EAIDifficulty = EAIDifficulty.NORMAL):
-        self.board_size = board_size
+    def __init__(self, difficulty: EAIDifficulty = EAIDifficulty.NORMAL):
         self.difficulty = difficulty
         self.current_strategy = AIStrategy.SEARCH
         self.last_shots: Set[TCoordIndex] = set()
+        self.board_dimensions: tuple[int, int] = (0, 0)
 
     # Choose the next shot from current board state.
     def decide_shot(self, board: TBoard) -> TCoordIndex:
-
+        self.board_dimensions = self._get_board_dimensions(board)
         self._update_shots_fired(board)
 
         if self.difficulty == EAIDifficulty.IMPOSSIBLE:
@@ -45,8 +46,10 @@ class SimpleBattleshipAI:
 
     def _impossible_shot(self, board: TBoard) -> TCoordIndex:
         # Cheat mode: pick any unshot ship cell first.
-        for row in range(self.board_size):
-            for col in range(self.board_size):
+        row_count, column_count = self.board_dimensions
+
+        for row in range(row_count):
+            for col in range(column_count):
                 coords = (row, col)
                 if coords in self.last_shots:
                     continue
@@ -57,16 +60,22 @@ class SimpleBattleshipAI:
 
     def _update_shots_fired(self, board: TBoard) -> None:
         # Update local shot history from board state.
-        for row in range(self.board_size):
-            for col in range(self.board_size):
+        self.board_dimensions = self._get_board_dimensions(board)
+        row_count, column_count = self.board_dimensions
+
+        for row in range(row_count):
+            for col in range(column_count):
                 if board[row][col]["is_shot"]:
                     self.last_shots.add((row, col))
 
     def _find_unsunk_hits(self, board: TBoard) -> List[TCoordIndex]:
         # Return all shot cells that still contain a ship.
+        self.board_dimensions = self._get_board_dimensions(board)
         hits = []
-        for row in range(self.board_size):
-            for col in range(self.board_size):
+        row_count, column_count = self.board_dimensions
+
+        for row in range(row_count):
+            for col in range(column_count):
                 cell = board[row][col]
                 if cell["is_shot"] and cell["ship"] is not None:
                     hits.append((row, col))
@@ -101,12 +110,12 @@ class SimpleBattleshipAI:
             if start in visited:
                 continue
 
-            queue = [start]
+            queue = deque([start])
             visited.add(start)
             group: List[TCoordIndex] = []
 
             while queue:
-                row, col = queue.pop(0)
+                row, col = queue.popleft()
                 group.append((row, col))
 
                 for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
@@ -157,17 +166,18 @@ class SimpleBattleshipAI:
 
     def _search_shot(self, board: TBoard, deterministic: bool) -> TCoordIndex:
         # Search mode with simple checkerboard-based scoring.
+        row_count, column_count = self.board_dimensions
         checker_candidates = [
             (row, col)
-            for row in range(self.board_size)
-            for col in range(self.board_size)
+            for row in range(row_count)
+            for col in range(column_count)
             if (row, col) not in self.last_shots and (row + col) % 2 == 0
         ]
 
         candidates = checker_candidates or [
             (row, col)
-            for row in range(self.board_size)
-            for col in range(self.board_size)
+            for row in range(row_count)
+            for col in range(column_count)
             if (row, col) not in self.last_shots
         ]
 
@@ -187,21 +197,23 @@ class SimpleBattleshipAI:
     def _basic_cell_score(self, row: int, col: int, board: TBoard) -> float:
         # Simple score: checkerboard priority + nearby-hit bonus + center proximity + heat map.
         score = 1.0
+        row_count, column_count = self.board_dimensions
 
         # Checkerboard priority
         if (row + col) % 2 == 0:
             score += 0.5
 
         # Proximity to center
-        center = (self.board_size - 1) / 2
-        dist = abs(row - center) + abs(col - center)
-        max_dist = self.board_size - 1
+        row_center = (row_count - 1) / 2
+        column_center = (column_count - 1) / 2
+        dist = abs(row - row_center) + abs(col - column_center)
+        max_dist = max(row_count - 1, column_count - 1, 1)
         score += (max_dist - dist) * 0.3  # Weight for center proximity
 
         # Nearby hits (heat map effect)
         for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
             nr, nc = row + dr, col + dc
-            if 0 <= nr < self.board_size and 0 <= nc < self.board_size:
+            if 0 <= nr < row_count and 0 <= nc < column_count:
                 if board[nr][nc]["is_shot"]:
                     if board[nr][nc]["ship"] is not None:
                         score += 0.5  # Higher weight for nearby hits
@@ -212,19 +224,28 @@ class SimpleBattleshipAI:
 
     def _is_valid_unshot(self, coords: TCoordIndex) -> bool:
         row, col = coords
+        row_count, column_count = self.board_dimensions
         return (
-            0 <= row < self.board_size
-            and 0 <= col < self.board_size
+            0 <= row < row_count
+            and 0 <= col < column_count
             and coords not in self.last_shots
         )
 
     # Fallback for IMPOSSIBLE mode if no unshot ship cells found (should not happen in normal play)
     def _first_unshot_cell(self) -> TCoordIndex:
-        for row in range(self.board_size):
-            for col in range(self.board_size):
+        row_count, column_count = self.board_dimensions
+
+        for row in range(row_count):
+            for col in range(column_count):
                 if (row, col) not in self.last_shots:
                     return (row, col)
         return (0, 0)
+
+
+    def _get_board_dimensions(self, board: TBoard) -> tuple[int, int]:
+        row_count = len(board)
+        column_count = len(board[0]) if row_count else 0
+        return row_count, column_count
 
     def reset(self) -> None:
         # Reset AI state for a new game.

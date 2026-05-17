@@ -18,7 +18,7 @@ UI flow, or database schema design decisions.
 - Difficulty-level behavior for `EAIDifficulty` values.
 - Algorithmic AI behavior in `src/ai/algorithmic_ai.py`.
 - LLM AI integration behavior in `src/ai/llm_ai.py`.
-- AI tests in `tests/ai/` using mirrored structure and `*.test.py` naming. Run tests with `python test.py`.
+- AI tests in `tests/ai/` using mirrored structure and suffix-style pytest naming (`*_test.py`). Run tests with `pytest`.
 
 ## Out Of Scope
 

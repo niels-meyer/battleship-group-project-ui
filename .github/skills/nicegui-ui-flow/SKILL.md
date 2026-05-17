@@ -43,7 +43,7 @@ Implement the UI using NiceGUI with this required navigation contract:
 
 ### 1. Build player selector page as app entry point (`/`).
 
-- If the user is already active (`_get_current_player()` returns a value), redirect immediately to `/menu`.
+- If the user is already active (`get_current_player()` returns a value), redirect immediately to `/menu`.
 - Show a player name input with autocomplete.
 - On empty input/focus, show suggestions for all existing players.
 - On typed input, filter suggestions case-insensitively.

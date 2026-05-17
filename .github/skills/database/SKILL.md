@@ -7,11 +7,11 @@ argument-hint: "Implement or extend SQLModel database schema"
 # Database Skill
 
 All persistence uses **SQLModel** (built on SQLAlchemy) with a local **SQLite** file at
-`database/battleship.db`. Tables are created on first run via `create_db_and_tables()`.
+`battleship.db` (project root level). Tables are created on first run via `create_db_and_tables()`.
 
 ## Schema
 
-### Player (`database/player.py`)
+### Player (`src/database/player.py`)
 
 | Column          | Type            | Notes                                       |
 | --------------- | --------------- | ------------------------------------------- |
@@ -19,15 +19,16 @@ All persistence uses **SQLModel** (built on SQLAlchemy) with a local **SQLite** 
 | `name`          | `str`           | Unique player name; used as player identity |
 | `match_history` | relationship    | One-to-many back-reference to `Match`       |
 
-### Match (`database/match.py`)
+### Match (`src/database/match.py`)
 
-| Column             | Type            | Notes                                                        |
-| ------------------ | --------------- | ------------------------------------------------------------ |
-| `id`               | `Optional[int]` | Primary key, auto-assigned                                   |
-| `player_id`        | `Optional[int]` | Foreign key → `player.id`                                    |
-| `player`           | relationship    | Many-to-one back-reference, `back_populates="match_history"` |
-| `number_of_rounds` | `int`           | Number of rounds persisted for the match                     |
-| `has_player_won`   | `bool`          | `True` if the human player won                               |
+| Column             | Type            | Notes                                                             |
+| ------------------ | --------------- | ----------------------------------------------------------------- |
+| `id`               | `Optional[int]` | Primary key, auto-assigned                                        |
+| `player_id`        | `Optional[int]` | Foreign key → `player.id`                                         |
+| `player`           | relationship    | Many-to-one back-reference, `back_populates="match_history"`      |
+| `number_of_rounds` | `int`           | Number of rounds persisted for the match                          |
+| `has_player_won`   | `bool`          | `True` if the human player won                                    |
+| `ai_difficulty`    | `str`           | AI difficulty value (e.g. `"baby"`, `"normal"`); default `"baby"` |
 
 ### Relationship summary
 
@@ -38,10 +39,10 @@ Player 1 ──────── * Match
 
 One Player has many Matches. Each Match references exactly one Player.
 
-## Engine & Session (`database/db.py`)
+## Engine & Session (`src/database/db.py`)
 
 ```python
-engine = create_engine("sqlite:///database/battleship.db", echo=True)
+engine = create_engine("sqlite:///battleship.db", echo=True)
 
 def create_db_and_tables():          # call once at startup
     SQLModel.metadata.create_all(engine)

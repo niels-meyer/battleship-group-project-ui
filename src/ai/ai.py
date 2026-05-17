@@ -6,7 +6,7 @@ try:
 except ImportError:
     LLMM_AI = None
 from src.app_types import EAIDifficulty, TRemainingCells, TCoord, TShipCoords, TBoard
-from src.config.config import get_rows, get_columns, get_ships
+from src.constants import ROWS, COLUMNS, SHIPS
 from src.core.player import Player
 from src.utils.helpers import suggest_ship_end_coords, get_coords_between
 
@@ -17,7 +17,7 @@ class AI(Player):
         self.difficulty = difficulty
 
     def _generate_opponent_remaining_cells(self) -> TRemainingCells:
-        return {row: get_columns().copy() for row in get_rows()}
+        return {row: COLUMNS.copy() for row in ROWS}
 
     def _get_random_opponent_remaining_cell(self) -> TCoord | None:
         if not self._opponent_remaining_cells:
@@ -29,10 +29,7 @@ class AI(Player):
 
     def get_random_ship_placement_coords(self, ship_length: int) -> TShipCoords:
         # TODO: Improve AI ship placement logic, make it smarter
-        rows = get_rows()
-        columns = get_columns()
-        
-        start_coord = (random.choice(rows), random.choice(columns))
+        start_coord = (random.choice(ROWS), random.choice(COLUMNS))
         
         valid_end_coords = suggest_ship_end_coords(self.board.get_board(), start_coord, ship_length)
         
@@ -44,8 +41,7 @@ class AI(Player):
 
     # --- Override ---
     def place_ship(self, ship_name: str, ship_coords: TShipCoords | None = None) -> None:
-        ships = get_ships()
-        ship_length = ships[ship_name]["length"]
+        ship_length = SHIPS[ship_name]["length"]
         if ship_coords is None:
             ship_coords = self.get_random_ship_placement_coords(ship_length)
 
@@ -53,18 +49,30 @@ class AI(Player):
 
     def _select_target_coord(self, player: "Player") -> TCoord:
         """Select a target coordinate routed by difficulty level."""
+        strategy_chain = self._get_target_strategies(player)
+
+        for strategy in strategy_chain:
+            coord = strategy()
+            if coord is not None:
+                return coord
+
+        raise RuntimeError("No remaining target cells available for AI")
+
+
+    def _get_target_strategies(self, player: "Player") -> list[callable[[], TCoord | None]]:
         if self.difficulty in (EAIDifficulty.NORMAL, EAIDifficulty.HARD, EAIDifficulty.IMPOSSIBLE):
-            coord = self._get_algorithmic_ai_coord(player)
-            if coord is not None:
-                return coord
+            return [
+                lambda: self._get_algorithmic_ai_coord(player),
+                self._get_random_opponent_remaining_cell,
+            ]
+
         if self.difficulty == EAIDifficulty.EASY:
-            coord = self._get_llm_ai_coord(player)
-            if coord is not None:
-                return coord
-        coord = self._get_random_opponent_remaining_cell()
-        if coord is None:
-            raise RuntimeError("No remaining target cells available for AI")
-        return coord
+            return [
+                lambda: self._get_llm_ai_coord(player),
+                self._get_random_opponent_remaining_cell,
+            ]
+
+        return [self._get_random_opponent_remaining_cell]
 
     def shoot_player(self, player: Player, coord: TCoord | None = None) -> bool:
         """Shoots at the provided coord or picks one automatically if missing."""
@@ -112,15 +120,12 @@ class AI(Player):
 
         hits: list[str] = []
         missed_shots: list[str] = []
-        rows = get_rows()
-        columns = get_columns()
-
         for row_i, row in enumerate(board):
             for col_i, cell in enumerate(row):
                 if not cell["is_shot"]:
                     continue
 
-                coord = f"{rows[row_i]}{columns[col_i]}"
+                coord = f"{ROWS[row_i]}{COLUMNS[col_i]}"
                 if cell["ship"]:
                     hits.append(coord)
                 else:
@@ -140,9 +145,9 @@ class AI(Player):
 
     def _get_algorithmic_ai_coord(self, player: Player) -> TCoord | None:
         snapshot = self._get_board_snapshot(player)
-        algorithmic_ai = SimpleBattleshipAI(board_size=len(get_rows()), difficulty=self.difficulty)
+        algorithmic_ai = SimpleBattleshipAI(difficulty=self.difficulty)
         row_index, column_index = algorithmic_ai.decide_shot(snapshot["board_view"])
-        coord = (get_rows()[row_index], get_columns()[column_index])
+        coord = (ROWS[row_index], COLUMNS[column_index])
         return coord if self._is_valid_remaining_coord(coord) else None
 
     def _get_llm_ai_coord(self, player: Player) -> TCoord | None:

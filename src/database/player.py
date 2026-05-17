@@ -1,9 +1,9 @@
 from typing import TYPE_CHECKING, List, Optional, Tuple
 from sqlmodel import Field, Relationship, SQLModel, select
-from database.db import get_session
+from src.database.db import get_session
 
 if TYPE_CHECKING:
-    from database.match import Match
+    from src.database.match import Match
 
 class Player(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)

@@ -7,11 +7,3 @@ authors = [
   { name="Héloïse Filâtre", email="heloise.filatre@students.fhnw.ch" }
 ]
 readme = "README.md"
-
-[tool.setuptools.packages.find]
-where = ["src"]
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-python_files = ["*.test.py"]
-addopts = ["--import-mode=importlib"]

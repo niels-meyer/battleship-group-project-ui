@@ -1,24 +1,6 @@
 from typing import Dict, List, Sequence, Tuple, TypedDict
 from enum import Enum
 
-# --- Config ---
-TConfigShips = Dict[str, TypedDict("TConfigShip", {
-    "length": int,
-})]
-TConfigRows = List[str]
-TConfigColumns = List[str]
-TConfig = TypedDict("TConfig", {
-    "ships": TConfigShips,
-    "rows": TConfigRows,
-    "columns": TConfigColumns
-})
-TConfigCellSymbols = TypedDict("TConfigCellSymbols", {
-    "empty": str,
-    "ship": str,
-    "hit": str,
-    "miss": str
-})
-
 # --- Coord ---
 TCoord = Tuple[str, str]
 TCoordIndex = Tuple[int, int]
@@ -41,3 +23,9 @@ class EAIDifficulty(Enum):
     NORMAL = "normal"
     HARD = "hard"
     IMPOSSIBLE = "impossible"
+
+
+class TCurrentPlayer(TypedDict):
+    id: int
+    name: str
+    ai_difficulty: str
