@@ -52,21 +52,12 @@ Implement the UI using NiceGUI with this required navigation contract:
   - If player does not exist: create the player, set session state, and navigate to `/menu`.
   - If input is empty: show a `ui.notify` warning.
 
-### 3. Protect Main Menu route/view.
-
-- If player state is missing, immediately redirect to `/`.
-- Do not render menu actions before state validation.
-
-### 4. Render Main Menu with exactly four primary actions.
-
-2. Protect Main Menu route/view.
+### 2. Protect Main Menu route/view.
 
 - If player state is missing, immediately redirect to `/` using `require_current_player()`.
 - Do not render menu actions before state validation.
 
-### 3
-
-### 4. Stats View.
+### 3. Stats View.
 
 - Triggered by `Stats` button in Main Menu.
 - Scoped to the currently logged-in player.
@@ -79,12 +70,12 @@ Implement the UI using NiceGUI with this required navigation contract:
   - List of individual matches showing: match number, rounds, outcome (Win / Loss).
 - Provide a back action to return to Main Menu.
 
-### 5. Keep navigation readable.
+### 4. Keep navigation readable.
 
 - Prefer small, named handlers for each button action.
 - Avoid hidden or implicit transitions.
 
-### 6. Verify acceptance criteria before finishing.
+### 5. Verify acceptance criteria before finishing.
 
 - Start state is the player selector page (`/`).
 - Active players visiting `/` are redirected to `/menu`.
@@ -100,8 +91,6 @@ Implement the UI using NiceGUI with this required navigation contract:
 
 ## Project Fit Notes
 
-- Current entry point is `start.py` and NiceGUI root is in `src/ui/app.py`.
-- Player lookup and create helpers live in `database/player.py`.
 - UI helper functions live in `src/ui/pages/helpers/` split by concern:
   - `storage_session.py` — session get/set/clear
   - `access_control.py` — `require_current_player()`, `logout()`
