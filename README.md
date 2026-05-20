@@ -196,8 +196,7 @@ The application allows users to:
 
 ## 🗄️ Database and ORM
 
-![Database diagram](docs/DB-Battleship.png)
-
+![Database diagram](docs/ORM-Diagram-Battleship.png)
 
 ---
 
@@ -356,27 +355,27 @@ pytest
 
 #### AI Difficulty Tests ([tests/ai/difficulty_test.py](tests/ai/difficulty_test.py))
 
-| ID     | Title                                                  |
-| ------ | ------------------------------------------------------ |
-| TC_006 | Invalid difficulty falls back to default               |
-| TC_007 | Available difficulties match enum                      |
-| TC_008 | Difficulty ranks span 1 to 10                          |
-| TC_009 | Difficulty summary format (e.g., "Hard (8/10)")        |
+| ID     | Title                                           |
+| ------ | ----------------------------------------------- |
+| TC_006 | Invalid difficulty falls back to default        |
+| TC_007 | Available difficulties match enum               |
+| TC_008 | Difficulty ranks span 1 to 10                   |
+| TC_009 | Difficulty summary format (e.g., "Hard (8/10)") |
 
 #### Database Player Tests ([tests/database/player_test.py](tests/database/player_test.py))
 
-| ID     | Title                                                       |
-| ------ | ----------------------------------------------------------- |
-| TC_010 | create_player persists and is retrievable by name           |
-| TC_019 | get_all_players returns players in alphabetical order       |
-| TC_020 | register_player with duplicate name returns failure         |
+| ID     | Title                                                 |
+| ------ | ----------------------------------------------------- |
+| TC_010 | create_player persists and is retrievable by name     |
+| TC_019 | get_all_players returns players in alphabetical order |
+| TC_020 | register_player with duplicate name returns failure   |
 
 #### Database Match Tests ([tests/database/match_test.py](tests/database/match_test.py))
 
-| ID     | Title                                                        |
-| ------ | ------------------------------------------------------------ |
-| TC_011 | create_match persists and links to correct player            |
-| TC_012 | get_matches_by_player_id returns empty list when no matches  |
+| ID     | Title                                                       |
+| ------ | ----------------------------------------------------------- |
+| TC_011 | create_match persists and links to correct player           |
+| TC_012 | get_matches_by_player_id returns empty list when no matches |
 
 #### Core Game Tests ([tests/core/game_test.py](tests/core/game_test.py))
 
@@ -390,16 +389,16 @@ pytest
 
 #### Core Ship Tests ([tests/core/ships_test.py](tests/core/ships_test.py))
 
-| ID     | Title                                                     |
-| ------ | --------------------------------------------------------- |
-| TC_016 | has_ships is false after last ship removed                |
-| TC_017 | decrease_ship removes ship when last coordinate hit       |
+| ID     | Title                                               |
+| ------ | --------------------------------------------------- |
+| TC_016 | has_ships is false after last ship removed          |
+| TC_017 | decrease_ship removes ship when last coordinate hit |
 
 #### Core Board Tests ([tests/core/board_test.py](tests/core/board_test.py))
 
-| ID     | Title                                                            |
-| ------ | ---------------------------------------------------------------- |
-| TC_018 | shoot_ship returns ship name on hit, None on miss, marks cell    |
+| ID     | Title                                                         |
+| ------ | ------------------------------------------------------------- |
+| TC_018 | shoot_ship returns ship name on hit, None on miss, marks cell |
 
 ### Test Case Template
 
@@ -414,17 +413,17 @@ Each test case follows this structure:
 7. **Actual result** – outcome from execution (populated when test runs)
 8. **Status** – pass or fail
 9. **Comments** – additional notes
-9. Comments – additional notes
+10. Comments – additional notes
 
 ---
 
 ## 👥 Team & Contributions
 
-| Name      | Contribution                       |
-| --------- | ---------------------------------- |
-| Niels     | Smart AI LLM + Algorithmic         |
-| Alex      | DB + overwork UI                   |
-| Héloïse   | New UI implementation              |
+| Name    | Contribution               |
+| ------- | -------------------------- |
+| Niels   | Smart AI LLM + Algorithmic |
+| Alex    | DB + overwork UI           |
+| Héloïse | New UI implementation      |
 
 ---
 
