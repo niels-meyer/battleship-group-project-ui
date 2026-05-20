@@ -205,8 +205,6 @@ The application allows users to:
 
 ---
 
-> 🚧 Requirements act as a contract: implement and demonstrate each point below.
-
 Each app must meet the following criteria in order to be accepted (see also the official project guidelines PDF on Moodle):
 
 1. Interactive application flow
@@ -421,8 +419,6 @@ Each test case follows this structure:
 ---
 
 ## 👥 Team & Contributions
-
-> 🚧 Fill in the names of all team members and describe their individual contributions below.
 
 | Name      | Contribution                       |
 | --------- | ---------------------------------- |
