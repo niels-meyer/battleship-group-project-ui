@@ -88,7 +88,7 @@ From the project root:
 
 ```bash
 python start.py
-``
+```
 
 ---
 
