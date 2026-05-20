@@ -427,17 +427,6 @@ Each test case follows this structure:
 
 ---
 
-## 🤝 Contributing
-
-> 🚧 This is a template repository for student projects.  
-> 🚧 Do not change this section in your final submission.
-
-- Use this repository as a starting point by importing it into your own GitHub account
-- Work only within your own copy — do not push to the original template
-- Commit regularly to track your progress
-
----
-
 ## 📝 License
 
 This project is provided for educational use only as part of the Advanced Programming module.
