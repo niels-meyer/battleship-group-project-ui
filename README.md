@@ -419,11 +419,11 @@ Each test case follows this structure:
 
 ## 👥 Team & Contributions
 
-| Name    | Contribution               |
-| ------- | -------------------------- |
-| Niels   | Smart AI LLM + Algorithmic |
-| Alex    | DB + overwork UI           |
-| Héloïse | New UI implementation      |
+| Name    | Contribution             |
+| ------- | ------------------------ |
+| Niels   | Smart AI LLM + Algorithm |
+| Alex    | DB + NiceGUI integration |
+| Héloïse | UI implementation        |
 
 ---
 
