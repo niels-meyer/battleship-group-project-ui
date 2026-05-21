@@ -1,3 +1,14 @@
+# Background
+BACKGROUND_CSS = """
+body {
+    background-image: url('/static/menu-background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+"""
+
 # Layout
 PAGE_CLASS = "w-full items-center q-pa-xl gap-4"
 VIEWPORT_PAGE_CLASS = "w-full h-full items-center q-pa-md gap-4"

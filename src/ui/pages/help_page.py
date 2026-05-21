@@ -4,7 +4,7 @@ from src.constants import CELL_SYMBOLS, COLUMNS, ROWS, SHIPS
 from src.ui.constants import BACK_LABEL, HELP_ROUTE, MENU_ROUTE
 from src.ui.pages.helpers.access_control import require_current_player
 from src.ui.pages.helpers.navigation import redirect_to_root
-from src.ui.styles import CARD_WIDE_CLASS, FULL_WIDTH_CLASS, PAGE_CLASS, SECTION_HEADING_CLASS, TITLE_CLASS
+from src.ui.styles import BACKGROUND_CSS, CARD_WIDE_CLASS, FULL_WIDTH_CLASS, PAGE_CLASS, SECTION_HEADING_CLASS, TITLE_CLASS
 
 # Text Constants
 TITLE = "Help"
@@ -51,6 +51,7 @@ LIST_COLUMN_CLASS = "w-full gap-1"
 
 @ui.page(HELP_ROUTE)
 def help_page() -> Any:
+    ui.add_css(BACKGROUND_CSS)
     player = require_current_player()
     if player is None:
         return redirect_to_root()

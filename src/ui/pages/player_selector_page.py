@@ -2,7 +2,7 @@ from typing import Any
 from nicegui import ui
 from src.ui.constants import APP_TITLE, ROOT_ROUTE
 from src.ui.pages.helpers import get_current_player, get_player_name_options, redirect_to_menu, select_or_create_player
-from src.ui.styles import CARD_MEDIUM_CLASS, FULL_WIDTH_CLASS, PAGE_CLASS, SECTION_HEADING_CLASS, TITLE_CLASS
+from src.ui.styles import BACKGROUND_CSS, CARD_MEDIUM_CLASS, FULL_WIDTH_CLASS, PAGE_CLASS, SECTION_HEADING_CLASS, TITLE_CLASS
 
 # Text Constants
 PLAYER_SELECTOR_HEADING = "Select or create player"
@@ -19,6 +19,7 @@ PLAYER_INPUT_PROPS = "clearable"
 
 @ui.page(ROOT_ROUTE)
 def player_selector_page() -> Any:
+    ui.add_css(BACKGROUND_CSS)
     player = get_current_player()
     if player is not None:
         return redirect_to_menu()

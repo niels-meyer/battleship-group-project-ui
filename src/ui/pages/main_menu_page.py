@@ -3,7 +3,7 @@ from nicegui import ui
 from src.ui.constants import GAME_ROUTE, HELP_ROUTE, MENU_ROUTE, STATS_ROUTE
 from src.ui.pages.helpers.access_control import logout, require_current_player
 from src.ui.pages.helpers.navigation import redirect_to_root
-from src.ui.styles import BUTTON_COLUMN_CLASS, CARD_COMPACT_CLASS, FULL_WIDTH_CLASS, PAGE_CLASS, TITLE_CLASS
+from src.ui.styles import BACKGROUND_CSS, BUTTON_COLUMN_CLASS, CARD_COMPACT_CLASS, FULL_WIDTH_CLASS, PAGE_CLASS, TITLE_CLASS
 
 # Text Constants
 WELCOME_TEMPLATE = "Welcome, {player_name}"
@@ -17,6 +17,7 @@ CARD_CLASS = CARD_COMPACT_CLASS
 
 @ui.page(MENU_ROUTE)
 def main_menu_page() -> Any:
+    ui.add_css(BACKGROUND_CSS)
     player = require_current_player()
     if player is None:
         return redirect_to_root()

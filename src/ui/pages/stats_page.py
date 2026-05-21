@@ -4,7 +4,7 @@ from src.database.match import get_matches_by_player_id
 from src.ai.difficulty import get_ai_difficulty_rank, get_ai_difficulty_summary, parse_ai_difficulty
 from src.ui.constants import BACK_LABEL, MENU_ROUTE, STATS_ROUTE
 from src.ui.pages.helpers import redirect_to_root, require_current_player
-from src.ui.styles import CARD_WIDE_CLASS, FULL_WIDTH_CLASS, PAGE_CLASS, TITLE_CLASS
+from src.ui.styles import BACKGROUND_CSS, CARD_WIDE_CLASS, FULL_WIDTH_CLASS, PAGE_CLASS, TITLE_CLASS
 
 # Style Constants
 CARD_CLASS = CARD_WIDE_CLASS
@@ -35,6 +35,7 @@ TABLE_COLUMNS = [
 
 @ui.page(STATS_ROUTE)
 def stats_page() -> Any:
+    ui.add_css(BACKGROUND_CSS)
     player = require_current_player()
     if player is None:
         return redirect_to_root()

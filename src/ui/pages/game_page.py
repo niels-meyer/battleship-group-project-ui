@@ -13,7 +13,7 @@ from src.ui.constants import APP_TITLE, BACK_LABEL, GAME_ROUTE, MENU_ROUTE
 from src.ui.pages.helpers.access_control import require_current_player
 from src.ui.pages.helpers.navigation import redirect_to_root
 from src.ui.pages.helpers.storage_session import set_current_player_ai_difficulty
-from src.ui.styles import CARD_COMPACT_CLASS, FULL_WIDTH_CLASS, PAGE_CLASS, TITLE_CLASS
+from src.ui.styles import BACKGROUND_CSS, CARD_COMPACT_CLASS, FULL_WIDTH_CLASS, PAGE_CLASS, TITLE_CLASS
 
 # Style Constants
 SETUP_CARD_CLASS = CARD_COMPACT_CLASS
@@ -378,6 +378,7 @@ class GamePageController:
 
 @ui.page(GAME_ROUTE)
 def game_page() -> Any:
+    ui.add_css(BACKGROUND_CSS)
     player = require_current_player()
     if player is None:
         return redirect_to_root()

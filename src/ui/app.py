@@ -1,4 +1,5 @@
-from nicegui import ui
+from pathlib import Path
+from nicegui import app, ui
 from src.ui.pages.game_page import game_page
 from src.ui.pages.help_page import help_page
 from src.ui.pages.main_menu_page import main_menu_page
@@ -16,6 +17,8 @@ REGISTERED_PAGES = (
     help_page,
     game_page,
 )
+
+app.add_media_files("/static", str(Path(__file__).parent.parent / "assets"))
 
 def run_app() -> None:
     ui.run(
