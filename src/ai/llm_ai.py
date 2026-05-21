@@ -5,7 +5,7 @@ from ollama import chat
 from src.app_types import EAIDifficulty, TCoord, TRemainingCells
 from src.utils.helpers import parse_coord
 
-class LLMM_AI:
+class LLM_AI:
     def __init__(self, difficulty: EAIDifficulty, model: str = "mixtral:8x22b"):
         self.difficulty = difficulty
         self.model = model

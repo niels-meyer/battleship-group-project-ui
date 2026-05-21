@@ -31,3 +31,7 @@ For code style, conventions, and engineering guidelines, see the **project-guide
 ## Code Style & Conventions
 
 All code style, naming, module organization, and engineering conventions are defined in the **project-guidelines** skill.
+
+## Testing Conventions
+
+All pytest conventions, test styles, fixture rules, and test file structure are defined in the **tests** skill.

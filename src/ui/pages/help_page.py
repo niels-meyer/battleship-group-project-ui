@@ -9,10 +9,10 @@ from src.ui.styles import CARD_WIDE_CLASS, FULL_WIDTH_CLASS, PAGE_CLASS, SECTION
 # Text Constants
 TITLE = "Help"
 OVERVIEW_HEADING = "Overview"
-_GRID_ROWS = len(ROWS)
-_GRID_COLS = len(COLUMNS)
+GRID_ROWS = len(ROWS)
+GRID_COLS = len(COLUMNS)
 OVERVIEW_TEXT = (
-    f"This Battleship is a two-player strategy game played on a {_GRID_ROWS}×{_GRID_COLS} grid "
+    f"This Battleship is a two-player strategy game played on a {GRID_ROWS}×{GRID_COLS} grid "
     f"(rows {ROWS[0].upper()}–{ROWS[-1].upper()}, columns {COLUMNS[0]}–{COLUMNS[-1]}). "
     "You and an AI opponent each secretly place a fleet of ships on your own board, then take turns "
     "calling out coordinates to attack. The first player to sink every enemy ship wins."

@@ -1,10 +1,10 @@
 import random
-from typing import Any
+from typing import Any, Callable
 from src.ai.algorithmic_ai import SimpleBattleshipAI
 try:
-    from src.ai.llm_ai import LLMM_AI
+    from src.ai.llm_ai import LLM_AI
 except ImportError:
-    LLMM_AI = None
+    LLM_AI = None
 from src.app_types import EAIDifficulty, TRemainingCells, TCoord, TShipCoords, TBoard
 from src.constants import ROWS, COLUMNS, SHIPS
 from src.core.player import Player
@@ -59,7 +59,7 @@ class AI(Player):
         raise RuntimeError("No remaining target cells available for AI")
 
 
-    def _get_target_strategies(self, player: "Player") -> list[callable[[], TCoord | None]]:
+    def _get_target_strategies(self, player: "Player") -> list[Callable[[], TCoord | None]]:
         if self.difficulty in (EAIDifficulty.NORMAL, EAIDifficulty.HARD, EAIDifficulty.IMPOSSIBLE):
             return [
                 lambda: self._get_algorithmic_ai_coord(player),
@@ -151,11 +151,11 @@ class AI(Player):
         return coord if self._is_valid_remaining_coord(coord) else None
 
     def _get_llm_ai_coord(self, player: Player) -> TCoord | None:
-        if self.difficulty != EAIDifficulty.EASY or LLMM_AI is None:
+        if self.difficulty != EAIDifficulty.EASY or LLM_AI is None:
             return None
 
         try:
-            llm_ai = LLMM_AI(difficulty=self.difficulty)
+            llm_ai = LLM_AI(difficulty=self.difficulty)
         except Exception:
             return None
 
