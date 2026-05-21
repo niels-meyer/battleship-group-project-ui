@@ -7,26 +7,26 @@ from src.ui.pages.helpers import redirect_to_root, require_current_player
 from src.ui.styles import CARD_WIDE_CLASS, FULL_WIDTH_CLASS, PAGE_CLASS, TITLE_CLASS
 
 # Style Constants
-STATS_CARD_CLASS = CARD_WIDE_CLASS
+CARD_CLASS = CARD_WIDE_CLASS
 EMPTY_STATE_CLASS = "text-italic"
 
 # Text Constants
-STATS_TITLE = "Stats"
-STATS_TOTAL_MATCHES_TEMPLATE = "Total Matches: {total_matches}"
-STATS_WINS_TEMPLATE = "Wins: {total_wins}"
-STATS_LOSSES_TEMPLATE = "Losses: {total_losses}"
-STATS_WIN_RATE_TEMPLATE = "Win Rate: {win_rate:.1f}%"
-STATS_AVG_ROUNDS_TEMPLATE = "Average Rounds: {average_rounds:.1f}"
-STATS_AVG_DIFFICULTY_TEMPLATE = "Average Opponent Difficulty: {average_opponent_difficulty:.1f}/10"
-STATS_EMPTY_TEXT = "No matches recorded yet."
-STATS_MATCH_OUTCOME_WIN = "Win"
-STATS_MATCH_OUTCOME_LOSS = "Lose"
+TITLE = "Stats"
+TOTAL_MATCHES_TEMPLATE = "Total Matches: {total_matches}"
+WINS_TEMPLATE = "Wins: {total_wins}"
+LOSSES_TEMPLATE = "Losses: {total_losses}"
+WIN_RATE_TEMPLATE = "Win Rate: {win_rate:.1f}%"
+AVG_ROUNDS_TEMPLATE = "Average Rounds: {average_rounds:.1f}"
+AVG_DIFFICULTY_TEMPLATE = "Average Opponent Difficulty: {average_opponent_difficulty:.1f}/10"
+EMPTY_TEXT = "No matches recorded yet."
+MATCH_OUTCOME_WIN = "Win"
+MATCH_OUTCOME_LOSS = "Lose"
 
 # Value Constants
 TABLE_ROW_KEY = "match_number"
 MATCH_ID_FALLBACK = -1
 TABLE_ALIGN_LEFT = "left"
-STATS_COLUMNS = [
+TABLE_COLUMNS = [
     {"name": "match_number", "label": "Match #", "field": "match_number", "align": TABLE_ALIGN_LEFT},
     {"name": "rounds", "label": "Rounds", "field": "rounds", "align": TABLE_ALIGN_LEFT},
     {"name": "difficulty", "label": "Opponent", "field": "difficulty", "align": TABLE_ALIGN_LEFT},
@@ -48,26 +48,26 @@ def stats_page() -> Any:
     average_opponent_difficulty = (total_difficulty_rank / total_matches) if total_matches > 0 else 0.0
     average_rounds = (sum(match.number_of_rounds for match in player_matches) / total_matches) if total_matches > 0 else 0.0
     with ui.column().classes(PAGE_CLASS):
-        ui.label(STATS_TITLE).classes(TITLE_CLASS)
+        ui.label(TITLE).classes(TITLE_CLASS)
 
-        with ui.card().classes(STATS_CARD_CLASS):
-            ui.label(STATS_TOTAL_MATCHES_TEMPLATE.format(total_matches=total_matches))
-            ui.label(STATS_WINS_TEMPLATE.format(total_wins=total_wins))
-            ui.label(STATS_LOSSES_TEMPLATE.format(total_losses=total_losses))
-            ui.label(STATS_WIN_RATE_TEMPLATE.format(win_rate=win_rate))
-            ui.label(STATS_AVG_ROUNDS_TEMPLATE.format(average_rounds=average_rounds))
+        with ui.card().classes(CARD_CLASS):
+            ui.label(TOTAL_MATCHES_TEMPLATE.format(total_matches=total_matches))
+            ui.label(WINS_TEMPLATE.format(total_wins=total_wins))
+            ui.label(LOSSES_TEMPLATE.format(total_losses=total_losses))
+            ui.label(WIN_RATE_TEMPLATE.format(win_rate=win_rate))
+            ui.label(AVG_ROUNDS_TEMPLATE.format(average_rounds=average_rounds))
             ui.label(
-                STATS_AVG_DIFFICULTY_TEMPLATE.format(average_opponent_difficulty=average_opponent_difficulty)
+                AVG_DIFFICULTY_TEMPLATE.format(average_opponent_difficulty=average_opponent_difficulty)
             )
             ui.separator()
             if not player_matches:
-                ui.label(STATS_EMPTY_TEXT).classes(EMPTY_STATE_CLASS)
+                ui.label(EMPTY_TEXT).classes(EMPTY_STATE_CLASS)
             else:
                 rows = [
                     {
                         TABLE_ROW_KEY: index,
                         "rounds": match.number_of_rounds,
-                        "outcome": STATS_MATCH_OUTCOME_WIN if match.has_player_won else STATS_MATCH_OUTCOME_LOSS,
+                        "outcome": MATCH_OUTCOME_WIN if match.has_player_won else MATCH_OUTCOME_LOSS,
                         "difficulty": get_ai_difficulty_summary(parse_ai_difficulty(match.ai_difficulty)),
                     }
                     for index, match in enumerate(
@@ -75,6 +75,6 @@ def stats_page() -> Any:
                         start=1,
                     )
                 ]
-                ui.table(columns=STATS_COLUMNS, rows=rows, row_key=TABLE_ROW_KEY).classes(FULL_WIDTH_CLASS)
+                ui.table(columns=TABLE_COLUMNS, rows=rows, row_key=TABLE_ROW_KEY).classes(FULL_WIDTH_CLASS)
 
             ui.button(BACK_LABEL, on_click=lambda: ui.navigate.to(MENU_ROUTE)).classes(FULL_WIDTH_CLASS)

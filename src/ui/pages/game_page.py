@@ -21,7 +21,7 @@ GAME_CARD_CLASS = "w-full max-w-5xl q-pa-lg"
 BOARD_CARD_CLASS = "q-pa-md"
 BOARD_ROW_CLASS = "w-full justify-evenly items-start"
 STATUS_CLASS = "text-subtitle1 text-weight-medium"
-SUBTITLE_STRONG_CLASS = "text-subtitle1 text-weight-medium"
+HEADING_CLASS = "text-subtitle1 text-weight-medium"
 HELPER_TEXT_CLASS = "text-body2"
 BOARD_CELL_CLASS = "min-w-0"
 BOARD_CELL_STYLE = "width: 2rem; height: 2rem; padding: 0;"
@@ -39,8 +39,8 @@ SHOT_MISS = "Miss"
 SHOT_ENEMY_HIT = "hit"
 SHOT_ENEMY_MISSED = "missed"
 SETUP_TITLE = "Select Opponent"
-SETUP_OPPONENT_LABEL = "Opponent"
-SETUP_START_BTN = "Start Game"
+OPPONENT_LABEL = "Opponent"
+START_BTN = "Start Game"
 PLAYER_BOARD_TITLE = "Your Board"
 ENEMY_BOARD_TITLE = "Enemy Board"
 PLACEMENT_FIRST_SHIP = "Place your first ship by choosing a start cell."
@@ -265,7 +265,7 @@ class GamePageController:
     ) -> None:
         highlighted_coords = highlighted_coords or set()
         with ui.card().classes(BOARD_CARD_CLASS):
-            ui.label(title).classes(SUBTITLE_STRONG_CLASS + " w-full text-center")
+            ui.label(title).classes(HEADING_CLASS + " w-full text-center")
             with ui.element("div").style(_board_grid_style(len(self.columns))):
                 ui.label("")
                 for column in self.columns:
@@ -337,7 +337,7 @@ class GamePageController:
 
     def _render_result_help(self) -> None:
         outcome = VICTORY if self.game.has_player_won else DEFEAT
-        ui.label(RESULT_TITLE.format(outcome=outcome)).classes(SUBTITLE_STRONG_CLASS)
+        ui.label(RESULT_TITLE.format(outcome=outcome)).classes(HEADING_CLASS)
         ui.label(RESULT_ROUNDS.format(rounds=self.game.number_of_rounds)).classes(HELPER_TEXT_CLASS)
         ui.label(RESULT_SAVED).classes(HELPER_TEXT_CLASS)
 
@@ -399,7 +399,7 @@ def game_page() -> Any:
             if controller is None:
                 ui.label(APP_TITLE).classes(TITLE_CLASS)
                 with ui.card().classes(SETUP_CARD_CLASS):
-                    ui.label(SETUP_TITLE).classes(SUBTITLE_STRONG_CLASS)
+                    ui.label(SETUP_TITLE).classes(HEADING_CLASS)
                     opponent_options = {
                         difficulty.value: get_ai_difficulty_label(difficulty)
                         for difficulty in get_available_ai_difficulties()
@@ -407,10 +407,10 @@ def game_page() -> Any:
                     opponent_select = ui.select(
                         options=opponent_options,
                         value=selected_difficulty,
-                        label=SETUP_OPPONENT_LABEL,
+                        label=OPPONENT_LABEL,
                     ).classes(FULL_WIDTH_CLASS)
                     ui.button(
-                        SETUP_START_BTN,
+                        START_BTN,
                         on_click=lambda _event: start_game(opponent_select.value),
                     ).classes(FULL_WIDTH_CLASS)
                     ui.button(BACK_LABEL, on_click=lambda _event: ui.navigate.to(MENU_ROUTE)).classes(FULL_WIDTH_CLASS)
