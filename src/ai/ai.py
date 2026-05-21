@@ -8,7 +8,6 @@ except ImportError:
 from src.app_types import EAIDifficulty, TRemainingCells, TCoord, TShipCoords, TBoard
 from src.constants import ROWS, COLUMNS, SHIPS
 from src.core.player import Player
-from src.utils.helpers import suggest_ship_end_coords, get_coords_between
 
 class AI(Player):
     def __init__(self, name: str, difficulty: EAIDifficulty):
@@ -28,16 +27,56 @@ class AI(Player):
         return (row, column)
 
     def get_random_ship_placement_coords(self, ship_length: int) -> TShipCoords:
-        # TODO: Improve AI ship placement logic, make it smarter
-        start_coord = (random.choice(ROWS), random.choice(COLUMNS))
-        
-        valid_end_coords = suggest_ship_end_coords(self.board.get_board(), start_coord, ship_length)
-        
-        if not valid_end_coords:
-            return self.get_random_ship_placement_coords(ship_length)
+        board = self.board.get_board()
+        row_count, column_count = len(ROWS), len(COLUMNS)
+        placements: list[tuple[int, TShipCoords]] = []
 
-        end_coord = random.choice(valid_end_coords)
-        return get_coords_between(start_coord, end_coord)
+        for row_i in range(row_count):
+            for column_i in range(column_count):
+                for delta_row, delta_column in ((0, 1), (1, 0)):
+                    end_row_i = row_i + delta_row * (ship_length - 1)
+                    end_column_i = column_i + delta_column * (ship_length - 1)
+                    if end_row_i >= row_count or end_column_i >= column_count:
+                        continue
+
+                    ship_coords = [
+                        (ROWS[row_i + delta_row * offset], COLUMNS[column_i + delta_column * offset])
+                        for offset in range(ship_length)
+                    ]
+                    if any(board[r][c]["ship"] for r, c in (
+                        (row_i + delta_row * offset, column_i + delta_column * offset)
+                        for offset in range(ship_length)
+                    )):
+                        continue
+
+                    occupied = {
+                        (row_i + delta_row * offset, column_i + delta_column * offset)
+                        for offset in range(ship_length)
+                    }
+                    score = 0
+                    for ship_row_i, ship_column_i in occupied:
+                        score += min(ship_row_i, row_count - 1 - ship_row_i)
+                        score += min(ship_column_i, column_count - 1 - ship_column_i)
+
+                        for neighbor_row_i in range(ship_row_i - 1, ship_row_i + 2):
+                            for neighbor_column_i in range(ship_column_i - 1, ship_column_i + 2):
+                                if not (0 <= neighbor_row_i < row_count and 0 <= neighbor_column_i < column_count):
+                                    continue
+                                if (neighbor_row_i, neighbor_column_i) in occupied:
+                                    continue
+                                if board[neighbor_row_i][neighbor_column_i]["ship"]:
+                                    score -= 8
+                                else:
+                                    score += 1
+
+                    placements.append((score, ship_coords))
+
+        if not placements:
+            raise ValueError(f"No valid placement available for ship length {ship_length}.")
+
+        best_score = max(score for score, _ in placements)
+        best_placements = [coords for score, coords in placements if score == best_score]
+        return random.choice(best_placements)
 
     # --- Override ---
     def place_ship(self, ship_name: str, ship_coords: TShipCoords | None = None) -> None:

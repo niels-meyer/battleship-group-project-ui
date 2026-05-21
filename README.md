@@ -171,8 +171,6 @@ The application allows users to:
 
 ## 🧩 Use Cases
 
-![UML Use Case Diagram](docs/architecture-diagrams/uml_use_case_diagram.png)
-
 ### Main Use Cases
 
 - Start Game
@@ -185,64 +183,26 @@ The application allows users to:
 
 - Player
 - AI Opponent
-- Stats User
 
 ---
 
 ### Wireframes / Mockups
 
-> 🚧 Add screenshots of the wireframes or gameplay screens you chose to implement.
-
-![Wireframes – Home/Gameplay](docs/ui-images/wireframes.png)
-
----
-
-## 🏛️ Architecture
-
-![UML Class Diagram](docs/architecture-diagrams/uml_class_architecture.png)
-
-### Layers
-
-- **UI:** terminal-based menus and prompts
-- **Application logic:** game loop, turn handling, stats flow
-- **Domain/Core:** board, player, ships, and statistics
-- **Helpers:** coordinate parsing, placement validation, display utilities
-
-### Design Decisions
-
-- Separate core game logic from UI prompts
-- Keep AI behavior behind a dedicated AI class
-- Use helper functions for coordinate and board utilities
-
-### Patterns Used
-
-- Game loop orchestration
-- Strategy-like AI difficulty handling
-- Utility/helper pattern for shared logic
+![Battleship mockup](docs/Mockup-Battleship.png)
+![Battleship mockup screen 1](docs/Mockup-Battleship1.png)
+![Battleship mockup screen 2](docs/Mockup-Battleship2.png)
 
 ---
 
 ## 🗄️ Database and ORM
 
-![ER Diagram](docs/architecture-diagrams/er_diagram.png)
-
-This project currently does not use a database or ORM.
-
-### Entities
-
-> 🚧 Not applicable in the current version.
-
-### Relationships
-
-> 🚧 Not applicable in the current version.
+![Database diagram](docs/ORM-Diagram-Battleship.png)
 
 ---
 
 ## ✅ Project Requirements
 
 ---
-
-> 🚧 Requirements act as a contract: implement and demonstrate each point below.
 
 Each app must meet the following criteria in order to be accepted (see also the official project guidelines PDF on Moodle):
 
@@ -287,19 +247,21 @@ Game state is managed in the core classes:
 
 ## ⚙️ Implementation
 
-### Technology
+### Technology Stack
 
-- Python
-- InquirerPy
-- pytest
-- JSON-based persistence for stats
+- **Language:** Python 3.10+
+- **Web Framework:** NiceGUI
+- **Database:** SQLite + SQLModel (ORM)
+- **Testing:** pytest
+- **AI:** Algorithmic strategies + LLM-based AI (via Ollama)
 
-### Libraries Used
+### Core Libraries
 
-- **InquirerPy** – menu prompts
-- **pytest** – testing
-- **json** – stats persistence
-- **random** – AI shot selection and turn order
+- **NiceGUI** – web-based UI and routing
+- **SQLModel** – database models and ORM
+- **SQLAlchemy** – database session and query management
+- **pytest** – unit and integration testing
+- **Ollama** (optional) – local LLM support for advanced AI opponent
 
 ---
 
@@ -348,72 +310,30 @@ src/
     └── helpers.py
 
 tests/
-└── ai/
-   └── algorithmic_ai_test.py
+├── ai/
+│   ├── algorithmic_ai_test.py
+│   └── difficulty_test.py
+├── core/
+│   ├── board_test.py
+│   ├── game_test.py
+│   └── ships_test.py
+├── database/
+│   ├── match_test.py
+│   ├── player_test.py
+├── conftest.py
+└── helpers.py
 ```
-
----
-
-### How to Run
-
-#### 1. Project Setup
-
-- Python 3.10+ is required
-- Create and activate a virtual environment:
-
-  **Windows:**
-
-  ```bash
-  python -m venv .venv
-  .venv\Scripts\Activate.ps1
-  ```
-
-- Install dependencies:
-  ```bash
-  pip install -r requirements.txt
-  ```
-
-#### 2. Configuration
-
-> 🚧 Add configuration details here if needed.
-
-#### 3. Launch
-
-From the project root:
-
-```bash
-python start.py
-```
-
-#### 4. Usage
-
-1. Start the application from the main menu.
-2. Create or load a stats profile if needed.
-3. Place all ships on the board.
-4. Shoot at enemy coordinates on your turn.
-5. Continue until one side loses all ships.
 
 ---
 
 ## 🧪 Testing
 
-> 🚧 Explain what you test and how to run tests.
-
 **Test mix:**
 
 - Unit tests for board and ship handling
-- AI strategy tests for shot selection
-- Integration tests for game flow
-
-Current automated AI test cases are in [tests/ai/algorithmic_ai_test.py](tests/ai/algorithmic_ai_test.py):
-
-| Test case ID | Title                                                         |
-| ------------ | ------------------------------------------------------------- |
-| TC_001       | Impossible AI selects an unshot ship cell when one exists     |
-| TC_002       | Hard AI extends a horizontal hit group                        |
-| TC_003       | Normal AI never returns an already-shot coordinate            |
-| TC_004       | Reset clears tracked shots and strategy                       |
-| TC_005       | Unsunk hit detection returns only valid shot ship coordinates |
+- AI strategy tests for shot selection and difficulty ranking
+- Integration tests for game flow and persistence
+- Database persistence tests for player and match data
 
 Run tests with:
 
@@ -421,40 +341,89 @@ Run tests with:
 pytest
 ```
 
-### Template for writing test cases
+### Automated Test Cases
 
-1. Test case ID – unique identifier
-2. Test case title/description – what the test covers
-3. Preconditions – required setup
-4. Test steps – actions performed
-5. Test data/input
-6. Expected result
-7. Actual result
-8. Status – pass or fail
-9. Comments – additional notes
+#### AI Strategy Tests ([tests/ai/algorithmic_ai_test.py](tests/ai/algorithmic_ai_test.py))
+
+| ID     | Title                                                         |
+| ------ | ------------------------------------------------------------- |
+| TC_001 | Impossible AI selects an unshot ship cell when one exists     |
+| TC_002 | Hard AI extends a horizontal hit group                        |
+| TC_003 | Normal AI never returns an already-shot coordinate            |
+| TC_004 | Reset clears tracked shots and strategy                       |
+| TC_005 | Unsunk hit detection returns only valid shot ship coordinates |
+
+#### AI Difficulty Tests ([tests/ai/difficulty_test.py](tests/ai/difficulty_test.py))
+
+| ID     | Title                                           |
+| ------ | ----------------------------------------------- |
+| TC_006 | Invalid difficulty falls back to default        |
+| TC_007 | Available difficulties match enum               |
+| TC_008 | Difficulty ranks span 1 to 10                   |
+| TC_009 | Difficulty summary format (e.g., "Hard (8/10)") |
+
+#### Database Player Tests ([tests/database/player_test.py](tests/database/player_test.py))
+
+| ID     | Title                                                 |
+| ------ | ----------------------------------------------------- |
+| TC_010 | create_player persists and is retrievable by name     |
+| TC_019 | get_all_players returns players in alphabetical order |
+| TC_020 | register_player with duplicate name returns failure   |
+
+#### Database Match Tests ([tests/database/match_test.py](tests/database/match_test.py))
+
+| ID     | Title                                                       |
+| ------ | ----------------------------------------------------------- |
+| TC_011 | create_match persists and links to correct player           |
+| TC_012 | get_matches_by_player_id returns empty list when no matches |
+
+#### Core Game Tests ([tests/core/game_test.py](tests/core/game_test.py))
+
+| ID     | Title                                                        |
+| ------ | ------------------------------------------------------------ |
+| TC_013 | Player win is persisted correctly with has_player_won=True   |
+| TC_014 | Player loss is persisted correctly with has_player_won=False |
+| TC_015 | Two games produce two distinct match records                 |
+| TC_021 | number_of_rounds increments after full round                 |
+| TC_022 | is_game_over is true after all player ships removed          |
+
+#### Core Ship Tests ([tests/core/ships_test.py](tests/core/ships_test.py))
+
+| ID     | Title                                               |
+| ------ | --------------------------------------------------- |
+| TC_016 | has_ships is false after last ship removed          |
+| TC_017 | decrease_ship removes ship when last coordinate hit |
+
+#### Core Board Tests ([tests/core/board_test.py](tests/core/board_test.py))
+
+| ID     | Title                                                         |
+| ------ | ------------------------------------------------------------- |
+| TC_018 | shoot_ship returns ship name on hit, None on miss, marks cell |
+
+### Test Case Template
+
+Each test case follows this structure:
+
+1. **Test case ID** – unique identifier (TC_XXX)
+2. **Title** – concise description of what is tested
+3. **Preconditions** – required setup state
+4. **Steps** – ordered actions performed during test
+5. **Test data/input** – input values used
+6. **Expected result** – successful outcome
+7. **Actual result** – outcome from execution (populated when test runs)
+8. **Status** – pass or fail
+9. **Comments** – additional notes
+10. Comments – additional notes
 
 ---
 
 ## 👥 Team & Contributions
 
-> 🚧 Fill in the names of all team members and describe their individual contributions below.
-
-| Name      | Contribution                       |
-| --------- | ---------------------------------- |
-| Student A | UI and menu flow                   |
-| Student B | Core game logic and board handling |
-| Student C | AI logic and stats                 |
-
----
-
-## 🤝 Contributing
-
-> 🚧 This is a template repository for student projects.  
-> 🚧 Do not change this section in your final submission.
-
-- Use this repository as a starting point by importing it into your own GitHub account
-- Work only within your own copy — do not push to the original template
-- Commit regularly to track your progress
+| Name    | Contribution             |
+| ------- | ------------------------ |
+| Niels   | Smart AI LLM + Algorithm |
+| Alex    | DB + NiceGUI integration |
+| Héloïse | UI implementation        |
 
 ---
 
