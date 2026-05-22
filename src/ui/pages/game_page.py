@@ -13,7 +13,7 @@ from src.ui.constants import APP_TITLE, BACK_LABEL, GAME_ROUTE, MENU_ROUTE
 from src.ui.pages.helpers.access_control import require_current_player
 from src.ui.pages.helpers.navigation import redirect_to_root
 from src.ui.pages.helpers.storage_session import set_current_player_ai_difficulty
-from src.ui.styles import BACKGROUND_CSS, CARD_COMPACT_CLASS, FULL_WIDTH_CLASS, PAGE_CLASS, TITLE_CLASS
+from src.ui.styles import BACKGROUND_CSS, CARD_COMPACT_CLASS, FULL_WIDTH_CLASS, PAGE_CLASS, TITLE_CLASS, GREEN_BUTTON_STYLE
 
 # Style Constants
 SETUP_CARD_CLASS = CARD_COMPACT_CLASS
@@ -373,7 +373,7 @@ class GamePageController:
             with ui.column().classes(FULL_WIDTH_CLASS + " gap-4"):
                 self.render_status_section()
                 self.render_boards()
-                ui.button(BACK_LABEL, on_click=lambda _event: self.handle_back_to_menu()).classes(FULL_WIDTH_CLASS)
+                ui.button(BACK_LABEL, on_click=lambda _event: self.handle_back_to_menu()).classes(FULL_WIDTH_CLASS).style(GREEN_BUTTON_STYLE)
 
 
 @ui.page(GAME_ROUTE)
@@ -413,8 +413,8 @@ def game_page() -> Any:
                     ui.button(
                         START_BTN,
                         on_click=lambda _event: start_game(opponent_select.value),
-                    ).classes(FULL_WIDTH_CLASS)
-                    ui.button(BACK_LABEL, on_click=lambda _event: ui.navigate.to(MENU_ROUTE)).classes(FULL_WIDTH_CLASS)
+                    ).classes(FULL_WIDTH_CLASS).style(GREEN_BUTTON_STYLE)
+                    ui.button(BACK_LABEL, on_click=lambda _event: ui.navigate.to(MENU_ROUTE)).classes(FULL_WIDTH_CLASS).style(GREEN_BUTTON_STYLE)
                 return
 
             controller.render_content()

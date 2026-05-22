@@ -4,7 +4,7 @@ from src.constants import CELL_SYMBOLS, COLUMNS, ROWS, SHIPS
 from src.ui.constants import BACK_LABEL, HELP_ROUTE, MENU_ROUTE
 from src.ui.pages.helpers.access_control import require_current_player
 from src.ui.pages.helpers.navigation import redirect_to_root
-from src.ui.styles import BACKGROUND_CSS, CARD_WIDE_CLASS, FULL_WIDTH_CLASS, PAGE_CLASS, SECTION_HEADING_CLASS, TITLE_CLASS
+from src.ui.styles import BACKGROUND_CSS, CARD_WIDE_CLASS, FULL_WIDTH_CLASS, PAGE_CLASS, SECTION_HEADING_CLASS, TITLE_CLASS, GREEN_BUTTON_STYLE
 
 # Text Constants
 TITLE = "Help"
@@ -69,7 +69,7 @@ def help_page() -> Any:
                 _render_battle()
                 ui.separator()
                 _render_winning()
-                ui.button(BACK_LABEL, on_click=lambda: ui.navigate.to(MENU_ROUTE)).classes(FULL_WIDTH_CLASS)
+                ui.button(BACK_LABEL, on_click=lambda: ui.navigate.to(MENU_ROUTE)).classes(FULL_WIDTH_CLASS).style(GREEN_BUTTON_STYLE)
 
 def _render_overview() -> None:
     ui.label(OVERVIEW_HEADING).classes(SECTION_HEADING_CLASS)

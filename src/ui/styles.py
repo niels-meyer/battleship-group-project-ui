@@ -23,3 +23,11 @@ BUTTON_COLUMN_CLASS = "w-full gap-2"
 # Typography
 TITLE_CLASS = "text-h4 text-weight-bold"
 SECTION_HEADING_CLASS = "text-h6"
+
+# Buttons
+GREEN_BUTTON_STYLE = """
+background-color: #023020 !important;
+color: white !important;
+border: 1px solid #0b5d3b !important;
+border-radius: 10px !important;
+"""

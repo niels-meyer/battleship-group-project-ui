@@ -3,7 +3,7 @@ from nicegui import ui
 from src.ui.constants import GAME_ROUTE, HELP_ROUTE, MENU_ROUTE, STATS_ROUTE
 from src.ui.pages.helpers.access_control import logout, require_current_player
 from src.ui.pages.helpers.navigation import redirect_to_root
-from src.ui.styles import BACKGROUND_CSS, BUTTON_COLUMN_CLASS, CARD_COMPACT_CLASS, FULL_WIDTH_CLASS, PAGE_CLASS, TITLE_CLASS
+from src.ui.styles import BACKGROUND_CSS, BUTTON_COLUMN_CLASS, CARD_COMPACT_CLASS, FULL_WIDTH_CLASS, PAGE_CLASS, TITLE_CLASS, GREEN_BUTTON_STYLE
 
 # Text Constants
 WELCOME_TEMPLATE = "Welcome, {player_name}"
@@ -28,7 +28,11 @@ def main_menu_page() -> Any:
         ui.label(WELCOME_TEMPLATE.format(player_name=player_name)).classes(TITLE_CLASS)
         with ui.card().classes(CARD_CLASS):
             with ui.column().classes(BUTTON_COLUMN_CLASS):
-                ui.button(START_GAME_LABEL, on_click=lambda: ui.navigate.to(GAME_ROUTE)).classes(FULL_WIDTH_CLASS)
-                ui.button(STATS_LABEL, on_click=lambda: ui.navigate.to(STATS_ROUTE)).classes(FULL_WIDTH_CLASS)
-                ui.button(HELP_LABEL, on_click=lambda: ui.navigate.to(HELP_ROUTE)).classes(FULL_WIDTH_CLASS)
-                ui.button(LOGOUT_LABEL, on_click=logout).classes(FULL_WIDTH_CLASS)
+                ui.button(START_GAME_LABEL, on_click=lambda: ui.navigate.to(GAME_ROUTE)).classes(FULL_WIDTH_CLASS).style(
+                    GREEN_BUTTON_STYLE)
+                ui.button(STATS_LABEL, on_click=lambda: ui.navigate.to(STATS_ROUTE)).classes(FULL_WIDTH_CLASS).style(
+                    GREEN_BUTTON_STYLE)
+                ui.button(HELP_LABEL, on_click=lambda: ui.navigate.to(HELP_ROUTE)).classes(FULL_WIDTH_CLASS).style(
+                    GREEN_BUTTON_STYLE)
+                ui.button(LOGOUT_LABEL, on_click=logout).classes(FULL_WIDTH_CLASS).style(
+                    GREEN_BUTTON_STYLE)
