@@ -23,8 +23,9 @@ BOARD_ROW_CLASS = "w-full justify-evenly items-start"
 STATUS_CLASS = "text-subtitle1 text-weight-medium"
 HEADING_CLASS = "text-subtitle1 text-weight-medium"
 HELPER_TEXT_CLASS = "text-body2"
-BOARD_CELL_CLASS = "min-w-0"
+BOARD_CELL_CLASS = "battle-cell min-w-0"
 BOARD_CELL_STYLE = "width: 2rem; height: 2rem; padding: 0;"
+BOARD_CELL_GREEN_STYLE = """background-color: #023020 !important; color: #7CFFB2 !important; border: 1px solid #0b5d3b !important; border-radius: 10px !important; box-shadow: inset 0 0 8px rgba(0, 255, 120, 0.18);"""
 BOARD_LABEL_STYLE = "width: 1.5rem; text-align: center;"
 
 # Text Constants
@@ -312,7 +313,7 @@ class GamePageController:
             on_click=(lambda _event, target=coord: on_cell_click(target)) if is_clickable and on_cell_click else None,
         )
         button.classes(BOARD_CELL_CLASS)
-        button.style(BOARD_CELL_STYLE)
+        button.style(BOARD_CELL_STYLE + BOARD_CELL_GREEN_STYLE)
         if not is_clickable:
             button.disable()
 

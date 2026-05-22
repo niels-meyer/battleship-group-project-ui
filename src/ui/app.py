@@ -84,6 +84,70 @@ body,
     color: white !important;
 }
 
+/* ===== BATTLESHIP CELLS ===== */
+
+.battle-cell {
+    background: rgba(0, 70, 40, 0.85) !important;
+
+    border: 1px solid rgba(0, 255, 120, 0.35) !important;
+
+    color: #7CFFB2 !important;
+
+    border-radius: 10px !important;
+
+    transition: all 0.18s ease;
+
+    box-shadow:
+        inset 0 0 8px rgba(0, 255, 100, 0.08),
+        0 0 4px rgba(0, 255, 100, 0.12);
+
+    backdrop-filter: blur(2px);
+}
+
+/* Hover */
+
+.battle-cell:hover {
+    background: rgba(0, 110, 60, 0.95) !important;
+
+    box-shadow:
+        0 0 12px rgba(0, 255, 120, 0.45),
+        inset 0 0 10px rgba(0, 255, 150, 0.2);
+
+    transform: scale(1.05);
+}
+
+/* Click */
+
+.battle-cell:active {
+    transform: scale(0.96);
+}
+
+/* Disabled */
+
+.battle-cell:disabled {
+    opacity: 0.9 !important;
+}
+
+/* Hit cells */
+
+.battle-hit {
+    background: #00ff88 !important;
+    color: black !important;
+}
+
+/* Miss cells */
+
+.battle-miss {
+    background: rgba(20, 40, 30, 0.9) !important;
+    color: #8fa39a !important;
+}
+
+/* Ship placement */
+
+.battle-ship {
+    background: rgba(0, 180, 90, 0.35) !important;
+}
+
 </style>
 """, shared=True)
 
