@@ -147,7 +147,92 @@ body,
 .battle-ship {
     background: rgba(0, 180, 90, 0.35) !important;
 }
+/* ===== SELECT / INPUT CONTAINER ===== */
 
+.q-field__control {
+    background: transparent !important;
+    color: white !important;
+}
+
+.q-field__native,
+.q-field__input,
+.q-field input {
+    color: white !important;
+    background: transparent !important;
+}
+
+.q-field__label {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.q-field__append,
+.q-field__prepend,
+.q-icon {
+    color: white !important;
+}
+/* ===== AUTOCOMPLETE DROPDOWN ===== */
+
+.q-menu {
+    background: rgba(2, 48, 32, 0.96) !important;
+    border: 1px solid rgba(0,255,120,0.25) !important;
+    border-radius: 12px !important;
+    backdrop-filter: blur(10px);
+}
+
+/* Items */
+
+.q-item {
+    color: white !important;
+    background: transparent !important;
+}
+
+/* Hover */
+
+.q-item:hover,
+.q-item.q-manual-focusable--focused {
+    background: rgba(0,255,120,0.14) !important;
+}
+
+/* ===== REMOVE WHITE CHIP ===== */
+
+.q-chip {
+    background: rgba(2, 48, 32, 0.92) !important;
+    color: white !important;
+
+    border: 1px solid rgba(0,255,120,0.22);
+
+    box-shadow: 0 0 8px rgba(0,255,120,0.10);
+}
+
+/* X icon */
+
+.q-chip .q-icon {
+    color: white !important;
+}
+
+.q-menu,
+.q-virtual-scroll__content {
+    background: rgba(2, 48, 32, 0.96) !important;
+    color: white !important;
+    border-radius: 12px !important;
+}
+
+.q-item {
+    background: transparent !important;
+    color: white !important;
+}
+
+.q-item:hover,
+.q-item.q-manual-focusable--focused {
+    background: rgba(0, 255, 120, 0.16) !important;
+}
+
+.q-field__control,
+.q-field__native,
+.q-field__input {
+    background: transparent !important;
+    color: white !important;
+}
 </style>
 """, shared=True)
 
