@@ -30,4 +30,13 @@ background-color: #023020 !important;
 color: white !important;
 border: 1px solid #0b5d3b !important;
 border-radius: 10px !important;
+box-shadow: 0 0 10px rgba(0, 255, 150, 0.25) !important;
+"""
+#Input and Selects
+INPUT_SELECT_STYLE = """
+background: rgba(2, 48, 32, 0.72) !important;
+color: white !important;
+border: 1px solid rgba(0, 255, 120, 0.30) !important;
+border-radius: 14px !important;
+box-shadow: 0 0 14px rgba(0, 255, 120, 0.14);
 """
