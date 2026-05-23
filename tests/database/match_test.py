@@ -23,12 +23,9 @@ def test_tc_011_create_match_persists_and_links_to_player(in_memory_db, case_res
             "ai_difficulty": "normal",
         },
         "expected_result": "One match returned with player_id, rounds=10, won=True, ai_difficulty='normal'.",
-        "actual_result": "",
-        "status": "",
-        "comments": "",
     }
 
-    def validate() -> None:
+    def validate() -> str:
         player = create_player("Alex")
         create_match(
             player_id=player.id,
@@ -38,11 +35,12 @@ def test_tc_011_create_match_persists_and_links_to_player(in_memory_db, case_res
         )
         matches = get_matches_by_player_id(player.id)
         assert len(matches) == 1
-        assert matches[0].player_id == player.id
-        assert matches[0].number_of_rounds == 10
-        assert matches[0].has_player_won is True
-        assert matches[0].ai_difficulty == "normal"
-
+        m = matches[0]
+        assert m.player_id == player.id
+        assert m.number_of_rounds == 10
+        assert m.has_player_won is True
+        assert m.ai_difficulty == "normal"
+        return f"Created match for player {player.id} with rounds={m.number_of_rounds}, won={m.has_player_won}, ai_difficulty={m.ai_difficulty}"
     run_case(case, validate, case_results)
 
 
@@ -58,14 +56,11 @@ def test_tc_012_no_matches_returns_empty_list(in_memory_db, case_results: list[d
         ],
         "test_data_input": {"player_name": "Héloïse"},
         "expected_result": "Empty list is returned.",
-        "actual_result": "",
-        "status": "",
-        "comments": "",
     }
 
-    def validate() -> None:
+    def validate() -> str:
         player = create_player("Héloïse")
         matches = get_matches_by_player_id(player.id)
         assert matches == []
-
+        return f"get_matches_by_player_id returned {matches} for player {player.id}"
     run_case(case, validate, case_results)

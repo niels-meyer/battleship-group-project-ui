@@ -20,18 +20,16 @@ def test_tc_016_has_ships_is_false_after_last_ship_removed(case_results: list[di
             "ship_coordinates": [("a", "1"), ("a", "2")],
         },
         "expected_result": "has_ships() returns False after the only ship is removed.",
-        "actual_result": "",
-        "status": "",
-        "comments": "",
     }
 
-    def validate() -> None:
+    def validate() -> str:
         ships = Ships()
         ships.add_ship("Destroyer", [("a", "1"), ("a", "2")])
 
         ships.remove_ship("Destroyer")
 
         assert ships.has_ships() is False
+        return f"has_ships() returned {ships.has_ships()}"
 
     run_case(case, validate, case_results)
 
@@ -55,12 +53,9 @@ def test_tc_017_decrease_ship_removes_ship_when_last_coord_hit(case_results: lis
             "hit_coordinates": [("a", "1"), ("a", "2")],
         },
         "expected_result": "Destroyer is no longer stored and has_ships() returns False.",
-        "actual_result": "",
-        "status": "",
-        "comments": "",
     }
 
-    def validate() -> None:
+    def validate() -> str:
         ships = Ships()
         ships.add_ship("Destroyer", [("a", "1"), ("a", "2")])
 
@@ -69,5 +64,6 @@ def test_tc_017_decrease_ship_removes_ship_when_last_coord_hit(case_results: lis
 
         assert "Destroyer" not in ships.get_ships()
         assert ships.has_ships() is False
+        return "Destroyer removed and has_ships() is False"
 
     run_case(case, validate, case_results)

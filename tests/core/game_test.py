@@ -36,12 +36,9 @@ def test_tc_013_player_win_is_persisted_correctly(in_memory_db, case_results: li
         ],
         "test_data_input": {"player_name": "Niels", "ai_difficulty": "EAIDifficulty.BABY"},
         "expected_result": "One match record with has_player_won=True and ai_difficulty='baby'.",
-        "actual_result": "",
-        "status": "",
-        "comments": "",
     }
 
-    def validate() -> None:
+    def validate() -> str:
         game = Game("Niels", ai_difficulty=EAIDifficulty.BABY)
         _place_all_ships(game)
         for ship_name in list(game._ai.ships.get_ships()):
@@ -54,6 +51,7 @@ def test_tc_013_player_win_is_persisted_correctly(in_memory_db, case_results: li
         assert len(matches) == 1
         assert matches[0].has_player_won is True
         assert matches[0].ai_difficulty == EAIDifficulty.BABY.value
+        return f"Recorded match count: {len(matches)}, has_player_won={matches[0].has_player_won}"
 
     run_case(case, validate, case_results)
 
@@ -74,12 +72,9 @@ def test_tc_014_player_loss_is_persisted_correctly(in_memory_db, case_results: l
         ],
         "test_data_input": {"player_name": "Alex", "ai_difficulty": "EAIDifficulty.BABY"},
         "expected_result": "One match record with has_player_won=False.",
-        "actual_result": "",
-        "status": "",
-        "comments": "",
     }
 
-    def validate() -> None:
+    def validate() -> str:
         game = Game("Alex", ai_difficulty=EAIDifficulty.BABY)
         _place_all_ships(game)
         for ship_name in list(game._player.ships.get_ships()):
@@ -91,6 +86,7 @@ def test_tc_014_player_loss_is_persisted_correctly(in_memory_db, case_results: l
         matches = get_matches_by_player_id(player.id)
         assert len(matches) == 1
         assert matches[0].has_player_won is False
+        return f"Recorded match count: {len(matches)}, has_player_won={matches[0].has_player_won}"
 
     run_case(case, validate, case_results)
 
@@ -112,12 +108,9 @@ def test_tc_015_two_games_produce_two_match_records(in_memory_db, case_results: 
             "game_2_outcome": "loss",
         },
         "expected_result": "Two match records: one with has_player_won=True, one with has_player_won=False.",
-        "actual_result": "",
-        "status": "",
-        "comments": "",
     }
 
-    def validate() -> None:
+    def validate() -> str:
         game1 = Game("Héloïse", ai_difficulty=EAIDifficulty.BABY)
         _place_all_ships(game1)
         for ship_name in list(game1._ai.ships.get_ships()):
@@ -136,6 +129,7 @@ def test_tc_015_two_games_produce_two_match_records(in_memory_db, case_results: 
         assert len(matches) == 2
         outcomes = {m.has_player_won for m in matches}
         assert outcomes == {True, False}
+        return f"Recorded matches outcomes: {outcomes}"
 
     run_case(case, validate, case_results)
 
@@ -154,12 +148,9 @@ def test_tc_021_number_of_rounds_increments_after_full_round(in_memory_db, case_
         ],
         "test_data_input": {"player_name": "Niels", "ai_difficulty": "EAIDifficulty.BABY"},
         "expected_result": "number_of_rounds equals 2 after one complete player + AI round.",
-        "actual_result": "",
-        "status": "",
-        "comments": "",
     }
 
-    def validate() -> None:
+    def validate() -> str:
         game = Game("Niels", ai_difficulty=EAIDifficulty.BABY)
         _place_all_ships(game)
         game._does_player_start = True
@@ -172,6 +163,7 @@ def test_tc_021_number_of_rounds_increments_after_full_round(in_memory_db, case_
 
         game.ai_shoot()
         assert game.number_of_rounds == 2
+        return f"number_of_rounds after full round: {game.number_of_rounds}"
 
     run_case(case, validate, case_results)
 
@@ -189,12 +181,9 @@ def test_tc_022_is_game_over_is_true_after_all_player_ships_removed(in_memory_db
         ],
         "test_data_input": {"player_name": "Niels", "ai_difficulty": "EAIDifficulty.BABY"},
         "expected_result": "is_game_over is False before, True after all player ships are removed.",
-        "actual_result": "",
-        "status": "",
-        "comments": "",
     }
 
-    def validate() -> None:
+    def validate() -> str:
         game = Game("Niels", ai_difficulty=EAIDifficulty.BABY)
         _place_all_ships(game)
 
@@ -204,5 +193,6 @@ def test_tc_022_is_game_over_is_true_after_all_player_ships_removed(in_memory_db
             game._player.ships.remove_ship(ship_name)
 
         assert game.is_game_over is True
+        return f"is_game_over after removing player ships: {game.is_game_over}"
 
     run_case(case, validate, case_results)
