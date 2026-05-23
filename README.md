@@ -2,10 +2,9 @@
 
 A web-based Battleship game built with Python and NiceGUI.
 
-## Requirements
+## Prerequisite
 
 - Python 3.10+ (for type hints and `match` statements).
-- Dependencies listed in `requirements.txt`.
 
 ## Environment setup
 
@@ -142,21 +141,21 @@ The application allows users to:
 
 ---
 
-### 3. Shoot at Enemy Board
-
-**As a user, I want to enter a coordinate to shoot at the enemy board.**
-
-- **Inputs:** coordinate (`row`, `column`)
-- **Outputs:** hit or miss result, updated board state
-
----
-
-### 4. Play Against AI
+### 3. Play Against AI
 
 **As a user, I want to play against an AI opponent with different difficulty levels.**
 
 - **Inputs:** selected difficulty
 - **Outputs:** AI moves based on the selected strategy
+
+---
+
+### 4. Shoot at Enemy Board
+
+**As a user, I want to select a coordinate to shoot at the enemy board.**
+
+- **Inputs:** coordinate (`row`, `column`)
+- **Outputs:** hit or miss result, updated board state
 
 ---
 
@@ -420,7 +419,6 @@ Each test case follows this structure:
 7. **Actual result** – outcome from execution (populated when test runs)
 8. **Status** – pass or fail
 9. **Comments** – additional notes
-10. Comments – additional notes
 
 ---
 
