@@ -18,14 +18,13 @@ from src.ui.styles import (
     INPUT_SELECT_STYLE,
 )
 
+# Text Constants
 PLAYER_SELECTOR_HEADING = "Select or create player"
 PLAYER_SELECTOR_HELP_TEXT = "Start typing to find an existing player. Use a new name to create one."
 PLAYER_SELECTOR_INPUT_LABEL = "Player name"
 CONTINUE_LABEL = "Continue"
 
-SELECTOR_TITLE_CLASS = TITLE_CLASS
-SELECTOR_HEADING_CLASS = SECTION_HEADING_CLASS
-
+# Value Constants
 PLAYER_INPUT_PROPS = "clearable standout dark"
 
 @ui.page(ROOT_ROUTE)
@@ -42,10 +41,10 @@ def player_selector_page() -> Any:
         select_or_create_player(player_input.value)
 
     with ui.column().classes(PAGE_CLASS):
-        ui.label(APP_TITLE).classes(SELECTOR_TITLE_CLASS)
+        ui.label(APP_TITLE).classes(TITLE_CLASS)
 
         with ui.card().classes(CARD_MEDIUM_CLASS):
-            ui.label(PLAYER_SELECTOR_HEADING).classes(SELECTOR_HEADING_CLASS)
+            ui.label(PLAYER_SELECTOR_HEADING).classes(SECTION_HEADING_CLASS)
             ui.label(PLAYER_SELECTOR_HELP_TEXT)
 
             player_input = ui.input(

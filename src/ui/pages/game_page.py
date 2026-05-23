@@ -6,8 +6,8 @@ from src.ai.difficulty import (
     get_default_ai_difficulty,
     parse_ai_difficulty,
 )
-from src.app_types import EAIDifficulty, TBoard, TBoardCell, TCoord
-from src.constants import CELL_SYMBOLS, COLUMNS, ROWS
+from src.utils.app_types import EAIDifficulty, TBoard, TBoardCell, TCoord
+from src.utils.constants import CELL_SYMBOLS, COLUMNS, ROWS
 from src.core.game import Game
 from src.ui.constants import APP_TITLE, BACK_LABEL, GAME_ROUTE, MENU_ROUTE
 from src.ui.pages.helpers.access_control import require_current_player
@@ -49,7 +49,7 @@ PLACEMENT_CLEARED = "Placement selection cleared."
 PLACEMENT_INVALID = "That ship position is not valid."
 SHOT_WARNING = "That cell was already targeted."
 PLACEMENT_HELP = "Place {ship_name} ({ship_length} cells)."
-PLACEMENT_HELP_SUB = "Select a start cell, then select one of the marked end cells."
+PLACEMENT_HELP_SUB = "Select a start cell, then select one of the marked end cells to place your ship."
 PLACEMENT_STATUS = "Place {ship_name} ({ship_length} cells): choose an end cell from {start_coord}."
 PLACED_NEXT = "Placed {placed_ship}. Next: {next_ship} ({next_length} cells)."
 PLACED_BATTLE_START = "Placed {placed_ship}. Battle phase is starting."

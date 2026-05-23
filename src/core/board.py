@@ -1,5 +1,5 @@
-from src.app_types import TBoard, TBoardShip, TCoord, TShipCoords
-from src.constants import ROWS, COLUMNS
+from src.utils.app_types import TBoard, TBoardShip, TCoord, TShipCoords
+from src.utils.constants import ROWS, COLUMNS
 from src.utils.helpers import get_coord_index, get_row_index, get_column_index
 
 

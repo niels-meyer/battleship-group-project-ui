@@ -12,9 +12,6 @@ STATS_LABEL = "Stats"
 HELP_LABEL = "Help"
 LOGOUT_LABEL = "Logout"
 
-# Style Constants
-CARD_CLASS = CARD_COMPACT_CLASS
-
 @ui.page(MENU_ROUTE)
 def main_menu_page() -> Any:
     ui.add_css(BACKGROUND_CSS)
@@ -26,7 +23,7 @@ def main_menu_page() -> Any:
 
     with ui.column().classes(PAGE_CLASS):
         ui.label(WELCOME_TEMPLATE.format(player_name=player_name)).classes(TITLE_CLASS)
-        with ui.card().classes(CARD_CLASS):
+        with ui.card().classes(CARD_COMPACT_CLASS):
             with ui.column().classes(BUTTON_COLUMN_CLASS):
                 ui.button(START_GAME_LABEL, on_click=lambda: ui.navigate.to(GAME_ROUTE)).classes(FULL_WIDTH_CLASS).style(
                     GREEN_BUTTON_STYLE)

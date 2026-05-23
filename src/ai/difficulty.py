@@ -1,4 +1,4 @@
-from src.app_types import EAIDifficulty
+from src.utils.app_types import EAIDifficulty
 
 AI_DIFFICULTY_RANKS = {
     EAIDifficulty.BABY: 1,

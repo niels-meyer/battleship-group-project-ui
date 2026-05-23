@@ -7,7 +7,6 @@ from src.ui.pages.helpers import redirect_to_root, require_current_player
 from src.ui.styles import BACKGROUND_CSS, CARD_WIDE_CLASS, FULL_WIDTH_CLASS, PAGE_CLASS, TITLE_CLASS, GREEN_BUTTON_STYLE
 
 # Style Constants
-CARD_CLASS = CARD_WIDE_CLASS
 EMPTY_STATE_CLASS = "text-italic"
 
 # Text Constants
@@ -51,7 +50,7 @@ def stats_page() -> Any:
     with ui.column().classes(PAGE_CLASS):
         ui.label(TITLE).classes(TITLE_CLASS)
 
-        with ui.card().classes(CARD_CLASS):
+        with ui.card().classes(CARD_WIDE_CLASS):
             ui.label(TOTAL_MATCHES_TEMPLATE.format(total_matches=total_matches))
             ui.label(WINS_TEMPLATE.format(total_wins=total_wins))
             ui.label(LOSSES_TEMPLATE.format(total_losses=total_losses))

@@ -1,6 +1,7 @@
 """UI constants: routes, keys, and shared labels."""
 
 # Session Storage Keys
+DEV_STORAGE_SECRET = "dev-secret"
 CURRENT_PLAYER_KEY = "current_player"
 CURRENT_AI_DIFFICULTY_KEY = "ai_difficulty"
 
