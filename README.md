@@ -343,7 +343,11 @@ pytest -s
 
 Use the `-s` flag to disable output capture and show `print()` output from tests directly on the console. In the format:
 
+```text
 | ID     | Status | Expected                                                     | Actual                                                                           | Comments         |
+| ------ | ------ | ------------------------------------------------------------ | -------------------------------------------------------------------------------- | ---------------- |
+| TC_001 | ✅ PASS | Coordinate selected from known ship positions where possible | (4, 7)                                                                           | Immediate hit    |
+```
 
 ### Automated Test Cases
 
