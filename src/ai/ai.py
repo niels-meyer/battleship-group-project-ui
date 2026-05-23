@@ -5,8 +5,8 @@ try:
     from src.ai.llm_ai import LLM_AI
 except ImportError:
     LLM_AI = None
-from src.app_types import EAIDifficulty, TRemainingCells, TCoord, TShipCoords, TBoard
-from src.constants import ROWS, COLUMNS, SHIPS
+from src.utils.app_types import EAIDifficulty, TRemainingCells, TCoord, TShipCoords, TBoard
+from src.utils.constants import ROWS, COLUMNS, SHIPS
 from src.core.player import Player
 
 class AI(Player):

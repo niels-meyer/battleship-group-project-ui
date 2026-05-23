@@ -2,7 +2,7 @@ import json
 import re
 from typing import Any
 from ollama import chat
-from src.app_types import EAIDifficulty, TCoord, TRemainingCells
+from src.utils.app_types import EAIDifficulty, TCoord, TRemainingCells
 from src.utils.helpers import parse_coord
 
 class LLM_AI:

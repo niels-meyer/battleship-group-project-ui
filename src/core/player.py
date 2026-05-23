@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
-from src.app_types import EAIDifficulty
-from src.app_types import TCoord, TShipCoords
+from src.utils.app_types import EAIDifficulty
+from src.utils.app_types import TCoord, TShipCoords
 from src.core.board import Board
 from src.core.ships import Ships
 

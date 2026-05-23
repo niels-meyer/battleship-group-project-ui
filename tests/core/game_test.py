@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import Any
-from src.app_types import EAIDifficulty
+from src.utils.app_types import EAIDifficulty
 from src.core.game import Game
 from src.database.match import get_matches_by_player_id
 from src.database.player import get_player_by_name

@@ -7,7 +7,7 @@ from src.ai.difficulty import (
     get_default_ai_difficulty,
     parse_ai_difficulty,
 )
-from src.app_types import EAIDifficulty
+from src.utils.app_types import EAIDifficulty
 from tests.helpers import run_case
 
 

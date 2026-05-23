@@ -1,9 +1,9 @@
 import random
 from typing import Optional
 from src.ai.difficulty import get_default_ai_difficulty
-from src.app_types import EAIDifficulty, TCoord, TBoard
+from src.utils.app_types import EAIDifficulty, TCoord, TBoard
 from src.ai.ai import AI
-from src.constants import SHIPS
+from src.utils.constants import SHIPS
 from src.core.player import Player
 from src.utils.helpers import suggest_ship_end_coords, get_coords_between, get_row_index, get_column_index
 

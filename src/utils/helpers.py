@@ -1,6 +1,6 @@
 from typing import Sequence
-from src.app_types import TBoard, TCoord, TShipCoords
-from src.constants import COLUMNS, ROWS
+from src.utils.app_types import TBoard, TCoord, TShipCoords
+from src.utils.constants import COLUMNS, ROWS
 
 _row_lookup = {row: i for i, row in enumerate(ROWS)}
 _column_lookup = {column: i for i, column in enumerate(COLUMNS)}

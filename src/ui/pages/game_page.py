@@ -6,8 +6,8 @@ from src.ai.difficulty import (
     get_default_ai_difficulty,
     parse_ai_difficulty,
 )
-from src.app_types import EAIDifficulty, TBoard, TBoardCell, TCoord
-from src.constants import CELL_SYMBOLS, COLUMNS, ROWS
+from src.utils.app_types import EAIDifficulty, TBoard, TBoardCell, TCoord
+from src.utils.constants import CELL_SYMBOLS, COLUMNS, ROWS
 from src.core.game import Game
 from src.ui.constants import APP_TITLE, BACK_LABEL, GAME_ROUTE, MENU_ROUTE
 from src.ui.pages.helpers.access_control import require_current_player
@@ -23,9 +23,8 @@ BOARD_ROW_CLASS = "w-full justify-evenly items-start"
 STATUS_CLASS = "text-subtitle1 text-weight-medium"
 HEADING_CLASS = "text-subtitle1 text-weight-medium"
 HELPER_TEXT_CLASS = "text-body2"
-BOARD_CELL_CLASS = "min-w-0"
-BOARD_CELL_STYLE = "width: 2rem; height: 2rem; padding: 0;"
-BOARD_LABEL_STYLE = "width: 1.5rem; text-align: center;"
+BOARD_CELL_CLASS = "min-w-0 w-8 h-8 p-0"
+BOARD_LABEL_CLASS = "w-6 text-center"
 
 # Text Constants
 CELL_SELECTED = CELL_SYMBOLS["start_coord"]
@@ -48,7 +47,7 @@ PLACEMENT_CLEARED = "Placement selection cleared."
 PLACEMENT_INVALID = "That ship position is not valid."
 SHOT_WARNING = "That cell was already targeted."
 PLACEMENT_HELP = "Place {ship_name} ({ship_length} cells)."
-PLACEMENT_HELP_SUB = "Select a start cell, then select one of the marked end cells."
+PLACEMENT_HELP_SUB = "Select a start cell, then select one of the marked end cells to place your ship."
 PLACEMENT_STATUS = "Place {ship_name} ({ship_length} cells): choose an end cell from {start_coord}."
 PLACED_NEXT = "Placed {placed_ship}. Next: {next_ship} ({next_length} cells)."
 PLACED_BATTLE_START = "Placed {placed_ship}. Battle phase is starting."
@@ -269,10 +268,10 @@ class GamePageController:
             with ui.element("div").style(_board_grid_style(len(self.columns))):
                 ui.label("")
                 for column in self.columns:
-                    ui.label(column).style(BOARD_LABEL_STYLE)
+                    ui.label(column).classes(BOARD_LABEL_CLASS)
                 ui.label("")
                 for row_index, row in enumerate(self.rows):
-                    ui.label(row.upper()).style(BOARD_LABEL_STYLE)
+                    ui.label(row.upper()).classes(BOARD_LABEL_CLASS)
                     for column_index, column in enumerate(self.columns):
                         self._render_board_cell(
                             row=row,
@@ -283,10 +282,10 @@ class GamePageController:
                             highlighted_coords=highlighted_coords,
                             selected_coord=selected_coord,
                         )
-                    ui.label(row.upper()).style(BOARD_LABEL_STYLE)
+                    ui.label(row.upper()).classes(BOARD_LABEL_CLASS)
                 ui.label("")
                 for column in self.columns:
-                    ui.label(column).style(BOARD_LABEL_STYLE)
+                    ui.label(column).classes(BOARD_LABEL_CLASS)
                 ui.label("")
 
     def _render_board_cell(
@@ -312,7 +311,6 @@ class GamePageController:
             on_click=(lambda _event, target=coord: on_cell_click(target)) if is_clickable and on_cell_click else None,
         )
         button.classes(BOARD_CELL_CLASS)
-        button.style(BOARD_CELL_STYLE)
         if not is_clickable:
             button.disable()
 

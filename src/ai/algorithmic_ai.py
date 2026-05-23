@@ -2,7 +2,7 @@ import random
 from enum import Enum
 from collections import deque
 from typing import List, Set
-from src.app_types import EAIDifficulty, TBoard, TCoordIndex
+from src.utils.app_types import EAIDifficulty, TBoard, TCoordIndex
 
 class AIStrategy(Enum):
     # Enum for high-level AI behavior.

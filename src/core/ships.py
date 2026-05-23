@@ -1,4 +1,4 @@
-from src.app_types import TShips, TShipCoords, TCoord
+from src.utils.app_types import TShips, TShipCoords, TCoord
 
 class Ships:
     def __init__(self):

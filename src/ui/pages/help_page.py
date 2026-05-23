@@ -1,6 +1,6 @@
 from typing import Any
 from nicegui import ui
-from src.constants import CELL_SYMBOLS, COLUMNS, ROWS, SHIPS
+from src.utils.constants import CELL_SYMBOLS, COLUMNS, ROWS, SHIPS
 from src.ui.constants import BACK_LABEL, HELP_ROUTE, MENU_ROUTE
 from src.ui.pages.helpers.access_control import require_current_player
 from src.ui.pages.helpers.navigation import redirect_to_root

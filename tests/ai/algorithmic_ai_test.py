@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import Any, Dict, Iterable
 from src.ai.algorithmic_ai import AIStrategy, SimpleBattleshipAI
-from src.app_types import EAIDifficulty, TBoard, TCoordIndex
+from src.utils.app_types import EAIDifficulty, TBoard, TCoordIndex
 from tests.helpers import run_case
 
 Coord = TCoordIndex

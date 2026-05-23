@@ -2,7 +2,7 @@
 
 from nicegui import app
 from src.ai.difficulty import get_default_ai_difficulty, parse_ai_difficulty
-from src.app_types import EAIDifficulty, TCurrentPlayer
+from src.utils.app_types import EAIDifficulty, TCurrentPlayer
 from src.ui.constants import CURRENT_AI_DIFFICULTY_KEY, CURRENT_PLAYER_KEY
 
 # Value Constants
