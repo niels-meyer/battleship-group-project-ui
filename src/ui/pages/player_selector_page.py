@@ -16,13 +16,15 @@ from src.ui.styles import (
 )
 
 # Text Constants
-PLAYER_SELECTOR_HEADING = "Select or create player"
-PLAYER_SELECTOR_HELP_TEXT = "Start typing to find an existing player. Use a new name to create one."
-PLAYER_SELECTOR_INPUT_LABEL = "Player name"
-CONTINUE_LABEL = "Continue"
+INPUT_LABEL = "Player name"
+EXISTING_PLAYER_HEADING = "Select existing player"
+NEW_PLAYER_HEADING = "Create new player"
+CREATE_PLAYER_BUTTON_LABEL = "Create Player"
 
 # Value Constants
 PLAYER_INPUT_PROPS = "clearable standout dark"
+DIVIDER_CLASS = "w-full"
+SECTION_CLASS = "w-full gap-2"
 
 @ui.page(ROOT_ROUTE)
 def player_selector_page() -> Any:
@@ -33,31 +35,43 @@ def player_selector_page() -> Any:
     player_name_options = get_player_name_options()
 
     def continue_with_player() -> None:
-        select_or_create_player(player_input.value)
+        select_or_create_player(new_player_input.value)
 
     with ui.column().classes(PAGE_CLASS):
         ui.label(APP_TITLE).classes(TITLE_CLASS)
 
         with ui.card().classes(CARD_MEDIUM_CLASS):
-            ui.label(PLAYER_SELECTOR_HEADING).classes(SECTION_HEADING_CLASS)
-            ui.label(PLAYER_SELECTOR_HELP_TEXT)
 
-            player_input = ui.input(
-                label=PLAYER_SELECTOR_INPUT_LABEL,
-                placeholder="Create a new player name",
-                autocomplete=player_name_options,
-            ).props(
-                PLAYER_INPUT_PROPS
-            ).on(
-                "keydown.enter",
-                continue_with_player,
-            ).classes(
-                FULL_WIDTH_CLASS
-            )
+            with ui.column().classes(SECTION_CLASS):
+                ui.label(EXISTING_PLAYER_HEADING)
+                ui.select(
+                    options=player_name_options,
+                    label=INPUT_LABEL,
+                    on_change=lambda e: select_or_create_player(e.value),
+                    with_input=True,
+                ).props(
+                    PLAYER_INPUT_PROPS
+                ).classes(
+                    FULL_WIDTH_CLASS
+                )
 
-            ui.button(
-                CONTINUE_LABEL,
-                on_click=continue_with_player,
-            ).classes(
-                FULL_WIDTH_CLASS
-            )
+            ui.separator().classes(DIVIDER_CLASS)
+
+            with ui.column().classes(SECTION_CLASS):
+                ui.label(NEW_PLAYER_HEADING)
+                new_player_input = ui.input(
+                    label=INPUT_LABEL,
+                ).props(
+                    PLAYER_INPUT_PROPS
+                ).on(
+                    "keydown.enter",
+                    continue_with_player,
+                ).classes(
+                    FULL_WIDTH_CLASS
+                )
+                ui.button(
+                    CREATE_PLAYER_BUTTON_LABEL,
+                    on_click=continue_with_player,
+                ).classes(
+                    FULL_WIDTH_CLASS
+                )

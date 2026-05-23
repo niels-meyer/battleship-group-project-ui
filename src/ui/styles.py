@@ -1,5 +1,9 @@
 # Colors
 PRIMARY_COLOR = "#023020"
+COLOR_CARD    = "#00140a"
+COLOR_GLOW    = "#00ff78"
+COLOR_TEXT    = "#ffffff"
+C_BORDER      = "#0b5d3b"
 
 # Layout
 PAGE_CLASS = "w-full min-h-screen items-center justify-center q-pa-xl gap-4"
@@ -16,50 +20,39 @@ TITLE_CLASS = "text-h4 text-weight-bold"
 SECTION_HEADING_CLASS = "text-h6"
 
 # Global app styles injected once at startup via ui.add_head_html
-GLOBAL_CSS = """
+GLOBAL_CSS = f"""
 <style>
-
-/* ===== DESIGN TOKENS ===== */
-
-:root {
-    --c-surface:      rgba(2, 48, 32, 0.72);
-    --c-overlay:      rgba(2, 48, 32, 0.96);
-    --c-border:       #0b5d3b;
-    --c-glow-faint:   rgba(0, 255, 150, 0.15);
-    --c-glow-low:     rgba(0, 255, 120, 0.25);
-    --shadow-glow:    0 0 10px rgba(0, 255, 150, 0.25);
-}
 
 /* ===== BACKGROUND ===== */
 
-body {
+body {{
     background-image: url('/assets/menu-background.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-}
+}}
 
 /* ===== BUTTONS ===== */
 
-.q-btn {
-    border: 1px solid var(--c-border) !important;
+.q-btn {{
+    border: 1px solid {C_BORDER} !important;
     border-radius: 10px !important;
-    box-shadow: var(--shadow-glow) !important;
-}
+    box-shadow: 0 0 10px {COLOR_GLOW}40 !important;
+}}
 
-.q-btn:before {
+.q-btn:before {{
     box-shadow: none !important;
-}
+}}
 
 /* ===== CARDS ===== */
 
-.q-card {
-    background: rgba(0, 20, 10, 0.82) !important;
-    border: 1px solid var(--c-glow-faint);
+.q-card {{
+    background: {COLOR_CARD}d1 !important;
+    border: 1px solid {COLOR_GLOW}26;
     backdrop-filter: blur(6px);
-    color: white;
-}
+    color: {COLOR_TEXT};
+}}
 
 /* ===== TEXT ===== */
 
@@ -68,73 +61,92 @@ body,
 .q-field,
 .q-input,
 .q-select,
-.q-table {
-    color: white !important;
-}
+.q-table {{
+    color: {COLOR_TEXT} !important;
+}}
 
 /* ===== INPUTS / SELECTS ===== */
 
-.q-field__control {
-    background: var(--c-surface) !important;
-    border: 1px solid var(--c-glow-low) !important;
+.q-field__control {{
+    background: {PRIMARY_COLOR}b8 !important;
+    border: 1px solid {COLOR_GLOW}40 !important;
     border-radius: 14px !important;
-    box-shadow: 0 0 14px rgba(0, 255, 120, 0.14) !important;
-}
+    box-shadow: 0 0 14px {COLOR_GLOW}24 !important;
+}}
 
 .q-field__native,
-.q-field__input {
-    color: white !important;
-}
+.q-field__input {{
+    color: {COLOR_TEXT} !important;
+}}
 
-.q-field__label {
-    color: rgba(255, 255, 255, 0.75) !important;
-}
+.q-field__label {{
+    color: {COLOR_TEXT}bf !important;
+}}
 
 .q-field__append,
 .q-field__prepend,
-.q-icon {
-    color: white !important;
-}
+.q-icon {{
+    color: {COLOR_TEXT} !important;
+}}
 
 /* ===== AUTOCOMPLETE DROPDOWN ===== */
 
 .q-menu,
-.q-virtual-scroll__content {
-    background: var(--c-overlay) !important;
-    color: white !important;
-    border: 1px solid var(--c-glow-low) !important;
+.q-virtual-scroll__content {{
+    background: {PRIMARY_COLOR}f5 !important;
+    color: {COLOR_TEXT} !important;
+    border: 1px solid {COLOR_GLOW}40 !important;
     border-radius: 12px !important;
     backdrop-filter: blur(10px);
-}
+}}
 
-.q-item {
+.q-item {{
     background: transparent !important;
-    color: white !important;
-}
+    color: {COLOR_TEXT} !important;
+}}
 
 .q-item:hover,
-.q-item.q-manual-focusable--focused {
-    background: rgba(0, 255, 120, 0.16) !important;
-}
+.q-item.q-manual-focusable--focused {{
+    background: {COLOR_GLOW}29 !important;
+}}
 
 /* ===== CHIPS ===== */
 
-.q-chip {
-    background: var(--c-overlay) !important;
-    color: white !important;
-    border: 1px solid var(--c-glow-low);
-    box-shadow: 0 0 8px rgba(0, 255, 120, 0.10);
-}
+.q-chip {{
+    background: {PRIMARY_COLOR}f5 !important;
+    color: {COLOR_TEXT} !important;
+    border: 1px solid {COLOR_GLOW}40;
+    box-shadow: 0 0 8px {COLOR_GLOW}1a;
+}}
 
-.q-chip .q-icon {
-    color: white !important;
-}
+.q-chip .q-icon {{
+    color: {COLOR_TEXT} !important;
+}}
 
 /* ===== SEPARATORS ===== */
 
-.q-separator {
-    background-color: var(--c-glow-faint) !important;
-}
+.q-separator {{
+    background-color: {COLOR_GLOW}26 !important;
+}}
+
+/* ===== TABLES ===== */
+
+.q-table__container,
+.q-table thead tr,
+.q-table tbody tr {{
+    background: {PRIMARY_COLOR}b8 !important;
+    color: {COLOR_TEXT} !important;
+}}
+
+.q-table tbody tr:hover {{
+    background: {PRIMARY_COLOR}f5 !important;
+}}
+
+.q-table th,
+.q-table td {{
+    border-color: {COLOR_GLOW}26 !important;
+    color: {COLOR_TEXT} !important;
+}}
 
 </style>
 """
