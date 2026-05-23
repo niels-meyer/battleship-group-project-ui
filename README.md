@@ -338,7 +338,7 @@ tests/
 Run tests with:
 
 ```bash
-dpytest -s
+pytest -s
 ```
 
 Use the `-s` flag to disable output capture and show `print()` output from tests directly on the console. In the format:
