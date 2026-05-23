@@ -338,8 +338,12 @@ tests/
 Run tests with:
 
 ```bash
-pytest
+dpytest -s
 ```
+
+Use the `-s` flag to disable output capture and show `print()` output from tests directly on the console. In the format:
+
+| ID     | Status | Expected                                                     | Actual                                                                           | Comments         |
 
 ### Automated Test Cases
 

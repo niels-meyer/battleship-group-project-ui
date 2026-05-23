@@ -16,18 +16,15 @@ def test_tc_010_create_player_persists_and_is_retrievable(in_memory_db, case_res
         ],
         "test_data_input": {"name": "Niels"},
         "expected_result": "get_player_by_name returns a player with name 'Niels' and an assigned integer id.",
-        "actual_result": "",
-        "status": "",
-        "comments": "",
     }
 
-    def validate() -> None:
+    def validate() -> str:
         create_player("Niels")
         found = get_player_by_name("Niels")
         assert found is not None
         assert found.name == "Niels"
         assert isinstance(found.id, int)
-
+        return f"Found player {found.name} with id {found.id}"
     run_case(case, validate, case_results)
 
 
@@ -43,18 +40,16 @@ def test_tc_019_get_all_players_returns_alphabetical_order(in_memory_db, case_re
         ],
         "test_data_input": {"names": ["Zara", "Alex", "Niels"]},
         "expected_result": "Players returned in order: Alex, Niels, Zara.",
-        "actual_result": "",
-        "status": "",
-        "comments": "",
     }
 
-    def validate() -> None:
+    def validate() -> str:
         create_player("Zara")
         create_player("Alex")
         create_player("Niels")
         players = get_all_players()
-        assert [p.name for p in players] == ["Alex", "Niels", "Zara"]
-
+        names = [p.name for p in players]
+        assert names == ["Alex", "Niels", "Zara"]
+        return f"get_all_players() returned {names}"
     run_case(case, validate, case_results)
 
 
@@ -71,16 +66,13 @@ def test_tc_020_register_player_duplicate_name_returns_failure(in_memory_db, cas
         ],
         "test_data_input": {"name": "Niels"},
         "expected_result": "Second call returns (False, None, <error message>) and the DB still has one player.",
-        "actual_result": "",
-        "status": "",
-        "comments": "",
     }
 
-    def validate() -> None:
+    def validate() -> str:
         register_player("Niels")
-        success, player, _ = register_player("Niels")
+        success, player, message = register_player("Niels")
         assert success is False
         assert player is None
         assert len(get_all_players()) == 1
-
+        return f"Second register_player returned (success={success}, player={player}, message={message})"
     run_case(case, validate, case_results)

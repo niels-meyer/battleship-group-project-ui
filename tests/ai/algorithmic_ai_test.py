@@ -42,18 +42,16 @@ def test_tc_001_impossible_targets_unshot_ship(case_results: list[dict[str, Any]
             "ship_cells": [(2, 3), (7, 8)],
             "shot_cells": [],
         },
-        "expected_result": "Returned coordinate is one of the unshot ship cells.",
-        "actual_result": "",
-        "status": "",
-        "comments": "",
+        "expected_result": "Returned coordinate is one of the unshot ship cells."
     }
 
     ai = SimpleBattleshipAI(difficulty=EAIDifficulty.IMPOSSIBLE)
     board = make_board(ship_cells={(2, 3): "Destroyer", (7, 8): "Submarine"})
 
-    def validate() -> None:
+    def validate() -> str:
         shot = ai.decide_shot(board)
         assert shot in {(2, 3), (7, 8)}
+        return f"Returned coordinate {shot}, which was one of the unshot ship cells."
 
     run_case(case, validate, case_results)
 
@@ -85,9 +83,10 @@ def test_tc_002_hard_extends_known_ship_line(case_results: list[dict[str, Any]])
         shot_cells=[(3, 0), (3, 1)],
     )
 
-    def validate() -> None:
+    def validate() -> str:
         shot = ai.decide_shot(board)
         assert shot == (3, 2)
+        return f"Returned coordinate {shot}, extending the horizontal hit group."
 
     run_case(case, validate, case_results)
 
@@ -116,9 +115,10 @@ def test_tc_003_normal_never_repeats_shot(case_results: list[dict[str, Any]]) ->
     previous_shots = {(0, 0), (1, 1), (2, 2), (4, 4)}
     board = make_board(shot_cells=previous_shots)
 
-    def validate() -> None:
+    def validate() -> str:
         shot = ai.decide_shot(board)
         assert shot not in previous_shots
+        return f"Returned coordinate {shot}, which was not in the previous shot set."
 
     run_case(case, validate, case_results)
 
@@ -147,10 +147,11 @@ def test_tc_004_reset_clears_state(case_results: list[dict[str, Any]]) -> None:
     ai.last_shots.add((5, 5))
     ai.current_strategy = AIStrategy.DESTROY
 
-    def validate() -> None:
+    def validate() -> str:
         ai.reset()
         assert ai.last_shots == set()
         assert ai.current_strategy == AIStrategy.SEARCH
+        return "last_shots was empty and current_strategy was SEARCH after reset()."
 
     run_case(case, validate, case_results)
 
@@ -181,8 +182,9 @@ def test_tc_005_find_unsunk_hits_returns_only_shot_ship_cells(case_results: list
         shot_cells=[(1, 1), (0, 0), (9, 9)],
     )
 
-    def validate() -> None:
+    def validate() -> str:
         hits = ai._find_unsunk_hits(board)
         assert hits == [(1, 1)]
+        return f"_find_unsunk_hits(board) returned {hits}."
 
     run_case(case, validate, case_results)

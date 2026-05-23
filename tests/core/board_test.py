@@ -24,12 +24,9 @@ def test_tc_018_shoot_ship_returns_name_on_hit_none_on_miss_and_marks_cell_shot(
             "miss_coordinate": ("b", "1"),
         },
         "expected_result": "Hit returns 'Carrier', miss returns None, and both cells have is_shot=True.",
-        "actual_result": "",
-        "status": "",
-        "comments": "",
     }
 
-    def validate() -> None:
+    def validate() -> str:
         board = Board()
         board.add_ship("Carrier", [("a", "1")])
 
@@ -41,5 +38,6 @@ def test_tc_018_shoot_ship_returns_name_on_hit_none_on_miss_and_marks_cell_shot(
         state = board.get_board()
         assert state[0][0]["is_shot"] is True
         assert state[1][0]["is_shot"] is True
+        return f"hit_result={hit_result}, miss_result={miss_result}, shots_marked={(state[0][0]['is_shot'], state[1][0]['is_shot'])}"
 
     run_case(case, validate, case_results)

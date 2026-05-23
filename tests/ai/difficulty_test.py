@@ -22,13 +22,12 @@ def test_tc_006_invalid_difficulty_falls_back_to_default(case_results: list[dict
         ],
         "test_data_input": {"value": "unknown"},
         "expected_result": "Return value equals get_default_ai_difficulty().",
-        "actual_result": "",
-        "status": "",
-        "comments": "",
     }
 
-    def validate() -> None:
-        assert parse_ai_difficulty("unknown") == get_default_ai_difficulty()
+    def validate() -> str:
+        result = parse_ai_difficulty("unknown")
+        assert result == get_default_ai_difficulty()
+        return f"parse_ai_difficulty('unknown') returned {result}"
 
     run_case(case, validate, case_results)
 
@@ -44,13 +43,11 @@ def test_tc_007_available_difficulties_match_enum(case_results: list[dict[str, A
         ],
         "test_data_input": {},
         "expected_result": "The returned list equals list(EAIDifficulty) with all five members.",
-        "actual_result": "",
-        "status": "",
-        "comments": "",
     }
-
-    def validate() -> None:
-        assert get_available_ai_difficulties() == list(EAIDifficulty)
+    def validate() -> str:
+        result = get_available_ai_difficulties()
+        assert result == list(EAIDifficulty)
+        return f"get_available_ai_difficulties() returned {result}"
 
     run_case(case, validate, case_results)
 
@@ -67,15 +64,12 @@ def test_tc_008_difficulty_ranks_span_one_to_ten(case_results: list[dict[str, An
         ],
         "test_data_input": {"difficulties": "all EAIDifficulty values"},
         "expected_result": "Minimum rank is 1, maximum rank is 10.",
-        "actual_result": "",
-        "status": "",
-        "comments": "",
     }
-
-    def validate() -> None:
+    def validate() -> str:
         ranks = [get_ai_difficulty_rank(d) for d in get_available_ai_difficulties()]
         assert min(ranks) == 1
         assert max(ranks) == 10
+        return f"ranks = {ranks}"
 
     run_case(case, validate, case_results)
 
@@ -91,12 +85,10 @@ def test_tc_009_difficulty_summary_format(case_results: list[dict[str, Any]]) ->
         ],
         "test_data_input": {"difficulty": "EAIDifficulty.HARD"},
         "expected_result": "Return value is 'Hard (8/10)'.",
-        "actual_result": "",
-        "status": "",
-        "comments": "",
     }
-
-    def validate() -> None:
-        assert get_ai_difficulty_summary(EAIDifficulty.HARD) == "Hard (8/10)"
+    def validate() -> str:
+        summary = get_ai_difficulty_summary(EAIDifficulty.HARD)
+        assert summary == "Hard (8/10)"
+        return f"get_ai_difficulty_summary returned '{summary}'"
 
     run_case(case, validate, case_results)
