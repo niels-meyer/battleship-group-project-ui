@@ -8,14 +8,11 @@ from src.ui.pages.helpers import (
     select_or_create_player,
 )
 from src.ui.styles import (
-    BACKGROUND_CSS,
     CARD_MEDIUM_CLASS,
     FULL_WIDTH_CLASS,
     PAGE_CLASS,
     SECTION_HEADING_CLASS,
     TITLE_CLASS,
-    GREEN_BUTTON_STYLE,
-    INPUT_SELECT_STYLE,
 )
 
 # Text Constants
@@ -29,8 +26,6 @@ PLAYER_INPUT_PROPS = "clearable standout dark"
 
 @ui.page(ROOT_ROUTE)
 def player_selector_page() -> Any:
-    ui.add_css(BACKGROUND_CSS)
-
     player = get_current_player()
     if player is not None:
         return redirect_to_menu()
@@ -58,8 +53,6 @@ def player_selector_page() -> Any:
                 continue_with_player,
             ).classes(
                 FULL_WIDTH_CLASS
-            ).style(
-                INPUT_SELECT_STYLE
             )
 
             ui.button(
@@ -67,6 +60,4 @@ def player_selector_page() -> Any:
                 on_click=continue_with_player,
             ).classes(
                 FULL_WIDTH_CLASS
-            ).style(
-                GREEN_BUTTON_STYLE
             )
