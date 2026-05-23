@@ -156,9 +156,10 @@ tests/
 
 ### Wireframes
 
-![Battleship mockup](docs/Mockup-Battleship.png)
-![Battleship mockup screen 1](docs/Mockup-Battleship1.png)
-![Battleship mockup screen 2](docs/Mockup-Battleship2.png)
+![Battleship mockup 1](docs/Mockup-Battleship1.png)
+![Battleship mockup 2](docs/Mockup-Battleship2.png)
+![Battleship mockup 3](docs/Mockup-Battleship3.png)
+![Battleship mockup 4](docs/Mockup-Battleship4.png)
 
 ### Database Diagram
 
