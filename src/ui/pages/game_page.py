@@ -1,3 +1,4 @@
+import asyncio
 from typing import Any, Callable
 from nicegui import ui
 from src.ai.difficulty import (
@@ -53,6 +54,9 @@ RESULT_TITLE = "Result: {outcome}"
 RESULT_SAVED = "The match result has been saved to your stats."
 PLAYER_SHOT = "You fired at {coord} and {result}."
 ENEMY_SHOT = "Enemy fired at {enemy_coord} and {enemy_result}."
+AI_THINKING = "AI is thinking..."
+AI_PLAYER_VICTORY = "AI: Congratulations, you won!"
+AI_ENEMY_VICTORY = "AI: Better luck next time!"
 
 def _board_grid_style(column_count: int) -> str:
     return (
@@ -118,6 +122,19 @@ class GamePageController:
         coord, hit = self.game.ai_shoot()
         return _format_coord(coord), SHOT_HIT if hit else SHOT_MISSED
 
+    async def _resolve_enemy_turn(self) -> None:
+        if self.game.is_game_over:
+            self.save_match()
+            self.refresh()
+            return
+
+        enemy_coord_label, enemy_result = self._shoot_ai()
+        self.save_match()
+        self.set_status(self.player_status, ENEMY_SHOT.format(enemy_coord=enemy_coord_label, enemy_result=enemy_result))
+        if self.game.is_game_over:
+            self.set_status(self.player_status, AI_ENEMY_VICTORY)
+        self.refresh()
+
     def begin_battle_phase(self) -> None:
         self.clear_selection()
         if self.game.is_player_turn:
@@ -182,7 +199,7 @@ class GamePageController:
             self.set_status(PLACEMENT_HELP.format(ship_name=next_name, ship_length=next_length))
         self.refresh()
 
-    def handle_player_shot(self, coord: TCoord) -> None:
+    async def handle_player_shot(self, coord: TCoord) -> None:
         if self.game.is_game_over or not self.game.is_player_turn:
             return
         if not self.game.is_valid_shot(coord):
@@ -190,14 +207,18 @@ class GamePageController:
 
         player_hit = self.game.player_shoot(coord)
         player_message = PLAYER_SHOT.format(coord=_format_coord(coord), result=SHOT_HIT if player_hit else SHOT_MISSED)
-        enemy_message = ""
-        if not self.game.is_game_over:
-            enemy_coord_label, enemy_result = self._shoot_ai()
-            enemy_message = ENEMY_SHOT.format(enemy_coord=enemy_coord_label, enemy_result=enemy_result)
 
-        self.save_match()
-        self.set_status(player_message, enemy_message)
+        if self.game.is_game_over:
+            self.set_status(player_message, AI_PLAYER_VICTORY)
+            self.save_match()
+            self.refresh()
+            return
+
+        self.set_status(player_message, AI_THINKING)
         self.refresh()
+
+        await asyncio.sleep(0)
+        await self._resolve_enemy_turn()
 
     def render_board(
         self,

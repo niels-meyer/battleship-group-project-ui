@@ -32,6 +32,26 @@ Prepare the project with a virtual environment and install dependencies:
    ```
    This installs all required dependencies into the active virtual environment.
 
+## Optional: Ollama LLM setup
+
+The advanced AI opponent uses Ollama with the `mixtral:8x22b` model. Install it locally before starting the app if you want to use the LLM-based AI:
+
+1. Install Ollama from the official website: https://ollama.com
+
+2. Download the model:
+
+   ```bash
+   ollama pull llama3.1:8b
+   ```
+
+3. Start the Ollama service if it is not already running:
+
+   ```bash
+   ollama serve
+   ```
+
+After the model is installed, the app can talk to Ollama on the default local endpoint.
+
 ## Updating local dependencies
 
 If a package has been added/updated and updated `requirements.txt`, you only need to sync your local environment:

@@ -6,7 +6,7 @@ from src.utils.app_types import EAIDifficulty, TCoord, TRemainingCells
 from src.utils.helpers import parse_coord
 
 class LLM_AI:
-    def __init__(self, difficulty: EAIDifficulty, model: str = "mixtral:8x22b"):
+    def __init__(self, difficulty: EAIDifficulty, model: str = "llama3.1:8b"):
         self.difficulty = difficulty
         self.model = model
 
@@ -41,7 +41,11 @@ Analyze the board. Look for patterns:
 
 Think like a real player. Make your next attack decision.
 
-{{"row": string, "column": string}}
+Return exactly one JSON object and nothing else.
+Do not include markdown, code fences, comments, or explanation.
+Use this format only:
+
+{{"row": "A", "column": "1"}}
 
 """
 
