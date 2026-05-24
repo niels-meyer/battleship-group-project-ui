@@ -16,7 +16,7 @@ A web-based Battleship game built with Python and NiceGUI. Players create a prof
 
 ## 🚀 Getting Started
 
-## Updating local dependencies
+### Prerequisites
 
 - Python 3.10+
 
@@ -42,7 +42,7 @@ A web-based Battleship game built with Python and NiceGUI. Players create a prof
    
 ### Optional: Ollama LLM setup
 
-The advanced AI opponent uses Ollama with the `mixtral:8x22b` model. Install it locally before starting the app if you want to use the LLM-based AI:
+The advanced AI opponent uses Ollama with the `llama3.1:8b` model. Install it locally before starting the app if you want to use the LLM-based AI:
 
 1. Install Ollama from the official website: https://ollama.com
 
